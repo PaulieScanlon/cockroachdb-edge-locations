@@ -8,7 +8,7 @@ async function main() {
       date: new Date(),
       city: 'Test',
       lat: 0,
-      lng: 0
+      lng: -0
     }
   });
 }

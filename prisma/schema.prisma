@@ -13,5 +13,5 @@ model locations {
   date          DateTime        @db.Date  
   city          String
   lat           Int
-  lng           Int
+  lng           Float
 }
