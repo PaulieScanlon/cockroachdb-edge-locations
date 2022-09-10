@@ -4,6 +4,7 @@ const geoip = require('fast-geoip');
 
 export default async function handler(req, res) {
   const { date } = JSON.parse(req.body);
+  console.log('date: ', date);
 
   const prisma = new PrismaClient({
     datasources: {
@@ -17,23 +18,24 @@ export default async function handler(req, res) {
     const ip = await requestIp.getClientIp(req);
     const geo = await geoip.lookup(ip);
 
-    const response = await prisma.dates.create({
-      data: {
-        date: new Date(date),
-        location: geo ? geo : 'localhost'
-      }
-    });
+    // const response = await prisma.dates.create({
+    //   data: {
+    //     date: new Date(date),
+    //     location: geo ? geo : 'localhost'
+    //   }
+    // });
 
     // throw new Error('Error');
 
     res.status(200).json({
       message: 'A-OK!',
       data: {
-        date: new Date(response.date).toLocaleString(),
-        location: response.location
+        date: new Date(date).toLocaleString(),
+        location: geo
       }
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: 'Error!' });
   } finally {
     prisma.$disconnect();

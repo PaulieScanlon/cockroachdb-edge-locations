@@ -48,12 +48,6 @@ const Page = () => {
   });
   const mutation = useMutation(create);
 
-  if (query.isSuccess) {
-    // console.log(JSON.parse(query.data.data.locations));
-    // console.log(typeof JSON.parse(query.data.data.locations));
-    // console.log(JSON.stringify(query.data.data.locations, null, 2));
-  }
-
   return (
     <div className="grid gap-4">
       <div>
