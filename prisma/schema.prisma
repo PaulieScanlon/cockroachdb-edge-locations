@@ -1,0 +1,24 @@
+generator client {
+  provider        = "prisma-client-js"
+}
+
+datasource db {
+  provider = "cockroachdb"
+  url      = env("DATABASE_URL")
+}
+
+model user_dates {
+  id          BigInt    @id @default(autoincrement())
+  location_id BigInt
+  date        DateTime  @db.Date
+  dates   dates @relation(fields: [location_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_location")
+  @@index([date], map: "user_dates_date")
+  @@index([location_id], map: "user_dates_location_id")
+}
+
+model dates {
+  id             BigInt           @id @default(autoincrement())
+  date           DateTime         @db.Date
+  location       String
+  user_dates user_dates[]
+}
