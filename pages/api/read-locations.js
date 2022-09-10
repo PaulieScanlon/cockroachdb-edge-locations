@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   });
 
   try {
-    const response = await prisma.dates.findMany();
+    const response = await prisma.locations.findMany();
 
     //   throw new Error('Error');
 

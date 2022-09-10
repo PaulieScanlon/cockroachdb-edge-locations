@@ -10,6 +10,7 @@
     "lint": "next lint",
     "generate": "prisma generate",
     "migrate": "prisma migrate dev --name init",
+    "format": "prisma format",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "prisma": {

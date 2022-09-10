@@ -84,7 +84,8 @@ const Page = () => {
                 <tr>
                   <td>Id</td>
                   <td>Date</td>
-                  <td>Location</td>
+                  <td>Latitude</td>
+                  <td>Longitude</td>
                 </tr>
               </thead>
 
@@ -92,12 +93,13 @@ const Page = () => {
                 {query.isSuccess ? (
                   <Fragment>
                     {JSON.parse(query.data.data.locations).map((item, index) => {
-                      const { id, date, location } = item;
+                      const { id, date, lat, lng } = item;
                       return (
                         <tr key={index}>
                           <td className="text-xs text-gray-500">{id}</td>
                           <td className="font-semibold">{new Date(date).toLocaleString('default', { month: 'long', day: 'numeric', year: '2-digit' })}</td>
-                          <td>{location}</td>
+                          <td>{lat}</td>
+                          <td>{lng}</td>
                         </tr>
                       );
                     })}

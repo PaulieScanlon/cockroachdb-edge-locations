@@ -3,10 +3,12 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function main() {
-  const test_date_1 = await prisma.locations.create({
+  const test_location_1 = await prisma.locations.create({
     data: {
       date: new Date(),
-      location: 'null'
+      city: 'Test',
+      lat: 0,
+      lng: 0
     }
   });
 }
