@@ -18,12 +18,12 @@ export default async function handler(req, res) {
     const ip = await requestIp.getClientIp(req);
     const geo = await geoip.lookup(ip);
 
-    // const response = await prisma.dates.create({
-    //   data: {
-    //     date: new Date(date),
-    //     location: geo ? geo : 'localhost'
-    //   }
-    // });
+    const response = await prisma.dates.create({
+      data: {
+        date: new Date(date),
+        location: geo
+      }
+    });
 
     // throw new Error('Error');
 
