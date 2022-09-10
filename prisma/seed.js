@@ -7,8 +7,8 @@ async function main() {
     data: {
       date: new Date(),
       city: 'Test',
-      lat: 0,
-      lng: -0
+      lat: 0.0,
+      lng: -0.0
     }
   });
 }

@@ -92,17 +92,20 @@ const Page = () => {
               <tbody>
                 {query.isSuccess ? (
                   <Fragment>
-                    {JSON.parse(query.data.data.locations).map((item, index) => {
-                      const { id, date, lat, lng } = item;
-                      return (
-                        <tr key={index}>
-                          <td className="text-xs text-gray-500">{id}</td>
-                          <td className="font-semibold">{new Date(date).toLocaleString('default', { month: 'long', day: 'numeric', year: '2-digit' })}</td>
-                          <td>{lat}</td>
-                          <td>{lng}</td>
-                        </tr>
-                      );
-                    })}
+                    {JSON.parse(query.data.data.locations)
+                      .sort((a, b) => b.id - a.id)
+                      .map((item, index) => {
+                        const { id, date, lat, lng } = item;
+                        console.log(date);
+                        return (
+                          <tr key={index}>
+                            <td className="text-xs text-gray-500">{id}</td>
+                            <td className="font-semibold">{new Date(date).toLocaleString('default', { month: 'long', day: 'numeric', year: '2-digit' })}</td>
+                            <td>{lat}</td>
+                            <td>{lng}</td>
+                          </tr>
+                        );
+                      })}
                   </Fragment>
                 ) : null}
               </tbody>

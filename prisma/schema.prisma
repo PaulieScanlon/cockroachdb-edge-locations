@@ -12,6 +12,6 @@ model locations {
   id            BigInt          @id @default(autoincrement())
   date          DateTime        @db.Date  
   city          String
-  lat           Int
-  lng           Float
+  lat           Decimal
+  lng           Decimal
 }

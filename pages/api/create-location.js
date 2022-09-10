@@ -1,4 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient, Prisma } = require('@prisma/client');
 const requestIp = require('request-ip');
 const geoip = require('fast-geoip');
 
@@ -12,9 +12,12 @@ const geoip = require('fast-geoip');
 // metro: 0,
 // area: 20
 
+const setAsPrismaDecimal = (n) => {
+  return new Prisma.Decimal(n);
+};
+
 export default async function handler(req, res) {
   const { date } = JSON.parse(req.body);
-  console.log('date: ', date);
 
   const prisma = new PrismaClient({
     datasources: {
@@ -32,8 +35,8 @@ export default async function handler(req, res) {
       data: {
         date: new Date(date),
         city: geo ? geo.city : 'Test',
-        lat: geo ? geo.ll[0] : 0,
-        lng: geo ? geo.ll[1] : 0
+        lat: geo ? setAsPrismaDecimal(geo.ll[0]) : setAsPrismaDecimal(0.123),
+        lng: geo ? setAsPrismaDecimal(geo.ll[1]) : setAsPrismaDecimal(-0.123)
       }
     });
 
@@ -43,7 +46,12 @@ export default async function handler(req, res) {
       message: 'A-OK!',
       data: {
         date: new Date(date).toLocaleString(),
-        location: geo
+        location: geo,
+        response: JSON.stringify(response, (_key, value) =>
+          // need to add a custom serializer because CockroachDB IDs map to
+          // JavaScript BigInts, which JSON.stringify has trouble serializing.
+          typeof value === 'bigint' ? value.toString() : value
+        )
       }
     });
   } catch (error) {
