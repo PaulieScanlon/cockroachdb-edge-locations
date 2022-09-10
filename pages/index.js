@@ -5,6 +5,8 @@ import Loading from '../components/loading';
 import Error from '../components/error';
 import Success from '../components/success';
 
+import ThreeScene from '../components/three-scene';
+
 const Page = () => {
   const read = async () => {
     try {
@@ -46,21 +48,20 @@ const Page = () => {
   const query = useQuery(['query'], read, {
     retry: 2
   });
+
   const mutation = useMutation(create);
 
   return (
-    <div className="grid gap-4">
+    <section>
       <div>
-        <h2>Create Location</h2>
-        <div className="grid gap-4">
-          <div className="min-h-[40px]">
+        <div className="grid gap-2 grid-cols-1fr-auto">
+          <div>
             {mutation.isLoading ? <Loading /> : null}
             {mutation.isError ? <Error /> : null}
             {mutation.isSuccess ? <Success /> : null}
           </div>
-          <pre className="min-h-[200px] m-0">{JSON.stringify(mutation.data, null, 2)}</pre>
           <button
-            className="min-w-[120px] rounded bg-gray-100 border border-gray-200 px-3 py-1 justify-self-start font-bold"
+            className="min-w-[100px] rounded border border-gray-200 px-2 py-1 text-gray-100 text-xs"
             onClick={() => {
               mutation.mutate();
             }}
@@ -69,52 +70,10 @@ const Page = () => {
           </button>
         </div>
       </div>
-      <div>
-        <h2>Read Locations</h2>
-        <div className="grid gap-4">
-          <div className="min-h-[40px]">
-            {query.isLoading ? <Loading /> : null}
-            {query.isError ? <Error /> : null}
-            {query.isSuccess ? <Success /> : null}
-          </div>
-
-          <div className="h-[300px] overflow-scroll">
-            <table>
-              <thead className="font-bold">
-                <tr>
-                  <td>Id</td>
-                  <td>Date</td>
-                  <td>Latitude</td>
-                  <td>Longitude</td>
-                </tr>
-              </thead>
-
-              <tbody>
-                {query.isSuccess ? (
-                  <Fragment>
-                    {JSON.parse(query.data.data.locations)
-                      .sort((a, b) => b.id - a.id)
-                      .map((item, index) => {
-                        const { id, date, lat, lng } = item;
-                        console.log(date);
-                        return (
-                          <tr key={index}>
-                            <td className="text-xs text-gray-500">{id}</td>
-                            <td className="font-semibold">{new Date(date).toLocaleString('default', { month: 'long', day: 'numeric', year: '2-digit' })}</td>
-                            <td>{lat}</td>
-                            <td>{lng}</td>
-                          </tr>
-                        );
-                      })}
-                  </Fragment>
-                ) : null}
-              </tbody>
-            </table>
-          </div>
-          <pre className="min-h-[200px] m-0">{JSON.stringify(query.data, null, 2)}</pre>
-        </div>
+      <div className="w-full h-screen cursor-move">
+        <ThreeScene locations={query.isSuccess ? JSON.parse(query.data.data.locations).filter((location) => location.city !== 'Test') : []} />
       </div>
-    </div>
+    </section>
   );
 };
 

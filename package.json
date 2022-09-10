@@ -1,5 +1,5 @@
 {
-  "name": "cockroachdb-github-activitity-app",
+  "name": "cockroachdb-edge-locations",
   "version": "1.0.0",
   "description": "A demo application to show weekly GitHub Activity",
   "main": "index.js",
@@ -19,29 +19,36 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PaulieScanlon/cockroachdb-github-activitity-app.git"
+    "url": "git+https://github.com/PaulieScanlon/cockroachdb-edge-locations.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/PaulieScanlon/cockroachdb-github-activitity-app/issues"
+    "url": "https://github.com/PaulieScanlon/cockroachdb-edge-locations/issues"
   },
-  "homepage": "https://github.com/PaulieScanlon/cockroachdb-github-activitity-app#readme",
+  "homepage": "https://github.com/PaulieScanlon/cockroachdb-edge-locations#readme",
   "dependencies": {
     "@prisma/client": "^4.3.1",
+    "@react-three/drei": "9.29.1",
+    "@react-three/fiber": "8.7.2",
     "@tanstack/react-query": "^4.2.3",
+    "d3-geo": "^3.0.1",
     "fast-geoip": "^1.1.88",
     "next": "^12.3.0",
+    "next-transpile-modules": "^9.0.0",
     "prisma": "^4.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "request-ip": "^3.3.0"
+    "request-ip": "^3.3.0",
+    "three": "0.144.0",
+    "three-geojson-geometry": "^1.1.7"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.7",
     "autoprefixer": "^10.4.8",
     "postcss": "^8.4.16",
+    "prop-types": "^15.8.1",
     "tailwindcss": "^3.1.8"
   }
 }
