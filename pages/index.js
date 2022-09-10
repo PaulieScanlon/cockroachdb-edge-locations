@@ -51,7 +51,7 @@ const Page = () => {
   return (
     <div className="grid gap-4">
       <div>
-        <h2>Add Location</h2>
+        <h2>Create Location</h2>
         <div className="grid gap-4">
           <div className="min-h-[40px]">
             {mutation.isLoading ? <Loading /> : null}
