@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import Link from 'next/link';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import Logo from '../components/logo';
@@ -165,10 +166,18 @@ const Page = () => {
                 </div>
               </div>
             </div>
-            <div className="text-xs text-secondary hover:text-primary">
-              <a href=" https://github.com/PaulieScanlon/cockroachdb-edge-locations" target="_blank" rel="noreferrer">
+            <div className="flex justify-between items-center">
+              <a
+                href=" https://github.com/PaulieScanlon/cockroachdb-edge-locations"
+                target="_blank"
+                rel="noreferrer"
+                className="text-xs text-secondary hover:text-primary"
+              >
                 github.com/cockroachdb-edge-locations
               </a>
+              <Link href="/admin">
+                <a className="text-xs text-secondary bg-background/30 rounded p-3 hover:text-primary hover:bg-background/80">Admin</a>
+              </Link>
             </div>
           </aside>
         </div>

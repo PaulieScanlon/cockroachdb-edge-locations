@@ -1,4 +1,6 @@
 import React, { Fragment } from 'react';
+import Link from 'next/link';
+
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import Spinner from '../components/spinner';
@@ -59,6 +61,11 @@ const Page = () => {
 
   return (
     <section className="grid gap-4 mx-auto p-6 md:p-8">
+      <div className="flex justify-end items-center rounded bg-surface p-2">
+        <Link href="/">
+          <a className="text-xs text-secondary bg-background/30 rounded p-3 hover:text-primary hover:bg-background/80">Back</a>
+        </Link>
+      </div>
       <aside className="grid gap-8">
         <div className="grid gap-4">
           <div className="overflow-hidden">
