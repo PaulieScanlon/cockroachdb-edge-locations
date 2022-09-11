@@ -95,6 +95,7 @@ const Page = () => {
                                 <td className="p-3 whitespace-nowrap">
                                   <button
                                     className="min-w-[100px] min-h-[34px] rounded border border-secondary px-2 py-1 text-primary disabled:border-border disabled:cursor-not-allowed"
+                                    disabled={mutation.isLoading ? true : false}
                                     onClick={() => {
                                       mutation.mutate(id);
                                     }}
