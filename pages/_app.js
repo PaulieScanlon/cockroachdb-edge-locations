@@ -7,7 +7,7 @@ import '../styles/globals.css';
 const App = ({ Component, pageProps }) => {
   return (
     <QueryClientProvider client={queryClient}>
-      <main className="p-4">
+      <main>
         <Component {...pageProps} />
       </main>
     </QueryClientProvider>

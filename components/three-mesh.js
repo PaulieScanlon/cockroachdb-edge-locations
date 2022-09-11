@@ -37,22 +37,22 @@ const ThreeMesh = ({ locations }) => {
           const { geometry } = data;
           return (
             <lineSegments key={index} geometry={new GeoJsonGeometry(geometry, 1)}>
-              <lineBasicMaterial color="#3f3f3f" />
+              <lineBasicMaterial color="#5c5c5c" />
             </lineSegments>
           );
         })}
       </Fragment>
 
       <lineSegments geometry={new GeoJsonGeometry(geoGraticule10(), 1)}>
-        <lineBasicMaterial color="#2a2a2a" />
+        <lineBasicMaterial color="#3d3d3d" />
       </lineSegments>
 
       <Points>
-        <pointsMaterial vertexColors size={0.015} fog={true} />
+        <pointsMaterial vertexColors size={0.03} />
 
         {locations.map((data, index) => {
           const { lat, lng } = data;
-          return <Point key={index} position={getVertex(lat, lng, 1)} color="#fd417a" />;
+          return <Point key={index} position={getVertex(lat, lng, 1)} color="#00ff33" />;
         })}
       </Points>
     </mesh>

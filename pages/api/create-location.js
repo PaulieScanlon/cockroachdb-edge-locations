@@ -46,12 +46,9 @@ export default async function handler(req, res) {
       message: 'A-OK!',
       data: {
         date: new Date(date).toLocaleString(),
-        location: geo,
-        response: JSON.stringify(response, (_key, value) =>
-          // need to add a custom serializer because CockroachDB IDs map to
-          // JavaScript BigInts, which JSON.stringify has trouble serializing.
-          typeof value === 'bigint' ? value.toString() : value
-        )
+        city: geo ? geo.city : 'Test',
+        lat: geo ? setAsPrismaDecimal(geo.ll[0]) : setAsPrismaDecimal(0.123),
+        lng: geo ? setAsPrismaDecimal(geo.ll[1]) : setAsPrismaDecimal(-0.123)
       }
     });
   } catch (error) {
