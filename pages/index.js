@@ -61,7 +61,7 @@ const Page = () => {
   return (
     <section className="grid xl:grid-cols-2">
       <div className="bg-surface xl:min-h-screen shadow-lg">
-        <div className="p-8">
+        <div className="p-6 md:p-8">
           <div className="grid gap-8 px-8 py-8">
             <Logo />
             <h1 className="sr-only">Edge</h1>
@@ -127,15 +127,15 @@ const Page = () => {
                       <tbody className="divide-y divide-table-divide bg-table-tbody text-text">
                         <Fragment>
                           {JSON.parse(query.data.data.locations)
-                            // .filter((location) => location.city !== 'Test')
-                            // .reduce((items, item) => {
-                            //   const city = items.find((obj) => obj.city === item.city);
-                            //   if (!city) {
-                            //     return items.concat([item]);
-                            //   } else {
-                            //     return items;
-                            //   }
-                            // }, [])
+                            .filter((location) => location.city !== 'Test')
+                            .reduce((items, item) => {
+                              const city = items.find((obj) => obj.city === item.city);
+                              if (!city) {
+                                return items.concat([item]);
+                              } else {
+                                return items;
+                              }
+                            }, [])
                             .sort((a, b) => b.id - a.id)
                             .map((item, index) => {
                               const { id, date, city, lat, lng } = item;
@@ -171,8 +171,8 @@ const Page = () => {
           </aside>
         </div>
       </div>
-      <div className="bg-gradient-to-b from-black to-shade p-8 lg:p-0 overflow-scroll">
-        <div className="relative w-full h-screen cursor-move rounded border border-border">
+      <div className="bg-gradient-to-b from-black to-shade p-6 md:p-8 lg:p-0 overflow-scroll">
+        <div className="relative w-full h-[300px] lg:h-screen cursor-move rounded border border-border">
           <ThreeScene locations={query.isSuccess ? JSON.parse(query.data.data.locations).filter((location) => location.city !== 'Test') : []} />
         </div>
       </div>
