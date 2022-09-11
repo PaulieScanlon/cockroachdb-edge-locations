@@ -682,6 +682,11 @@ loose-envify@^1.1.0, loose-envify@^1.4.0:
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
 
+maath@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/maath/-/maath-0.0.2.tgz#14ecbac2dbd69f674071a4bfdb539f15db534c81"
+  integrity sha512-GF8JisJYw45KUzdQXsr3jVfnNx6Ey/Ih1hro1Hd86wl2XlkTk38HMNm7ovuigBRSCPGaFA4ZMGlqRYTvMmo2Sg==
+
 merge2@^1.3.0:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/merge2/-/merge2-1.4.1.tgz#4368892f885e907455a6fd7dc55c0c9d404990ae"

@@ -1,8 +1,9 @@
 import React, { Fragment, useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useFrame, useLoader } from '@react-three/fiber';
-import { GradientTexture, Points, Point } from '@react-three/drei';
+import { GradientTexture, Points, Point, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
+import * as random from 'maath/random/dist/maath-random.cjs';
 
 import { GeoJsonGeometry } from 'three-geojson-geometry';
 import { geoGraticule10 } from 'd3-geo';
@@ -17,6 +18,8 @@ const getVertex = (lat, lng, radius) => {
 const ThreeMesh = ({ locations }) => {
   const mesh = useRef(null);
 
+  const [sphere] = useState(() => random.inSphere(new Float32Array(2000), { radius: 2 }));
+
   useFrame(() => {
     return (mesh.current.rotation.y += 0.004);
   });
@@ -30,7 +33,7 @@ const ThreeMesh = ({ locations }) => {
   return (
     <mesh ref={mesh}>
       <sphereGeometry args={[1, 32]} />
-      <meshStandardMaterial color="#191919" transparent={true} opacity={0.4} />
+      <meshPhongMaterial color="#191919" transparent={true} opacity={0.6} />
 
       <Fragment>
         {goeJson.features.map((data, index) => {
@@ -54,6 +57,10 @@ const ThreeMesh = ({ locations }) => {
           const { lat, lng } = data;
           return <Point key={index} position={getVertex(lat, lng, 1)} color="#00ff33" />;
         })}
+      </Points>
+
+      <Points positions={sphere} stride={3} frustumCulled={false}>
+        <PointMaterial transparent={true} color="#97907e" size={0.007} sizeAttenuation={true} depthWrite={false} />
       </Points>
     </mesh>
   );
