@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import Logo from '../components/logo';
 import Spinner from '../components/spinner';
@@ -11,6 +11,8 @@ import Success from '../components/success';
 import ThreeScene from '../components/three-scene';
 
 const Page = () => {
+  const queryClient = useQueryClient();
+
   const read = async () => {
     try {
       const response = await (
@@ -53,9 +55,9 @@ const Page = () => {
   });
 
   const mutation = useMutation(create, {
-    // onSuccess: async () => {
-    //   console.log('onSuccess');
-    // }
+    onSuccess: async () => {
+      queryClient.invalidateQueries(['query']);
+    }
   });
 
   return (
