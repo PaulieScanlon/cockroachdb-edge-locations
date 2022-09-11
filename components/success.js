@@ -2,8 +2,9 @@ import React from 'react';
 
 const Success = () => {
   return (
-    <div className="rounded border border-green-200 px-2 py-1 text-green-700 text-xs">
-      <strong className="text-green-600">Success: </strong> Hooray! Everything is A-OK.
+    <div className="rounded border border-border px-2 py-1 text-text">
+      <strong className="text-announce-success">Success: </strong>
+      <small className="ml-1">Hooray! Everything is A-OK.</small>
     </div>
   );
 };
