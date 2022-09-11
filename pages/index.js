@@ -127,6 +127,7 @@ const Page = () => {
                       <tbody className="divide-y divide-table-divide bg-table-tbody text-text">
                         <Fragment>
                           {JSON.parse(query.data.data.locations)
+                            .sort((a, b) => b.id - a.id)
                             .filter((location) => location.city !== 'Test')
                             .reduce((items, item) => {
                               const city = items.find((obj) => obj.city === item.city);
@@ -136,7 +137,6 @@ const Page = () => {
                                 return items;
                               }
                             }, [])
-                            .sort((a, b) => b.id - a.id)
                             .map((item, index) => {
                               const { id, date, city, lat, lng } = item;
                               const dateFormat = new Date(date).toLocaleString('default', { month: 'short', day: 'numeric', year: '2-digit' });
