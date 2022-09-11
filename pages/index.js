@@ -66,7 +66,7 @@ const Page = () => {
             <Logo />
             <h1 className="sr-only">Edge</h1>
             <p className="text-text text-xs text-center">
-              Submit to add the location of your nearest <em className="font-bold">edge.</em>
+              Submit the location of your nearest <em className="font-bold">edge.</em>
             </p>
           </div>
           <aside className="grid gap-8">
