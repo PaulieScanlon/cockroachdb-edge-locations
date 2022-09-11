@@ -173,7 +173,22 @@ const Page = () => {
       </div>
       <div className="bg-gradient-to-b from-black to-shade p-6 md:p-8 lg:p-0 overflow-scroll">
         <div className="relative w-full h-[300px] lg:h-screen cursor-move rounded border border-border">
-          <ThreeScene locations={query.isSuccess ? JSON.parse(query.data.data.locations).filter((location) => location.city !== 'Test') : []} />
+          <ThreeScene
+            locations={
+              query.isSuccess
+                ? JSON.parse(query.data.data.locations)
+                    .filter((location) => location.city !== 'Test')
+                    .reduce((items, item) => {
+                      const city = items.find((obj) => obj.city === item.city);
+                      if (!city) {
+                        return items.concat([item]);
+                      } else {
+                        return items;
+                      }
+                    }, [])
+                : []
+            }
+          />
         </div>
       </div>
     </section>
