@@ -52,7 +52,6 @@ export default async function handler(req, res) {
       }
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: 'Error!' });
   } finally {
     prisma.$disconnect();
