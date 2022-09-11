@@ -7,7 +7,7 @@ module.exports = {
         primary: '#DBD2BD',
         secondary: '#97907e',
         surface: '#121212',
-        shade: '#1b1b1b',
+        shade: '#121212',
         background: '#000000',
         border: '#232323',
         table: {

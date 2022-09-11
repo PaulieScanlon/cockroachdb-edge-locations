@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const Logo = () => {
+const Logo = ({ className }) => {
   return (
     <svg
       version="1.1"
@@ -12,7 +13,7 @@ const Logo = () => {
       viewBox="0 0 374.6 216.1"
       enableBackground="new 0 0 374.6 216.1"
       xmlSpace="preserve"
-      className="w-40 mx-auto"
+      className={className}
     >
       <polygon id="left-edge" fill="#282828" points="147.6,216.1 87.3,208.2 87.3,14.7 147.6,0 " />
       <g id="left-text">
@@ -53,6 +54,15 @@ const Logo = () => {
       </g>
     </svg>
   );
+};
+
+Logo.defaultProps = {
+  className: 'w-40 mx-auto'
+};
+
+Logo.propTypes = {
+  /** CSS classes */
+  className: PropTypes.string
 };
 
 export default Logo;

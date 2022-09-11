@@ -7,6 +7,7 @@ import Spinner from '../components/spinner';
 import Loading from '../components/loading';
 import Error from '../components/error';
 import Success from '../components/success';
+import Logo from '../components/logo';
 
 const Page = () => {
   const queryClient = useQueryClient();
@@ -38,11 +39,9 @@ const Page = () => {
           })
         })
       ).json();
-
       if (!response.data) {
         throw new Error();
       }
-
       return response;
     } catch (error) {
       throw new Error();
@@ -60,8 +59,15 @@ const Page = () => {
   });
 
   return (
-    <section className="grid gap-4 mx-auto p-6 md:p-8">
-      <div className="flex justify-end items-center rounded bg-surface p-2">
+    <section className="grid gap-8 mx-auto p-6 md:p-8">
+      {/* <pre className="text-text">{JSON.stringify(mutation, null, 2)}</pre> */}
+      <div className="flex justify-between items-center rounded bg-surface px-4 py-2">
+        <div className="flex gap-4 items-center">
+          <Logo className="w-12" />
+          <p className="text-primary text-xs mt-1">
+            No auth, <em className="font-bold">YOLO</em>
+          </p>
+        </div>
         <Link href="/">
           <a className="text-xs text-secondary bg-background/30 rounded p-3 hover:text-primary hover:bg-background/80">Back</a>
         </Link>
@@ -101,13 +107,13 @@ const Page = () => {
                                 <td className="p-3 whitespace-nowrap">{lng}</td>
                                 <td className="p-3 whitespace-nowrap">
                                   <button
-                                    className="min-w-[100px] min-h-[34px] rounded border border-secondary px-2 py-1 text-primary disabled:border-border disabled:cursor-not-allowed"
-                                    disabled={mutation.isLoading ? true : false}
+                                    className="min-w-[100px] min-h-[34px] rounded border border-secondary px-2 py-1 text-primary disabled:border-neutral-700 disabled:cursor-not-allowed"
+                                    disabled={mutation.isLoading && mutation.variables === id ? true : false}
                                     onClick={() => {
                                       mutation.mutate(id);
                                     }}
                                   >
-                                    {mutation.isLoading ? <Spinner /> : 'Delete'}
+                                    {mutation.isLoading && mutation.variables === id ? <Spinner /> : 'Delete'}
                                   </button>
                                 </td>
                               </tr>
