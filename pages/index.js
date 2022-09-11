@@ -56,9 +56,9 @@ const Page = () => {
 
   return (
     <section className="grid xl:grid-cols-2">
-      <div className="bg-surface xl:h-screen shadow-lg">
+      <div className="bg-surface xl:min-h-screen shadow-lg">
         <div className="p-8">
-          <div className="grid gap-8 px-8 py-16">
+          <div className="grid gap-8 px-8 py-8">
             <Logo />
             <h1 className="sr-only">Edge</h1>
             <p className="text-text text-xs text-center">
@@ -106,7 +106,7 @@ const Page = () => {
             </div>
 
             <div className="overflow-hidden">
-              <div className="flex flex-col max-h-[400px] overflow-hidden">
+              <div className="flex flex-col h-[300px] overflow-hidden">
                 <div className="flex-grow overflow-auto rounded border border-border">
                   <table className="relative w-full">
                     <thead className="text-primary font-bold">
@@ -119,8 +119,8 @@ const Page = () => {
                       </tr>
                     </thead>
 
-                    <tbody className="divide-y divide-table-divide bg-table-tbody text-text">
-                      {query.isSuccess ? (
+                    {query.isSuccess ? (
+                      <tbody className="divide-y divide-table-divide bg-table-tbody text-text">
                         <Fragment>
                           {JSON.parse(query.data.data.locations)
                             .filter((location) => location.city !== 'Test')
@@ -147,9 +147,15 @@ const Page = () => {
                               );
                             })}
                         </Fragment>
-                      ) : null}
-                    </tbody>
+                      </tbody>
+                    ) : null}
                   </table>
+
+                  {query.isLoading ? (
+                    <div className="flex items-center justify-center h-[240px]">
+                      <Spinner />
+                    </div>
+                  ) : null}
                 </div>
               </div>
             </div>

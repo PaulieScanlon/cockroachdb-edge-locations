@@ -52,10 +52,9 @@ const ThreeMesh = ({ locations }) => {
 
       <Points>
         <pointsMaterial vertexColors size={0.03} />
-
         {locations.map((data, index) => {
           const { lat, lng } = data;
-          return <Point key={index} position={getVertex(lat, lng, 1)} color="#00ff33" />;
+          return <Point key={index} position={getVertex(lat, lng, 1.02)} color="#00ff33" />;
         })}
       </Points>
 

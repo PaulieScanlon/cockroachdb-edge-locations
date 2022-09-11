@@ -12,7 +12,7 @@ const Logo = () => {
       viewBox="0 0 374.6 216.1"
       enableBackground="new 0 0 374.6 216.1"
       xmlSpace="preserve"
-      className="w-48 mx-auto"
+      className="w-40 mx-auto"
     >
       <polygon id="left-edge" fill="#282828" points="147.6,216.1 87.3,208.2 87.3,14.7 147.6,0 " />
       <g id="left-text">
