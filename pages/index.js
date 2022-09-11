@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
+import Logo from '../components/logo';
 import Spinner from '../components/spinner';
 import Empty from '../components/empty';
 import Loading from '../components/loading';
@@ -57,11 +58,12 @@ const Page = () => {
     <section className="grid xl:grid-cols-2">
       <div className="bg-surface xl:h-screen shadow-lg">
         <div className="p-8">
-          <div className="px-8 py-16">
-            <h1 className="text-transparent uppercase text-6xl font-black text-center bg-clip-text bg-gradient-to-r from-hero-start to-hero-end">
-              Edge Locations
-            </h1>
-            <p className="text-text text-xs text-center">Click Submit to add the location of your nearest edge.</p>
+          <div className="grid gap-8 px-8 py-16">
+            <Logo />
+            <h1 className="sr-only">Edge</h1>
+            <p className="text-text text-xs text-center">
+              Submit to add the location of your nearest <em className="font-bold">edge.</em>
+            </p>
           </div>
           <aside className="grid gap-8">
             <div className="grid gap-2">
@@ -83,22 +85,22 @@ const Page = () => {
                   {mutation.isLoading ? <Spinner /> : 'Submit'}
                 </button>
               </div>
-              <ul className="flex gap-2 text-xs text-announce-success px-3 rounded border border-border p-3">
+              <ul className="flex gap-2 text-xs text-primary px-3 rounded border border-border p-3">
                 <li>
                   <strong>Date: </strong>
-                  {mutation.data ? `${mutation.data.data.date}` : null}
+                  <small className="text-announce-success">{mutation.data ? `${mutation.data.data.date}` : null}</small>
                 </li>
                 <li>
                   <strong>City: </strong>
-                  {mutation.data ? `${mutation.data.data.city}` : null}
+                  <small className="text-announce-success"> {mutation.data ? `${mutation.data.data.city}` : null}</small>
                 </li>
                 <li>
                   <strong>Latitude: </strong>
-                  {mutation.data ? `${mutation.data.data.lat}` : null}{' '}
+                  <small className="text-announce-success"> {mutation.data ? `${mutation.data.data.lat}` : null} </small>
                 </li>
                 <li>
                   <strong>Longitude: </strong>
-                  {mutation.data ? `${mutation.data.data.lng}` : null}{' '}
+                  <small className="text-announce-success"> {mutation.data ? `${mutation.data.data.lng}` : null} </small>
                 </li>
               </ul>
             </div>

@@ -4,7 +4,7 @@ const Success = () => {
   return (
     <div className="rounded border border-border px-2 py-1 text-text">
       <strong className="text-announce-success">Success: </strong>
-      <small className="ml-1">Hooray! Everything is A-OK.</small>
+      <small className="ml-1">A-OK</small>
     </div>
   );
 };
