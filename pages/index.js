@@ -166,14 +166,14 @@ const Page = () => {
                 </div>
               </div>
             </div>
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center gap-4">
               <a
                 href=" https://github.com/PaulieScanlon/cockroachdb-edge-locations"
                 target="_blank"
                 rel="noreferrer"
                 className="text-xs text-secondary hover:text-primary"
               >
-                github.com/cockroachdb-edge-locations
+                github.com/PaulieScanlon/cockroachdb-edge-locations
               </a>
               <Link href="/admin">
                 <a className="text-xs text-secondary bg-background/30 rounded p-3 hover:text-primary hover:bg-background/80">Admin</a>
