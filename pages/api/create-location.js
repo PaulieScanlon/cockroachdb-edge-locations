@@ -47,8 +47,8 @@ export default async function handler(req, res) {
       data: {
         date: new Date(date).toLocaleString(),
         city: geo ? geo.city : 'Test',
-        lat: geo ? setAsPrismaDecimal(geo.ll[0]) : setAsPrismaDecimal(0.123),
-        lng: geo ? setAsPrismaDecimal(geo.ll[1]) : setAsPrismaDecimal(-0.123)
+        lat: geo ? setAsPrismaDecimal(geo.ll[0]) : setAsPrismaDecimal(0.12345),
+        lng: geo ? setAsPrismaDecimal(geo.ll[1]) : setAsPrismaDecimal(-0.12345)
       }
     });
   } catch (error) {

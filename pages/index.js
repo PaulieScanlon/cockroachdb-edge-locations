@@ -52,7 +52,11 @@ const Page = () => {
     retry: 2
   });
 
-  const mutation = useMutation(create);
+  const mutation = useMutation(create, {
+    // onSuccess: async () => {
+    //   console.log('onSuccess');
+    // }
+  });
 
   return (
     <section className="grid xl:grid-cols-2">
@@ -123,15 +127,15 @@ const Page = () => {
                       <tbody className="divide-y divide-table-divide bg-table-tbody text-text">
                         <Fragment>
                           {JSON.parse(query.data.data.locations)
-                            .filter((location) => location.city !== 'Test')
-                            .reduce((items, item) => {
-                              const city = items.find((obj) => obj.city === item.city);
-                              if (!city) {
-                                return items.concat([item]);
-                              } else {
-                                return items;
-                              }
-                            }, [])
+                            // .filter((location) => location.city !== 'Test')
+                            // .reduce((items, item) => {
+                            //   const city = items.find((obj) => obj.city === item.city);
+                            //   if (!city) {
+                            //     return items.concat([item]);
+                            //   } else {
+                            //     return items;
+                            //   }
+                            // }, [])
                             .sort((a, b) => b.id - a.id)
                             .map((item, index) => {
                               const { id, date, city, lat, lng } = item;
@@ -167,8 +171,8 @@ const Page = () => {
           </aside>
         </div>
       </div>
-      <div className="relative bg-gradient-to-b from-black to-shade">
-        <div className="absolute w-full h-screen cursor-move">
+      <div className="bg-gradient-to-b from-black to-shade p-8 lg:p-0 overflow-scroll">
+        <div className="relative w-full h-screen cursor-move rounded border border-border">
           <ThreeScene locations={query.isSuccess ? JSON.parse(query.data.data.locations).filter((location) => location.city !== 'Test') : []} />
         </div>
       </div>
