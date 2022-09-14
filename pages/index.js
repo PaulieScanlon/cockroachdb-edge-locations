@@ -181,8 +181,8 @@ const Page = () => {
         </div>
       </div>
       <div className="bg-gradient-to-b from-black to-shade p-6 md:p-8 lg:p-0 overflow-scroll">
-        <div className="relative w-full h-[300px] lg:h-screen cursor-move rounded border border-border">
-          <div className="absolute top-0 right-0 text-text p-4 text-xs flex flex-col gap-2">
+        <div className="relative w-full h-[300px] lg:h-screen cursor-move rounded border border-border lg:border-none">
+          <div className="hidden xl:flex absolute top-0 right-0 text-text p-4 text-xs flex-col gap-2">
             <span>
               <strong>Zoom: </strong>Scroll
             </span>
