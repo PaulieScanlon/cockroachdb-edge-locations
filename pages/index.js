@@ -118,7 +118,6 @@ const Page = () => {
                   <table className="relative w-full">
                     <thead className="text-primary font-bold">
                       <tr>
-                        <th className="sticky top-0 p-3 bg-table-thead text-left">Id</th>
                         <th className="sticky top-0 p-3 bg-table-thead text-left">Date</th>
                         <th className="sticky top-0 p-3 bg-table-thead text-left">City</th>
                         <th className="sticky top-0 p-3 bg-table-thead text-left">Latitude</th>
@@ -145,7 +144,6 @@ const Page = () => {
                               const dateFormat = new Date(date).toLocaleString('default', { month: 'short', day: 'numeric', year: '2-digit' });
                               return (
                                 <tr key={index}>
-                                  <td className="text-xs text-secondary p-3">{id}</td>
                                   <td className="p-3 whitespace-nowrap">{dateFormat}</td>
                                   <td className="p-3 whitespace-nowrap">{city}</td>
                                   <td className="p-3 whitespace-nowrap">{lat}</td>
