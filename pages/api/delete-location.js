@@ -1,18 +1,10 @@
-const { PrismaClient, Prisma } = require('@prisma/client');
+const { client } = require('../../prisma-client');
 
 export default async function handler(req, res) {
   const { id } = JSON.parse(req.body);
 
-  const prisma = new PrismaClient({
-    datasources: {
-      db: {
-        url: process.env.DATABASE_URL
-      }
-    }
-  });
-
   try {
-    const response = await prisma.locations.delete({
+    const response = await client.locations.delete({
       where: {
         id: BigInt(id)
       }
@@ -25,8 +17,9 @@ export default async function handler(req, res) {
       }
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: 'Error!' });
   } finally {
-    prisma.$disconnect();
+    client.$disconnect();
   }
 }

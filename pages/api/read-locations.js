@@ -1,16 +1,8 @@
-const { PrismaClient } = require('@prisma/client');
+const { client } = require('../../prisma-client');
 
 export default async function handler(req, res) {
-  const prisma = new PrismaClient({
-    datasources: {
-      db: {
-        url: process.env.DATABASE_URL
-      }
-    }
-  });
-
   try {
-    const response = await prisma.locations.findMany();
+    const response = await client.locations.findMany();
 
     //   throw new Error('Error');
 

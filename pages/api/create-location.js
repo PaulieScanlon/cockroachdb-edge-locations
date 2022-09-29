@@ -1,4 +1,5 @@
-const { PrismaClient, Prisma } = require('@prisma/client');
+const { client, Prisma } = require('../../prisma-client');
+
 const requestIp = require('request-ip');
 const geoip = require('fast-geoip');
 
@@ -19,19 +20,11 @@ const setAsPrismaDecimal = (n) => {
 export default async function handler(req, res) {
   const { date } = JSON.parse(req.body);
 
-  const prisma = new PrismaClient({
-    datasources: {
-      db: {
-        url: process.env.DATABASE_URL
-      }
-    }
-  });
-
   try {
     const ip = await requestIp.getClientIp(req);
     const geo = await geoip.lookup(ip);
 
-    const response = await prisma.locations.create({
+    const response = await client.locations.create({
       data: {
         date: new Date(date),
         city: geo ? geo.city : 'Test',
@@ -54,6 +47,6 @@ export default async function handler(req, res) {
   } catch (error) {
     res.status(500).json({ message: 'Error!' });
   } finally {
-    prisma.$disconnect();
+    client.$disconnect();
   }
 }
