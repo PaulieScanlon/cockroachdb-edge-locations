@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import Link from 'next/link';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -13,6 +13,7 @@ import ThreeScene from '../components/three-scene';
 
 const Page = () => {
   const queryClient = useQueryClient();
+  const [isPlaying, setIsPlaying] = useState(true);
 
   const read = async () => {
     try {
@@ -182,7 +183,7 @@ const Page = () => {
       </div>
       <div className="bg-gradient-to-b from-black to-shade p-6 md:p-8 lg:p-0 overflow-scroll">
         <div className="relative w-full h-[300px] lg:h-screen cursor-move rounded border border-border lg:border-none">
-          <div className="hidden xl:flex absolute top-0 right-0 text-text p-4 text-xs flex-col gap-2">
+          <div className="hidden xl:flex absolute top-0 right-0 text-text p-4 text-xs flex-col gap-2 z-10">
             <span>
               <strong>Zoom: </strong>Scroll
             </span>
@@ -190,7 +191,27 @@ const Page = () => {
               <strong>Pan: </strong>⌘ Click
             </span>
           </div>
+          <div className="absolute bottom-0 right-0 text-text p-4 text-xs z-10">
+            <button onClick={() => setIsPlaying(!isPlaying)}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                {isPlaying ? (
+                  <path
+                    fillRule="evenodd"
+                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zM9 8.25a.75.75 0 00-.75.75v6c0 .414.336.75.75.75h.75a.75.75 0 00.75-.75V9a.75.75 0 00-.75-.75H9zm5.25 0a.75.75 0 00-.75.75v6c0 .414.336.75.75.75H15a.75.75 0 00.75-.75V9a.75.75 0 00-.75-.75h-.75z"
+                    clipRule="evenodd"
+                  />
+                ) : (
+                  <path
+                    fillRule="evenodd"
+                    d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm14.024-.983a1.125 1.125 0 010 1.966l-5.603 3.113A1.125 1.125 0 019 15.113V8.887c0-.857.921-1.4 1.671-.983l5.603 3.113z"
+                    clipRule="evenodd"
+                  />
+                )}
+              </svg>
+            </button>
+          </div>
           <ThreeScene
+            isPlaying={isPlaying}
             locations={
               query.isSuccess
                 ? JSON.parse(query.data.data.locations)

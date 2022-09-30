@@ -15,13 +15,13 @@ const getVertex = (lat, lng, radius) => {
   return vector;
 };
 
-const ThreeMesh = ({ locations }) => {
+const ThreeMesh = ({ isPlaying, locations }) => {
   const mesh = useRef(null);
 
   const [sphere] = useState(() => random.inSphere(new Float32Array(2000), { radius: 2 }));
 
   useFrame(() => {
-    return (mesh.current.rotation.y += 0.004);
+    return !isPlaying ? null : (mesh.current.rotation.y += 0.004);
   });
 
   useEffect(() => {
@@ -66,6 +66,8 @@ const ThreeMesh = ({ locations }) => {
 };
 
 ThreeMesh.propTypes = {
+  /** Status of animation */
+  isPlaying: PropTypes.bool.isRequired,
   /** The location data */
   locations: PropTypes.any.isRequired
 };

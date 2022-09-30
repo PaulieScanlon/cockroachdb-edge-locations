@@ -63,7 +63,11 @@ const Page = () => {
       {/* <pre className="text-text">{JSON.stringify(mutation, null, 2)}</pre> */}
       <div className="flex justify-between items-center rounded bg-surface px-4 py-2">
         <div className="flex gap-4 items-center">
-          <Logo className="w-12" />
+          <Link href="/">
+            <a>
+              <Logo className="w-12" />
+            </a>
+          </Link>
           <p className="text-primary text-xs mt-1">
             No auth, <em className="font-bold">YOLO</em>
           </p>
