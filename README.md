@@ -1,6 +1,7 @@
 # cockroachdb-edge-locations
 
-A demo application to show Vercel's Edge Locations. Data saved in CockroachDB.
+A demo application to log serverless functions latitute and longtitude. Data saved in
+[CockroachDB](https://www.cockroachlabs.com/product/).
 
 ## Preview
 

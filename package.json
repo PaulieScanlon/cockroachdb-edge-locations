@@ -1,7 +1,7 @@
 {
   "name": "cockroachdb-edge-locations",
   "version": "1.0.0",
-  "description": "A demo application to log serverless function latitute and longtitude",
+  "description": "A demo application to log serverless functions latitute and longtitude",
   "main": "index.js",
   "scripts": {
     "dev": "next dev",
