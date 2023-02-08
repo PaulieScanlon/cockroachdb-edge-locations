@@ -1,7 +1,7 @@
 {
   "name": "cockroachdb-edge-locations",
   "version": "1.0.0",
-  "description": "A demo application to show weekly GitHub Activity",
+  "description": "A demo application to log serverless function latitute and longtitude",
   "main": "index.js",
   "scripts": {
     "dev": "next dev",
@@ -37,6 +37,7 @@
     "fast-geoip": "^1.1.88",
     "maath": "^0.0.2",
     "next": "^12.3.0",
+    "next-auth": "^4.19.2",
     "next-transpile-modules": "^9.0.0",
     "prisma": "^4.3.1",
     "react": "^18.2.0",

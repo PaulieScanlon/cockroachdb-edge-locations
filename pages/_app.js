@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import Head from 'next/head';
+import { SessionProvider } from 'next-auth/react';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -7,7 +8,7 @@ const queryClient = new QueryClient();
 
 import '../styles/globals.css';
 
-const App = ({ Component, pageProps }) => {
+const App = ({ Component, pageProps: { session, ...pageProps } }) => {
   const url = 'https://cockroachdb-edge-locations.vercel.app/';
   const seoTitle = 'Edge';
   const seoDescription = 'Submit the location of your nearest edge.';
@@ -42,11 +43,13 @@ const App = ({ Component, pageProps }) => {
         <link rel="icon" type="image/png" sizes="16x16" href={`${url}favicon-16x16.png`} data-react-helmet="true" />
         <link rel="icon" type="image/png" sizes="32x32" href={`${url}favicon-32x32.png`} data-react-helmet="true" />
       </Head>
-      <QueryClientProvider client={queryClient}>
-        <main>
-          <Component {...pageProps} />
-        </main>
-      </QueryClientProvider>
+      <SessionProvider session={session}>
+        <QueryClientProvider client={queryClient}>
+          <main>
+            <Component {...pageProps} />
+          </main>
+        </QueryClientProvider>
+      </SessionProvider>
     </Fragment>
   );
 };
