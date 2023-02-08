@@ -80,7 +80,7 @@ const Page = () => {
                 {mutation.isSuccess ? <Success /> : null}
                 {mutation.isIdle ? <Empty /> : null}
                 <button
-                  className="min-w-[100px] rounded border border-secondary px-2 py-1 text-primary disabled:border-border disabled:cursor-not-allowed"
+                  className="min-w-[100px] rounded border border-hero-end px-2 py-1 text-hero-start disabled:border-border disabled:text-secondary disabled:cursor-not-allowed hover:text-primary hover:border-primary"
                   disabled={mutation.isLoading ? true : false}
                   onClick={() => {
                     mutation.mutate();
