@@ -155,7 +155,7 @@ const Page = () => {
                               return (
                                 <tr key={index}>
                                   <td className="p-3 whitespace-nowrap">{dateFormat}</td>
-                                  <td className="p-3 whitespace-nowrap">{city}</td>
+                                  <td className="p-3 whitespace-nowrap">{`${city || '* city not recognized'}`}</td>
                                   <td className="p-3 whitespace-nowrap">{lat}</td>
                                   <td className="p-3 whitespace-nowrap">{lng}</td>
                                 </tr>
