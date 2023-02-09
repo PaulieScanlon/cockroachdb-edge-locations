@@ -122,12 +122,12 @@ const Page = () => {
                                 <tr key={index}>
                                   <td className="text-xs text-secondary p-3">{id}</td>
                                   <td className="p-3 whitespace-nowrap">{dateFormat}</td>
-                                  <td className="p-3 whitespace-nowrap">{city}</td>
+                                  <td className="p-3 whitespace-nowrap">{`${city || '* city not recognized'}`}</td>
                                   <td className="p-3 whitespace-nowrap">{lat}</td>
                                   <td className="p-3 whitespace-nowrap">{lng}</td>
                                   <td className="p-3 whitespace-nowrap">
                                     <button
-                                      className="min-w-[100px] min-h-[34px] rounded border border-secondary px-2 py-1 text-primary disabled:border-neutral-700 disabled:cursor-not-allowed"
+                                      className="min-w-[100px] min-h-[34px] rounded border border-red-800 bg-red-600 text-white px-2 py-1 text-primary disabled:border-neutral-700 disabled:bg-secondary disabled:cursor-not-allowed"
                                       disabled={mutation.isLoading && mutation.variables === id ? true : false}
                                       onClick={() => {
                                         mutation.mutate(id);
