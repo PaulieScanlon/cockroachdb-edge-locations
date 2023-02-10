@@ -148,7 +148,7 @@ const Page = () => {
             </div>
 
             <div className="overflow-hidden lg:grow">
-              <div className="flex max-h-[400px] lg:max-h-[calc(100vh-460px)] h-full rounded border border-border overflow-auto">
+              <div className="flex max-h-[400px] lg:max-h-[calc(100vh-520px)] h-full rounded border border-border overflow-auto">
                 {query.isLoading ? (
                   <div className="flex items-center justify-center h-full w-full">
                     <Spinner />
