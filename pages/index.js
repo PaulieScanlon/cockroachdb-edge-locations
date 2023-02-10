@@ -62,7 +62,7 @@ const Page = () => {
   });
 
   return (
-    <section className="grid xl:grid-cols-2">
+    <section className="grid grid-cols-1 xl:grid-cols-2">
       <div className="bg-surface xl:min-h-screen shadow-lg">
         <div className="flex flex-col p-6 md:p-8 h-full">
           <div className="grid gap-8 px-8 py-8">
@@ -122,8 +122,8 @@ const Page = () => {
               </div>
             </div>
 
-            <div className="overflow-hidden grow">
-              <div className="flex max-h-[400px] lg:max-h-[calc(100vh-460px)] h-full rounded border border-border overflow-hidden">
+            <div className="overflow-hidden lg:grow">
+              <div className="flex max-h-[400px] lg:max-h-[calc(100vh-460px)] h-full rounded border border-border overflow-auto">
                 {query.isLoading ? (
                   <div className="flex items-center justify-center h-full w-full">
                     <Spinner />
@@ -131,7 +131,7 @@ const Page = () => {
                 ) : null}
 
                 {query.isSuccess ? (
-                  <div className="flex-grow overflow-auto">
+                  <div className="flex-grow min-w-[400px] overflow-auto">
                     <table className="relative w-full">
                       <thead className="text-primary font-bold">
                         <tr>
