@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import Logo from '../components/logo';
@@ -10,9 +10,21 @@ import Success from '../components/success';
 
 import ThreeScene from '../components/three-scene';
 
+import usePrefersReducedMotion from '../hooks/use-prefers-reduced-motion';
+
 const Page = () => {
   const queryClient = useQueryClient();
   const [isPlaying, setIsPlaying] = useState(true);
+
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      setIsPlaying(false);
+    } else {
+      setIsPlaying(true);
+    }
+  }, [prefersReducedMotion]);
 
   const read = async () => {
     try {

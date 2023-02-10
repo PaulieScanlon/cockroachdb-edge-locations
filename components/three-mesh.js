@@ -11,7 +11,9 @@ import { geoGraticule10 } from 'd3-geo';
 import goeJson from './ne_110m_admin_0_countries.geojson.json';
 
 const getVertex = (lat, lng, radius) => {
-  const vector = new THREE.Vector3().setFromSpherical(new THREE.Spherical(radius, THREE.MathUtils.degToRad(90 - lat), THREE.MathUtils.degToRad(lng)));
+  const vector = new THREE.Vector3().setFromSpherical(
+    new THREE.Spherical(radius, THREE.MathUtils.degToRad(90 - lat), THREE.MathUtils.degToRad(lng))
+  );
   return vector;
 };
 
