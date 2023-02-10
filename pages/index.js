@@ -80,9 +80,22 @@ const Page = () => {
           <div className="grid gap-8 px-8 py-8">
             <Logo />
             <h1 className="sr-only">Edge</h1>
-            <p className="text-text text-xs text-center">
-              Submit the location of your nearest <em className="font-bold">edge.</em>
-            </p>
+            <div className="grid gap-2">
+              <p className="text-text text-sm text-center">
+                Submit the location of your nearest <em className="font-bold">edge.</em>
+              </p>
+              <small className="block text-secondary text-center">
+                Read more about this app on my{' '}
+                <a
+                  href="https://paulie.dev/posts/2023/02/cockroachlabs-interview-app/"
+                  target="_blank"
+                  rel="noopener"
+                  className="underline text-primary hover:text-hero-start"
+                >
+                  blog
+                </a>
+              </small>
+            </div>
           </div>
           <aside className="flex flex-col gap-8 grow">
             <div className="flex flex-col">
@@ -194,7 +207,7 @@ const Page = () => {
               <a
                 href=" https://github.com/PaulieScanlon/cockroachdb-edge-locations"
                 target="_blank"
-                rel="opener"
+                rel="noopener"
                 className="flex gap-2 items-center text-xs text-secondary hover:text-primary"
               >
                 <svg
@@ -220,7 +233,7 @@ const Page = () => {
               <a
                 href="https://paulie.dev/posts/2023/02/cockroachlabs-interview-app/"
                 target="_blank"
-                rel="opener"
+                rel="noopener"
                 className="flex gap-2 items-center text-xs text-secondary hover:text-primary"
               >
                 <svg
