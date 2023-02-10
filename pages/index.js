@@ -232,12 +232,13 @@ const Page = () => {
         </div>
       </div>
       <div className="bg-gradient-to-b from-black to-shade p-6 md:p-8 lg:p-0 overflow-scroll">
-        <div className="relative w-full h-[600px] lg:h-screen cursor-move rounded border border-border lg:border-none">
-          <div className="hidden xl:flex absolute top-0 right-0 text-text p-4 text-xs flex-col gap-2 z-10">
-            <span>
-              <strong>Zoom: </strong>Scroll
+        <div className="relative w-full h-[400px] md:h-[600px] xl:h-screen cursor-move rounded border border-border lg:border-none">
+          <div className="flex absolute top-0 right-0 text-text p-4 text-xs flex-col gap-2 z-10">
+            <span className="flex gap-1">
+              <strong>Zoom: </strong> <span className="hidden xl:block">Scroll</span>
+              <span className="block xl:hidden">Pinch</span>
             </span>
-            <span>
+            <span className="hidden xl:block">
               <strong>Pan: </strong>⌘ Click
             </span>
           </div>
