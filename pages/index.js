@@ -148,9 +148,9 @@ const Page = () => {
             </div>
 
             <div className="overflow-hidden lg:grow">
-              <div className="flex max-h-[320px] md:max-h-[360px] lg:max-h-[calc(100vh-520px)] h-full rounded border border-border overflow-auto">
+              <div className="flex h-[220px] lg:h-[calc(100vh-520px)] h-full rounded border border-border overflow-auto">
                 {query.isLoading ? (
-                  <div className="flex h-[320px] md:h-[360px] items-center justify-center h-full w-full">
+                  <div className="flex items-center justify-center h-full w-full">
                     <Spinner />
                   </div>
                 ) : null}
