@@ -261,9 +261,10 @@ const Page = () => {
         <div className="relative w-full h-[400px] md:h-[600px] xl:h-screen cursor-move rounded border border-border lg:border-none">
           <div className="absolute top-0 left-0 flex justify-between gap-2 text-text p-4 text-xs w-full z-10">
             <div>
-              <span className="flex gap-1">
+              <span className="flex gap-1 items-center">
                 <strong>Total Edges: </strong>
-                {`x${query.isSuccess ? query.data.length : ''}`}
+                {query.isSuccess ? `x${query.data.length}` : <Spinner className="w-3 h-3" />}
+                {/* {`x${query.isSuccess ? query.data.length : }`} */}
               </span>
             </div>
             <div>
