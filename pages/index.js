@@ -34,10 +34,22 @@ const Page = () => {
 
       const json = await response.json();
 
+      const filtered = JSON.parse(json.data.locations)
+        .sort((a, b) => b.id - a.id)
+        .filter((location) => location.city !== 'Test')
+        .reduce((items, item) => {
+          const city = items.find((obj) => obj.city === item.city);
+          if (!city) {
+            return items.concat([item]);
+          } else {
+            return items;
+          }
+        }, []);
+
       if (!response.ok) {
         throw new Error();
       }
-      return json;
+      return filtered;
     } catch (error) {
       throw new Error();
     }
@@ -169,33 +181,22 @@ const Page = () => {
 
                       <tbody className="divide-y divide-table-divide bg-table-tbody text-text">
                         <Fragment>
-                          {JSON.parse(query.data.data.locations)
-                            .sort((a, b) => b.id - a.id)
-                            .filter((location) => location.city !== 'Test')
-                            .reduce((items, item) => {
-                              const city = items.find((obj) => obj.city === item.city);
-                              if (!city) {
-                                return items.concat([item]);
-                              } else {
-                                return items;
-                              }
-                            }, [])
-                            .map((item, index) => {
-                              const { id, date, city, lat, lng } = item;
-                              const dateFormat = new Date(date).toLocaleString('default', {
-                                month: 'short',
-                                day: 'numeric',
-                                year: '2-digit'
-                              });
-                              return (
-                                <tr key={index}>
-                                  <td className="p-3 whitespace-nowrap">{dateFormat}</td>
-                                  <td className="p-3 whitespace-nowrap">{`${city || '* city not recognized'}`}</td>
-                                  <td className="p-3 whitespace-nowrap">{lat}</td>
-                                  <td className="p-3 whitespace-nowrap">{lng}</td>
-                                </tr>
-                              );
-                            })}
+                          {query.data.map((item, index) => {
+                            const { id, date, city, lat, lng } = item;
+                            const dateFormat = new Date(date).toLocaleString('default', {
+                              month: 'short',
+                              day: 'numeric',
+                              year: '2-digit'
+                            });
+                            return (
+                              <tr key={index}>
+                                <td className="p-3 whitespace-nowrap">{dateFormat}</td>
+                                <td className="p-3 whitespace-nowrap">{`${city || '* city not recognized'}`}</td>
+                                <td className="p-3 whitespace-nowrap">{lat}</td>
+                                <td className="p-3 whitespace-nowrap">{lng}</td>
+                              </tr>
+                            );
+                          })}
                         </Fragment>
                       </tbody>
                     </table>
@@ -258,14 +259,22 @@ const Page = () => {
       </div>
       <div className="bg-gradient-to-b from-black to-shade p-6 md:p-8 lg:p-0 overflow-scroll">
         <div className="relative w-full h-[400px] md:h-[600px] xl:h-screen cursor-move rounded border border-border lg:border-none">
-          <div className="flex absolute top-0 right-0 text-text p-4 text-xs flex-col gap-2 z-10">
-            <span className="flex gap-1">
-              <strong>Zoom: </strong> <span className="hidden xl:block">Scroll</span>
-              <span className="block xl:hidden">Pinch</span>
-            </span>
-            <span className="hidden xl:block">
-              <strong>Pan: </strong>⌘ Click
-            </span>
+          <div className="absolute top-0 left-0 flex justify-between gap-2 text-text p-4 text-xs w-full z-10">
+            <div>
+              <span className="flex gap-1">
+                <strong>Total Edges: </strong>
+                {`x${query.isSuccess ? query.data.length : ''}`}
+              </span>
+            </div>
+            <div>
+              <span className="flex gap-1">
+                <strong>Zoom: </strong> <span className="hidden xl:block">Scroll</span>
+                <span className="block xl:hidden">Pinch</span>
+              </span>
+              <span className="hidden xl:block">
+                <strong>Pan: </strong>⌘ Click
+              </span>
+            </div>
           </div>
           <div className="absolute bottom-0 right-0 text-text p-4 text-xs z-10">
             <button onClick={() => setIsPlaying(!isPlaying)}>
@@ -286,23 +295,7 @@ const Page = () => {
               </svg>
             </button>
           </div>
-          <ThreeScene
-            isPlaying={isPlaying}
-            locations={
-              query.isSuccess
-                ? JSON.parse(query.data.data.locations)
-                    .filter((location) => location.city !== 'Test')
-                    .reduce((items, item) => {
-                      const city = items.find((obj) => obj.city === item.city);
-                      if (!city) {
-                        return items.concat([item]);
-                      } else {
-                        return items;
-                      }
-                    }, [])
-                : []
-            }
-          />
+          <ThreeScene isPlaying={isPlaying} locations={query.isSuccess ? query.data : []} />
         </div>
       </div>
     </section>
