@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import Logo from '../components/logo';
@@ -49,6 +50,7 @@ const Page = () => {
       if (!response.ok) {
         throw new Error();
       }
+
       return filtered;
     } catch (error) {
       throw new Error();
@@ -167,7 +169,7 @@ const Page = () => {
                   </div>
                 ) : null}
 
-                {query.isSuccess ? (
+                {query.data ? (
                   <div className="flex-grow min-w-[400px] overflow-auto">
                     <table className="relative w-full">
                       <thead className="text-primary font-bold">
@@ -264,7 +266,6 @@ const Page = () => {
               <span className="flex gap-1 items-center">
                 <strong>Total Edges: </strong>
                 {query.isSuccess ? `x${query.data.length}` : <Spinner className="w-3 h-3" />}
-                {/* {`x${query.isSuccess ? query.data.length : }`} */}
               </span>
             </div>
             <div>

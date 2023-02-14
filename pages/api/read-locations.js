@@ -4,8 +4,6 @@ export default async function handler(req, res) {
   try {
     const response = await client.locations.findMany();
 
-    //   throw new Error('Error');
-
     res.status(200).json({
       message: 'A-OK!',
       data: {
@@ -17,6 +15,8 @@ export default async function handler(req, res) {
       }
     });
   } catch (error) {
+    console.log(error);
+
     res.status(500).json({ message: 'Error!' });
   }
 }

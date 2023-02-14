@@ -13,16 +13,19 @@ const Page = () => {
 
   const read = async () => {
     try {
-      const response = await (
-        await fetch('/api/read-locations', {
-          method: 'GET'
-        })
-      ).json();
+      const response = await fetch('/api/read-locations', {
+        method: 'GET'
+      });
 
-      if (!response.data) {
+      const json = await response.json();
+
+      const formatted = JSON.parse(json.data.locations);
+
+      if (!response.ok) {
         throw new Error();
       }
-      return response;
+
+      return formatted;
     } catch (error) {
       throw new Error();
     }
@@ -57,16 +60,12 @@ const Page = () => {
     }
   });
 
-  console.log('session: ', session);
-
   return (
     <section className="grid gap-8 mx-auto p-6 md:p-8">
       <div className="flex justify-between items-center rounded bg-surface px-4 py-2">
         <div className="flex gap-4 items-center">
           <Link href="/">
-            <a>
-              <Logo className="w-12" />
-            </a>
+            <Logo className="w-12" />
           </Link>
         </div>
         <Fragment>
@@ -105,12 +104,11 @@ const Page = () => {
                       </tr>
                     </thead>
 
-                    {query.isSuccess ? (
+                    {query.data ? (
                       <tbody className="divide-y divide-table-divide bg-table-tbody text-text">
                         <Fragment>
-                          {JSON.parse(query.data.data.locations)
+                          {query.data
                             .sort((a, b) => b.id - a.id)
-
                             .map((item, index) => {
                               const { id, date, city, lat, lng } = item;
                               const dateFormat = new Date(date).toLocaleString('default', {
@@ -145,7 +143,7 @@ const Page = () => {
                   </table>
 
                   {query.isLoading ? (
-                    <div className="flex items-center justify-center h-[240px]">
+                    <div className="flex items-center justify-center h-[540px]">
                       <Spinner />
                     </div>
                   ) : null}
