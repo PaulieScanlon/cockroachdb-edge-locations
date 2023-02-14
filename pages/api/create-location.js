@@ -17,6 +17,10 @@ const setAsPrismaDecimal = (n) => {
   return new Prisma.Decimal(n);
 };
 
+export const config = {
+  runtime: 'edge'
+};
+
 export default async function handler(req, res) {
   const { date } = JSON.parse(req.body);
 
