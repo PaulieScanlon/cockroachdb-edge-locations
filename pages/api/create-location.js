@@ -1,4 +1,5 @@
-const { client, Prisma } = require('../../prisma-client');
+const { client } = require('../../prisma-client');
+const { Prisma } = require('@prisma/client');
 
 const requestIp = require('request-ip');
 const geoip = require('fast-geoip');
@@ -16,6 +17,10 @@ const geoip = require('fast-geoip');
 const setAsPrismaDecimal = (n) => {
   return new Prisma.Decimal(n);
 };
+
+// export const config = {
+//   runtime: 'edge'
+// };
 
 export default async function handler(req, res) {
   const { date } = JSON.parse(req.body);

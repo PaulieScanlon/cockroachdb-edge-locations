@@ -1,4 +1,4 @@
-const { client } = require('../../prisma-client');
+const client = require('../../prisma-client');
 
 export default async function handler(req, res) {
   const { id } = JSON.parse(req.body);
