@@ -7,11 +7,7 @@ export default async function handler(req, res) {
     res.status(200).json({
       message: 'A-OK!',
       data: {
-        locations: JSON.stringify(response, (_key, value) =>
-          // need to add a custom serializer because CockroachDB IDs map to
-          // JavaScript BigInts, which JSON.stringify has trouble serializing.
-          typeof value === 'bigint' ? value.toString() : value
-        )
+        locations: JSON.stringify(response, (_key, value) => (typeof value === 'bigint' ? value.toString() : value))
       }
     });
   } catch (error) {

@@ -8,7 +8,7 @@ import Spinner from '../components/spinner';
 import Logo from '../components/logo';
 
 const Page = () => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const queryClient = useQueryClient();
 
   const read = async () => {
@@ -33,18 +33,20 @@ const Page = () => {
 
   const remove = async (id) => {
     try {
-      const response = await (
-        await fetch('/api/delete-location', {
-          method: 'DELETE',
-          body: JSON.stringify({
-            id: id
-          })
+      const response = await fetch('/api/delete-location', {
+        method: 'DELETE',
+        body: JSON.stringify({
+          id: id
         })
-      ).json();
-      if (!response.data) {
+      });
+
+      const json = await response.json();
+
+      if (!response.ok) {
         throw new Error();
       }
-      return response;
+
+      return json;
     } catch (error) {
       throw new Error();
     }
@@ -100,6 +102,7 @@ const Page = () => {
                         <th className="sticky top-0 p-3 bg-table-thead text-left">City</th>
                         <th className="sticky top-0 p-3 bg-table-thead text-left">Latitude</th>
                         <td className="sticky top-0 p-3 bg-table-thead text-left">Longitude</td>
+                        {/* <td className="sticky top-0 p-3 bg-table-thead text-left">Runtime</td> */}
                         <td className="sticky top-0 p-3 bg-table-thead text-left">Delete</td>
                       </tr>
                     </thead>
@@ -110,7 +113,14 @@ const Page = () => {
                           {query.data
                             .sort((a, b) => b.id - a.id)
                             .map((item, index) => {
-                              const { id, date, city, lat, lng } = item;
+                              const {
+                                id,
+                                date,
+                                city,
+                                lat,
+                                lng
+                                //  runtime
+                              } = item;
                               const dateFormat = new Date(date).toLocaleString('default', {
                                 month: 'short',
                                 day: 'numeric',
@@ -123,6 +133,7 @@ const Page = () => {
                                   <td className="p-3 whitespace-nowrap">{`${city || '* city not recognized'}`}</td>
                                   <td className="p-3 whitespace-nowrap">{lat}</td>
                                   <td className="p-3 whitespace-nowrap">{lng}</td>
+                                  {/* <td className="p-3 whitespace-nowrap">{runtime}</td> */}
                                   <td className="p-3 whitespace-nowrap">
                                     <button
                                       className="min-w-[100px] min-h-[34px] rounded border border-red-800 bg-red-600 text-white px-2 py-1 text-primary disabled:border-neutral-700 disabled:bg-secondary disabled:cursor-not-allowed"

@@ -1,14 +1,14 @@
-const { PrismaClient } = require('@prisma/client');
-
-const prisma = new PrismaClient();
+// const { PrismaClient } = require('@prisma/client');
+const { client } = require('../prisma-client');
 
 async function main() {
-  const test_location_1 = await prisma.locations.create({
+  await client.locations.create({
     data: {
       date: new Date(),
-      city: 'Test',
+      city: '...',
       lat: 0.0,
       lng: -0.0
+      // runtime: ''
     }
   });
 }

@@ -38,7 +38,6 @@
     "maath": "^0.0.2",
     "next": "^13.1.6",
     "next-auth": "^4.19.2",
-    "prisma": "^4.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "request-ip": "^3.3.0",
@@ -49,6 +48,7 @@
     "@tailwindcss/typography": "^0.5.7",
     "autoprefixer": "^10.4.8",
     "postcss": "^8.4.16",
+    "prisma": "^4.10.1",
     "prop-types": "^15.8.1",
     "tailwindcss": "^3.1.8"
   }

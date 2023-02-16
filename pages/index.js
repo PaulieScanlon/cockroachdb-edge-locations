@@ -37,7 +37,7 @@ const Page = () => {
 
       const filtered = JSON.parse(json.data.locations)
         .sort((a, b) => b.id - a.id)
-        .filter((location) => location.city !== 'Test')
+        // .filter((location) => location.city !== 'Test')
         .reduce((items, item) => {
           const city = items.find((obj) => obj.city === item.city);
           if (!city) {
@@ -184,7 +184,8 @@ const Page = () => {
                       <tbody className="divide-y divide-table-divide bg-table-tbody text-text">
                         <Fragment>
                           {query.data.map((item, index) => {
-                            const { id, date, city, lat, lng } = item;
+                            const { date, city, lat, lng } = item;
+
                             const dateFormat = new Date(date).toLocaleString('default', {
                               month: 'short',
                               day: 'numeric',

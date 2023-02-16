@@ -1,14 +1,14 @@
-import { PrismaClient } from '@prisma/client';
+const { PrismaClient, Prisma } = require('@prisma/client');
 
-export let client;
-
-if (typeof window === 'undefined') {
-  if (process.env['NODE_ENV'] === 'production') {
-    client = new PrismaClient();
-  } else {
-    if (!global.prisma) {
-      global.prisma = new PrismaClient();
+const client = new PrismaClient({
+  datasources: {
+    db: {
+      url: process.env.DATABASE_URL
     }
-    client = global.prisma;
   }
-}
+});
+
+module.exports = {
+  client,
+  Prisma
+};
