@@ -340,8 +340,8 @@ const Page = () => {
                         const { name } = region;
                         console.log(name);
                         return (
-                          <li key={index}>
-                            <span className="mr-1">{getInfo(name, queries[2].data.cloud_provider).flag}</span>
+                          <li key={index} className="flex items-center gap-1">
+                            <span>{getInfo(name, queries[2].data.cloud_provider).flag}</span>
                             <span>{getInfo(name, queries[2].data.cloud_provider).location}</span>
                             <span>{getInfo(name, queries[2].data.cloud_provider).raw}</span>
                           </li>
@@ -359,8 +359,8 @@ const Page = () => {
                 </strong>
                 <ul className="leading-5">
                   {queries[1].isSuccess ? (
-                    <li>
-                      <span className="mr-1">{getInfo(queries[1].data.serverlessFunctionRegion, 'Vercel').flag}</span>
+                    <li className="flex items-center gap-1">
+                      <span>{getInfo(queries[1].data.serverlessFunctionRegion, 'Vercel').flag}</span>
                       <span>{getInfo(queries[1].data.serverlessFunctionRegion, 'Vercel').location}</span>
                       <span>{getInfo(queries[1].data.serverlessFunctionRegion, 'Vercel').provider_region}</span>
                     </li>
