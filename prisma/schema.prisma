@@ -15,4 +15,5 @@ model locations {
   city          String
   lat           Decimal
   lng           Decimal
+  runtime       String?
 }

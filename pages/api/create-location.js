@@ -23,8 +23,8 @@ export default async function handler(req, res) {
         date: new Date(date),
         city: geo ? geo.city : 'Uluru-Kata Tjuta National Park',
         lat: geo ? setAsPrismaDecimal(geo.ll[0]) : setAsPrismaDecimal(-25.34449),
-        lng: geo ? setAsPrismaDecimal(geo.ll[1]) : setAsPrismaDecimal(131.0369)
-        // runtime: 'serverless'
+        lng: geo ? setAsPrismaDecimal(geo.ll[1]) : setAsPrismaDecimal(131.0369),
+        runtime: 'serverless'
       }
     });
 
@@ -35,6 +35,7 @@ export default async function handler(req, res) {
       }
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: 'Error!' });
   } finally {
     client.$disconnect();

@@ -102,7 +102,7 @@ const Page = () => {
                         <th className="sticky top-0 p-3 bg-table-thead text-left">City</th>
                         <th className="sticky top-0 p-3 bg-table-thead text-left">Latitude</th>
                         <td className="sticky top-0 p-3 bg-table-thead text-left">Longitude</td>
-                        {/* <td className="sticky top-0 p-3 bg-table-thead text-left">Runtime</td> */}
+                        <td className="sticky top-0 p-3 bg-table-thead text-left">Runtime</td>
                         <td className="sticky top-0 p-3 bg-table-thead text-left">Delete</td>
                       </tr>
                     </thead>
@@ -113,14 +113,7 @@ const Page = () => {
                           {query.data
                             .sort((a, b) => b.id - a.id)
                             .map((item, index) => {
-                              const {
-                                id,
-                                date,
-                                city,
-                                lat,
-                                lng
-                                //  runtime
-                              } = item;
+                              const { id, date, city, lat, lng, runtime } = item;
                               const dateFormat = new Date(date).toLocaleString('default', {
                                 month: 'short',
                                 day: 'numeric',
@@ -133,7 +126,7 @@ const Page = () => {
                                   <td className="p-3 whitespace-nowrap">{`${city || '* city not recognized'}`}</td>
                                   <td className="p-3 whitespace-nowrap">{lat}</td>
                                   <td className="p-3 whitespace-nowrap">{lng}</td>
-                                  {/* <td className="p-3 whitespace-nowrap">{runtime}</td> */}
+                                  <td className="p-3 whitespace-nowrap">{runtime}</td>
                                   <td className="p-3 whitespace-nowrap">
                                     <button
                                       className="min-w-[100px] min-h-[34px] rounded border border-red-800 bg-red-600 text-white px-2 py-1 text-primary disabled:border-neutral-700 disabled:bg-secondary disabled:cursor-not-allowed"
