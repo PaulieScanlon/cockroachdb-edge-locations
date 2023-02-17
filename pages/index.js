@@ -81,6 +81,27 @@ const Page = () => {
           }
         },
         retry: 2
+      },
+      {
+        queryKey: ['cockroach-query'],
+        queryFn: async () => {
+          try {
+            const response = await fetch('/api/cockroach-cluster', {
+              method: 'GET'
+            });
+
+            if (!response.ok) {
+              throw new Error();
+            }
+
+            const json = await response.json();
+
+            return json.data;
+          } catch (error) {
+            throw new Error();
+          }
+        },
+        retry: 2
       }
     ]
   });
@@ -305,20 +326,47 @@ const Page = () => {
             </div>
           </div>
           <div className="absolute bottom-0 right-0 flex items-center justify-between gap-2 text-text p-4 text-xs w-full z-10">
-            <span className="flex flex-col sm:flex-row gap-1">
-              <strong className="flex items-center gap-1 ">
-                <span className="w-2 h-2 leading-none mt-0.5" style={{ backgroundColor: '#ff4684' }} />
-                Vercel Serverless Region
-              </strong>
-              <span className="flex gap-1">
-                {queries[1].isSuccess ? (
-                  <Fragment>
-                    <span>{getInfo(queries[1].data.serverlessFunctionRegion, 'Vercel').flag}</span>
-                    <span>{getInfo(queries[1].data.serverlessFunctionRegion, 'Vercel').location}</span>
-                  </Fragment>
-                ) : null}
+            <div className="flex flex-col gap-1">
+              <span className="flex flex-col sm:flex-row gap-1">
+                <strong className="flex items-center gap-1 ">
+                  <span className="w-2 h-2 leading-none" style={{ backgroundColor: '#0066ff' }} />
+                  CockroachDB Serverless Region
+                </strong>
+                <span className="flex items-center gap-1">
+                  {queries[2].isSuccess ? (
+                    <Fragment>
+                      {queries[2].data.regions.map((region, index) => {
+                        const { name } = region;
+                        return (
+                          <Fragment key={index}>
+                            <span>{getInfo(name, queries[2].data.cloud_provider).flag}</span>
+                            <span>{getInfo(name, queries[2].data.cloud_provider).location}</span>
+                            <span>{getInfo(name, queries[2].data.cloud_provider).raw}</span>
+                          </Fragment>
+                        );
+                      })}
+                    </Fragment>
+                  ) : null}
+                </span>
               </span>
-            </span>
+
+              <span className="flex flex-col sm:flex-row gap-1">
+                <strong className="flex items-center gap-1 ">
+                  <span className="w-2 h-2 leading-none" style={{ backgroundColor: '#ff3333' }} />
+                  Vercel Serverless Region
+                </strong>
+                <span className="flex items-center gap-1">
+                  {queries[1].isSuccess ? (
+                    <Fragment>
+                      <span>{getInfo(queries[1].data.serverlessFunctionRegion, 'Vercel').flag}</span>
+                      <span>{getInfo(queries[1].data.serverlessFunctionRegion, 'Vercel').location}</span>
+                      <span>{getInfo(queries[1].data.serverlessFunctionRegion, 'Vercel').provider_region}</span>
+                    </Fragment>
+                  ) : null}
+                </span>
+              </span>
+            </div>
+
             <button onClick={() => setIsPlaying(!isPlaying)}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                 {isPlaying ? (
@@ -337,10 +385,15 @@ const Page = () => {
               </svg>
             </button>
           </div>
+
           <ThreeScene
             isPlaying={isPlaying}
             locations={queries[0].isSuccess ? queries[0].data : []}
-            serverlessRegion={queries[1].isSuccess ? queries[1].data.serverlessFunctionRegion : ''}
+            vercelServerlessRegion={queries[1].isSuccess ? queries[1].data.serverlessFunctionRegion : ''}
+            cockroachDBServerlessRegion={
+              queries[2].isSuccess ? queries[2].data.regions.map((region) => region.name).join('') : ''
+            }
+            cockroachDBProvider={queries[2].isSuccess ? queries[2].data.cloud_provider : ''}
           />
         </div>
       </div>

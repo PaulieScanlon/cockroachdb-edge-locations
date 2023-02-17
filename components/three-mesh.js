@@ -18,7 +18,13 @@ const getVertex = (lat, lng, radius) => {
   return vector;
 };
 
-const ThreeMesh = ({ isPlaying, locations, serverlessRegion }) => {
+const ThreeMesh = ({
+  isPlaying,
+  locations,
+  vercelServerlessRegion,
+  cockroachDBServerlessRegion,
+  cockroachDBProvider
+}) => {
   const mesh = useRef(null);
 
   const [sphere] = useState(() => random.inSphere(new Float32Array(2000), { radius: 2 }));
@@ -53,7 +59,7 @@ const ThreeMesh = ({ isPlaying, locations, serverlessRegion }) => {
         <lineBasicMaterial color="#323232" />
       </lineSegments>
 
-      {locations && serverlessRegion ? (
+      {locations && vercelServerlessRegion ? (
         <Points>
           <pointsMaterial vertexColors size={0.02} />
           {locations.map((data, index) => {
@@ -62,11 +68,20 @@ const ThreeMesh = ({ isPlaying, locations, serverlessRegion }) => {
           })}
           <Point
             position={getVertex(
-              getInfo(serverlessRegion, 'Vercel').latitude,
-              getInfo(serverlessRegion, 'Vercel').longitude,
+              getInfo(vercelServerlessRegion, 'Vercel').latitude,
+              getInfo(vercelServerlessRegion, 'Vercel').longitude,
               1.04
             )}
-            color="#fd397b"
+            color="#ff3333"
+          />
+
+          <Point
+            position={getVertex(
+              getInfo(cockroachDBServerlessRegion, cockroachDBProvider).latitude,
+              getInfo(cockroachDBServerlessRegion, cockroachDBProvider).longitude,
+              1.04
+            )}
+            color="#0066ff"
           />
         </Points>
       ) : null}
@@ -83,8 +98,12 @@ ThreeMesh.propTypes = {
   isPlaying: PropTypes.bool.isRequired,
   /** The location data */
   locations: PropTypes.any.isRequired,
-  /** The location the Serverless Function is running */
-  serverlessRegion: PropTypes.string.isRequired
+  /** The region of Vercel Serverless Function */
+  vercelServerlessRegion: PropTypes.string.isRequired,
+  /** The region of CockroachDB Serverless */
+  cockroachDBServerlessRegion: PropTypes.string.isRequired,
+  /** The cloud provider of CockroachDB Serverless */
+  cockroachDBProvider: PropTypes.string.isRequired
 };
 
 export default ThreeMesh;
