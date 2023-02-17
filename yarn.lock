@@ -437,6 +437,11 @@ client-only@0.0.1:
   resolved "https://registry.yarnpkg.com/client-only/-/client-only-0.0.1.tgz#38bba5d403c41ab150bff64a95c85013cf73bca1"
   integrity sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==
 
+cloud-regions-country-flags@^0.0.13:
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/cloud-regions-country-flags/-/cloud-regions-country-flags-0.0.13.tgz#cc49be06618432a93509ddb29436b583584ff335"
+  integrity sha512-yI13GnkF38miVSOyRGRne8DgTcwBAwwrLtTeTFeUUtcBeFq2ioyTf1Qyjz8i9z7hi5Dq8la/+vaHh18cfzTkyw==
+
 color-name@^1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.4.tgz#c2a09a87acbde69543de6f63fa3995c826c536a2"

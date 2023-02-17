@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import Link from 'next/link';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueries, useQueryClient } from '@tanstack/react-query';
+import { getInfo } from 'cloud-regions-country-flags';
 
 import Logo from '../components/logo';
 import Spinner from '../components/spinner';
@@ -27,65 +27,90 @@ const Page = () => {
     }
   }, [prefersReducedMotion]);
 
-  const read = async () => {
-    try {
-      const response = await fetch('/api/read-locations', {
-        method: 'GET'
-      });
+  const queries = useQueries({
+    queries: [
+      {
+        queryKey: ['read-query'],
+        queryFn: async () => {
+          try {
+            const response = await fetch('/api/read-locations', {
+              method: 'GET'
+            });
 
-      const json = await response.json();
+            if (!response.ok) {
+              throw new Error();
+            }
 
-      const filtered = JSON.parse(json.data.locations)
-        .sort((a, b) => b.id - a.id)
-        // .filter((location) => location.city !== 'Test')
-        .reduce((items, item) => {
-          const city = items.find((obj) => obj.city === item.city);
-          if (!city) {
-            return items.concat([item]);
-          } else {
-            return items;
+            const json = await response.json();
+
+            const filtered = JSON.parse(json.data.locations)
+              .sort((a, b) => b.id - a.id)
+              .reduce((items, item) => {
+                const city = items.find((obj) => obj.city === item.city);
+                if (!city) {
+                  return items.concat([item]);
+                } else {
+                  return items;
+                }
+              }, []);
+
+            return filtered;
+          } catch (error) {
+            throw new Error();
           }
-        }, []);
+        },
+        retry: 2
+      },
+      {
+        queryKey: ['vercel-query'],
+        queryFn: async () => {
+          try {
+            const response = await fetch('/api/vercel-project', {
+              method: 'GET'
+            });
 
-      if (!response.ok) {
-        throw new Error();
+            if (!response.ok) {
+              throw new Error();
+            }
+
+            const json = await response.json();
+
+            return json.data;
+          } catch (error) {
+            throw new Error();
+          }
+        },
+        retry: 2
       }
+    ]
+  });
 
-      return filtered;
-    } catch (error) {
-      throw new Error();
-    }
-  };
-
-  const create = async () => {
-    try {
-      const response = await (
-        await fetch('/api/create-location', {
-          method: 'POST',
-          body: JSON.stringify({
-            date: new Date()
+  const mutation = useMutation(
+    async () => {
+      try {
+        const response = await (
+          await fetch('/api/create-location', {
+            method: 'POST',
+            body: JSON.stringify({
+              date: new Date()
+            })
           })
-        })
-      ).json();
+        ).json();
 
-      if (!response.data) {
+        if (!response.data) {
+          throw new Error();
+        }
+        return response;
+      } catch (error) {
         throw new Error();
       }
-      return response;
-    } catch (error) {
-      throw new Error();
+    },
+    {
+      onSuccess: async () => {
+        queryClient.invalidateQueries(['read-query']);
+      }
     }
-  };
-
-  const query = useQuery(['query'], read, {
-    retry: 2
-  });
-
-  const mutation = useMutation(create, {
-    onSuccess: async () => {
-      queryClient.invalidateQueries(['query']);
-    }
-  });
+  );
 
   return (
     <section className="grid grid-cols-1 xl:grid-cols-2">
@@ -163,13 +188,13 @@ const Page = () => {
 
             <div className="overflow-hidden lg:grow">
               <div className="flex h-[220px] lg:h-[calc(100vh-520px)] h-full rounded border border-border overflow-auto">
-                {query.isLoading ? (
+                {queries[0].isLoading ? (
                   <div className="flex items-center justify-center h-full w-full">
                     <Spinner />
                   </div>
                 ) : null}
 
-                {query.data ? (
+                {queries[0].data ? (
                   <div className="flex-grow min-w-[400px] overflow-auto">
                     <table className="relative w-full">
                       <thead className="text-primary font-bold">
@@ -183,7 +208,7 @@ const Page = () => {
 
                       <tbody className="divide-y divide-table-divide bg-table-tbody text-text">
                         <Fragment>
-                          {query.data.map((item, index) => {
+                          {queries[0].data.map((item, index) => {
                             const { date, city, lat, lng } = item;
 
                             const dateFormat = new Date(date).toLocaleString('default', {
@@ -266,7 +291,7 @@ const Page = () => {
             <div>
               <span className="flex gap-1 items-center">
                 <strong>Total Edges: </strong>
-                {query.isSuccess ? `x${query.data.length}` : <Spinner className="w-3 h-3" />}
+                {queries[0].isSuccess ? `x${queries[0].data.length}` : <Spinner className="w-3 h-3" />}
               </span>
             </div>
             <div>
@@ -279,7 +304,21 @@ const Page = () => {
               </span>
             </div>
           </div>
-          <div className="absolute bottom-0 right-0 text-text p-4 text-xs z-10">
+          <div className="absolute bottom-0 right-0 flex items-center justify-between gap-2 text-text p-4 text-xs w-full z-10">
+            <span className="flex flex-col sm:flex-row gap-1">
+              <strong className="flex items-center gap-1 ">
+                <span className="w-2 h-2 leading-none mt-0.5" style={{ backgroundColor: '#ff4684' }} />
+                Vercel Serverless Region
+              </strong>
+              <span className="flex gap-1">
+                {queries[1].isSuccess ? (
+                  <Fragment>
+                    <span>{getInfo(queries[1].data.serverlessFunctionRegion, 'Vercel').flag}</span>
+                    <span>{getInfo(queries[1].data.serverlessFunctionRegion, 'Vercel').location}</span>
+                  </Fragment>
+                ) : null}
+              </span>
+            </span>
             <button onClick={() => setIsPlaying(!isPlaying)}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                 {isPlaying ? (
@@ -298,7 +337,11 @@ const Page = () => {
               </svg>
             </button>
           </div>
-          <ThreeScene isPlaying={isPlaying} locations={query.isSuccess ? query.data : []} />
+          <ThreeScene
+            isPlaying={isPlaying}
+            locations={queries[0].isSuccess ? queries[0].data : []}
+            serverlessRegion={queries[1].data ? queries[1].data.serverlessFunctionRegion : ''}
+          />
         </div>
       </div>
     </section>

@@ -9,6 +9,7 @@ import { GeoJsonGeometry } from 'three-geojson-geometry';
 import { geoGraticule10 } from 'd3-geo';
 
 import goeJson from './ne_110m_admin_0_countries.geojson.json';
+import { getInfo } from 'cloud-regions-country-flags';
 
 const getVertex = (lat, lng, radius) => {
   const vector = new THREE.Vector3().setFromSpherical(
@@ -17,7 +18,7 @@ const getVertex = (lat, lng, radius) => {
   return vector;
 };
 
-const ThreeMesh = ({ isPlaying, locations }) => {
+const ThreeMesh = ({ isPlaying, locations, serverlessRegion }) => {
   const mesh = useRef(null);
 
   const [sphere] = useState(() => random.inSphere(new Float32Array(2000), { radius: 2 }));
@@ -58,6 +59,14 @@ const ThreeMesh = ({ isPlaying, locations }) => {
           const { lat, lng } = data;
           return <Point key={index} position={getVertex(lat, lng, 1.02)} color="#00ff33" />;
         })}
+        <Point
+          position={getVertex(
+            getInfo(serverlessRegion, 'Vercel').latitude,
+            getInfo(serverlessRegion, 'Vercel').longitude,
+            1.02
+          )}
+          color="#ff085b"
+        />
       </Points>
 
       <Points positions={sphere} stride={3} frustumCulled={false}>
@@ -71,7 +80,9 @@ ThreeMesh.propTypes = {
   /** Status of animation */
   isPlaying: PropTypes.bool.isRequired,
   /** The location data */
-  locations: PropTypes.any.isRequired
+  locations: PropTypes.any.isRequired,
+  /** The location the Serverless Function is running */
+  serverlessRegion: PropTypes.string.isRequired
 };
 
 export default ThreeMesh;

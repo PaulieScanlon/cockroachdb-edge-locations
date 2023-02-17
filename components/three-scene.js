@@ -5,7 +5,7 @@ import { OrbitControls } from '@react-three/drei';
 
 import ThreeMesh from '../components/three-mesh';
 
-const ThreeScene = ({ isPlaying, locations }) => {
+const ThreeScene = ({ isPlaying, locations, serverlessRegion }) => {
   return (
     <Canvas
       camera={{
@@ -16,7 +16,7 @@ const ThreeScene = ({ isPlaying, locations }) => {
       <OrbitControls enableRotate={true} enableZoom={true} enablePan={true} maxDistance={3} minDistance={0.2} />
       <ambientLight intensity={1.3} />
       <pointLight position={[-10, -10, -10]} intensity={0.4} />
-      <ThreeMesh locations={locations} isPlaying={isPlaying} />
+      <ThreeMesh locations={locations} isPlaying={isPlaying} serverlessRegion={serverlessRegion} />
     </Canvas>
   );
 };
@@ -25,7 +25,9 @@ ThreeScene.propTypes = {
   /** Status of animation */
   isPlaying: PropTypes.bool.isRequired,
   /** The location data */
-  locations: PropTypes.any.isRequired
+  locations: PropTypes.any.isRequired,
+  /** The location the Serverless Function is running */
+  serverlessRegion: PropTypes.string.isRequired
 };
 
 export default ThreeScene;
