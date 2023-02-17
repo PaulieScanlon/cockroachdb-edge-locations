@@ -325,46 +325,48 @@ const Page = () => {
               </span>
             </div>
           </div>
-          <div className="absolute bottom-0 right-0 flex items-center justify-between gap-2 text-text p-4 text-xs w-full z-10">
-            <div className="flex flex-col gap-1">
-              <span className="flex flex-col sm:flex-row gap-1">
-                <strong className="flex items-center gap-1 ">
+          <div className="absolute bottom-0 right-0 flex items-center justify-between gap-2 text-text p-4 text-xs w-full z-10 select-none">
+            <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-1">
+                <strong className="flex items-center gap-1 text-sm">
                   <span className="w-2 h-2 leading-none" style={{ backgroundColor: '#0066ff' }} />
-                  CockroachDB Serverless Region
+                  CockroachDB Serverless Regions
                 </strong>
-                <span className="flex items-center gap-1">
+
+                <ul className="leading-5">
                   {queries[2].isSuccess ? (
                     <Fragment>
                       {queries[2].data.regions.map((region, index) => {
                         const { name } = region;
+                        console.log(name);
                         return (
-                          <Fragment key={index}>
-                            <span>{getInfo(name, queries[2].data.cloud_provider).flag}</span>
+                          <li key={index}>
+                            <span className="mr-1">{getInfo(name, queries[2].data.cloud_provider).flag}</span>
                             <span>{getInfo(name, queries[2].data.cloud_provider).location}</span>
                             <span>{getInfo(name, queries[2].data.cloud_provider).raw}</span>
-                          </Fragment>
+                          </li>
                         );
                       })}
                     </Fragment>
                   ) : null}
-                </span>
-              </span>
+                </ul>
+              </div>
 
-              <span className="flex flex-col sm:flex-row gap-1">
-                <strong className="flex items-center gap-1 ">
+              <div className="flex flex-col gap-1">
+                <strong className="flex items-center gap-1 text-sm">
                   <span className="w-2 h-2 leading-none" style={{ backgroundColor: '#ff3333' }} />
                   Vercel Serverless Region
                 </strong>
-                <span className="flex items-center gap-1">
+                <ul className="leading-5">
                   {queries[1].isSuccess ? (
-                    <Fragment>
-                      <span>{getInfo(queries[1].data.serverlessFunctionRegion, 'Vercel').flag}</span>
+                    <li>
+                      <span className="mr-1">{getInfo(queries[1].data.serverlessFunctionRegion, 'Vercel').flag}</span>
                       <span>{getInfo(queries[1].data.serverlessFunctionRegion, 'Vercel').location}</span>
                       <span>{getInfo(queries[1].data.serverlessFunctionRegion, 'Vercel').provider_region}</span>
-                    </Fragment>
+                    </li>
                   ) : null}
-                </span>
-              </span>
+                </ul>
+              </div>
             </div>
 
             <button onClick={() => setIsPlaying(!isPlaying)}>
@@ -390,9 +392,7 @@ const Page = () => {
             isPlaying={isPlaying}
             locations={queries[0].isSuccess ? queries[0].data : []}
             vercelServerlessRegion={queries[1].isSuccess ? queries[1].data.serverlessFunctionRegion : ''}
-            cockroachDBServerlessRegion={
-              queries[2].isSuccess ? queries[2].data.regions.map((region) => region.name).join('') : ''
-            }
+            cockroachDBServerlessRegions={queries[2].isSuccess ? queries[2].data.regions : []}
             cockroachDBProvider={queries[2].isSuccess ? queries[2].data.cloud_provider : ''}
           />
         </div>

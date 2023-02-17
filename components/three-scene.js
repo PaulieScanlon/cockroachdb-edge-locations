@@ -9,7 +9,7 @@ const ThreeScene = ({
   isPlaying,
   locations,
   vercelServerlessRegion,
-  cockroachDBServerlessRegion,
+  cockroachDBServerlessRegions,
   cockroachDBProvider
 }) => {
   return (
@@ -26,7 +26,7 @@ const ThreeScene = ({
         locations={locations}
         isPlaying={isPlaying}
         vercelServerlessRegion={vercelServerlessRegion}
-        cockroachDBServerlessRegion={cockroachDBServerlessRegion}
+        cockroachDBServerlessRegions={cockroachDBServerlessRegions}
         cockroachDBProvider={cockroachDBProvider}
       />
     </Canvas>
@@ -41,7 +41,7 @@ ThreeScene.propTypes = {
   /** The region of Vercel Serverless Function */
   vercelServerlessRegion: PropTypes.string.isRequired,
   /** The region of CockroachDB Serverless */
-  cockroachDBServerlessRegion: PropTypes.string.isRequired,
+  cockroachDBServerlessRegions: PropTypes.any.isRequired,
   /** The cloud provider of CockroachDB Serverless */
   cockroachDBProvider: PropTypes.string.isRequired
 };

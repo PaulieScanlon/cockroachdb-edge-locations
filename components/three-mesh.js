@@ -22,7 +22,7 @@ const ThreeMesh = ({
   isPlaying,
   locations,
   vercelServerlessRegion,
-  cockroachDBServerlessRegion,
+  cockroachDBServerlessRegions,
   cockroachDBProvider
 }) => {
   const mesh = useRef(null);
@@ -75,14 +75,20 @@ const ThreeMesh = ({
             color="#ff3333"
           />
 
-          <Point
-            position={getVertex(
-              getInfo(cockroachDBServerlessRegion, cockroachDBProvider).latitude,
-              getInfo(cockroachDBServerlessRegion, cockroachDBProvider).longitude,
-              1.04
-            )}
-            color="#0066ff"
-          />
+          {cockroachDBServerlessRegions.map((region, index) => {
+            const { name } = region;
+            return (
+              <Point
+                key={index}
+                position={getVertex(
+                  getInfo(name, cockroachDBProvider).latitude,
+                  getInfo(name, cockroachDBProvider).longitude,
+                  1.04
+                )}
+                color="#0066ff"
+              />
+            );
+          })}
         </Points>
       ) : null}
 
@@ -101,7 +107,7 @@ ThreeMesh.propTypes = {
   /** The region of Vercel Serverless Function */
   vercelServerlessRegion: PropTypes.string.isRequired,
   /** The region of CockroachDB Serverless */
-  cockroachDBServerlessRegion: PropTypes.string.isRequired,
+  cockroachDBServerlessRegions: PropTypes.any.isRequired,
   /** The cloud provider of CockroachDB Serverless */
   cockroachDBProvider: PropTypes.string.isRequired
 };
