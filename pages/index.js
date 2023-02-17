@@ -325,7 +325,7 @@ const Page = () => {
               </span>
             </div>
           </div>
-          <div className="absolute bottom-0 right-0 flex items-center justify-between gap-2 text-text p-4 text-xs w-full z-10 select-none">
+          <div className="absolute bottom-0 right-0 flex items-end justify-between gap-2 text-text p-4 text-xs w-full z-10 select-none">
             <div className="flex flex-col gap-2">
               <div className="flex flex-col gap-1">
                 <strong className="flex items-center gap-1 text-sm">
