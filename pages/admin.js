@@ -120,7 +120,7 @@ const Page = () => {
                                 year: '2-digit'
                               });
                               return (
-                                <tr key={index}>
+                                <tr key={index} className="hover:bg-primary/10">
                                   <td className="text-xs text-secondary p-3">{id}</td>
                                   <td className="p-3 whitespace-nowrap">{dateFormat}</td>
                                   <td className="p-3 whitespace-nowrap">{`${city || '* city not recognized'}`}</td>
