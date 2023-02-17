@@ -53,21 +53,23 @@ const ThreeMesh = ({ isPlaying, locations, serverlessRegion }) => {
         <lineBasicMaterial color="#323232" />
       </lineSegments>
 
-      <Points>
-        <pointsMaterial vertexColors size={0.02} />
-        {locations.map((data, index) => {
-          const { lat, lng } = data;
-          return <Point key={index} position={getVertex(lat, lng, 1.02)} color="#00ff33" />;
-        })}
-        <Point
-          position={getVertex(
-            getInfo(serverlessRegion, 'Vercel').latitude,
-            getInfo(serverlessRegion, 'Vercel').longitude,
-            1.02
-          )}
-          color="#ff085b"
-        />
-      </Points>
+      {locations && serverlessRegion ? (
+        <Points>
+          <pointsMaterial vertexColors size={0.02} />
+          {locations.map((data, index) => {
+            const { lat, lng } = data;
+            return <Point key={index} position={getVertex(lat, lng, 1.01)} color="#00ff33" />;
+          })}
+          <Point
+            position={getVertex(
+              getInfo(serverlessRegion, 'Vercel').latitude,
+              getInfo(serverlessRegion, 'Vercel').longitude,
+              1.04
+            )}
+            color="#fd397b"
+          />
+        </Points>
+      ) : null}
 
       <Points positions={sphere} stride={3} frustumCulled={false}>
         <PointMaterial transparent={true} color="#97907e" size={0.007} sizeAttenuation={true} depthWrite={false} />

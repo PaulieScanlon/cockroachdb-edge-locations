@@ -340,7 +340,7 @@ const Page = () => {
           <ThreeScene
             isPlaying={isPlaying}
             locations={queries[0].isSuccess ? queries[0].data : []}
-            serverlessRegion={queries[1].data ? queries[1].data.serverlessFunctionRegion : ''}
+            serverlessRegion={queries[1].isSuccess ? queries[1].data.serverlessFunctionRegion : ''}
           />
         </div>
       </div>
