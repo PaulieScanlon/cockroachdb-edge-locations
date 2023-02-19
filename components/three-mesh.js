@@ -9,7 +9,7 @@ import { GeoJsonGeometry } from 'three-geojson-geometry';
 import { geoGraticule10 } from 'd3-geo';
 
 import goeJson from './ne_110m_admin_0_countries.geojson.json';
-import { getInfo } from 'cloud-regions-country-flags';
+import { fromProvider } from 'cloud-regions-country-flags';
 
 const getVertex = (lat, lng, radius) => {
   const vector = new THREE.Vector3().setFromSpherical(
@@ -68,8 +68,8 @@ const ThreeMesh = ({
           })}
           <Point
             position={getVertex(
-              getInfo(vercelServerlessRegion, 'Vercel').latitude,
-              getInfo(vercelServerlessRegion, 'Vercel').longitude,
+              fromProvider(vercelServerlessRegion, 'Vercel').latitude,
+              fromProvider(vercelServerlessRegion, 'Vercel').longitude,
               1.04
             )}
             color="#ff3333"
@@ -81,8 +81,8 @@ const ThreeMesh = ({
               <Point
                 key={index}
                 position={getVertex(
-                  getInfo(name, cockroachDBProvider).latitude,
-                  getInfo(name, cockroachDBProvider).longitude,
+                  fromProvider(name, cockroachDBProvider).latitude,
+                  fromProvider(name, cockroachDBProvider).longitude,
                   1.04
                 )}
                 color="#0066ff"

@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueries, useQueryClient } from '@tanstack/react-query';
-import { getInfo } from 'cloud-regions-country-flags';
+import { fromProvider } from 'cloud-regions-country-flags';
 
 import Logo from '../components/logo';
 import Spinner from '../components/spinner';
@@ -341,9 +341,9 @@ const Page = () => {
                         console.log(name);
                         return (
                           <li key={index} className="flex items-center gap-1">
-                            <span>{getInfo(name, queries[2].data.cloud_provider).flag}</span>
-                            <span>{getInfo(name, queries[2].data.cloud_provider).location}</span>
-                            <span>{getInfo(name, queries[2].data.cloud_provider).raw}</span>
+                            <span>{fromProvider(name, queries[2].data.cloud_provider).flag}</span>
+                            <span>{fromProvider(name, queries[2].data.cloud_provider).location}</span>
+                            <span>{fromProvider(name, queries[2].data.cloud_provider).raw}</span>
                           </li>
                         );
                       })}
@@ -360,9 +360,9 @@ const Page = () => {
                 <ul className="leading-5">
                   {queries[1].isSuccess ? (
                     <li className="flex items-center gap-1">
-                      <span>{getInfo(queries[1].data.serverlessFunctionRegion, 'Vercel').flag}</span>
-                      <span>{getInfo(queries[1].data.serverlessFunctionRegion, 'Vercel').location}</span>
-                      <span>{getInfo(queries[1].data.serverlessFunctionRegion, 'Vercel').provider_region}</span>
+                      <span>{fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').flag}</span>
+                      <span>{fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').location}</span>
+                      <span>{fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').provider_region}</span>
                     </li>
                   ) : null}
                 </ul>
