@@ -11,56 +11,61 @@ const Page = () => {
   const { data: session } = useSession();
   const queryClient = useQueryClient();
 
-  const read = async () => {
-    try {
-      const response = await fetch('/api/read-locations', {
-        method: 'GET'
-      });
+  const query = useQuery(
+    {
+      queryKey: ['query'],
+      queryFn: async () => {
+        try {
+          const response = await fetch('/api/read-locations', {
+            method: 'GET'
+          });
 
-      const json = await response.json();
+          const json = await response.json();
 
-      const formatted = JSON.parse(json.data.locations);
+          const formatted = JSON.parse(json.data.locations);
 
-      if (!response.ok) {
+          if (!response.ok) {
+            throw new Error();
+          }
+
+          return formatted;
+        } catch (error) {
+          throw new Error();
+        }
+      }
+    },
+    {
+      retry: 10
+    }
+  );
+
+  const mutation = useMutation(
+    async (id) => {
+      try {
+        const response = await fetch('/api/delete-location', {
+          method: 'DELETE',
+          body: JSON.stringify({
+            id: id
+          })
+        });
+
+        const json = await response.json();
+
+        if (!response.ok) {
+          throw new Error();
+        }
+
+        return json;
+      } catch (error) {
         throw new Error();
       }
-
-      return formatted;
-    } catch (error) {
-      throw new Error();
-    }
-  };
-
-  const remove = async (id) => {
-    try {
-      const response = await fetch('/api/delete-location', {
-        method: 'DELETE',
-        body: JSON.stringify({
-          id: id
-        })
-      });
-
-      const json = await response.json();
-
-      if (!response.ok) {
-        throw new Error();
+    },
+    {
+      onSuccess: async () => {
+        queryClient.invalidateQueries(['query']);
       }
-
-      return json;
-    } catch (error) {
-      throw new Error();
     }
-  };
-
-  const query = useQuery(['query'], read, {
-    retry: 2
-  });
-
-  const mutation = useMutation(remove, {
-    onSuccess: async () => {
-      queryClient.invalidateQueries(['query']);
-    }
-  });
+  );
 
   return (
     <section className="grid gap-8 mx-auto p-6 md:p-8">
