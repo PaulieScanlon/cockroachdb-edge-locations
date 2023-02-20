@@ -59,7 +59,7 @@ const Page = () => {
             throw new Error();
           }
         },
-        retry: 2
+        retry: 10
       },
       {
         queryKey: ['vercel-query'],
