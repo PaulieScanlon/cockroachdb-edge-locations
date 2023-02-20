@@ -10,13 +10,9 @@ const setAsPrismaDecimal = (n) => {
 export default async function handler(req, res) {
   const { date } = JSON.parse(req.body);
 
-  // console.log(res);
-
   try {
     const ip = await requestIp.getClientIp(req);
     const geo = await geoip.lookup(ip);
-
-    console.log(req.headers);
 
     const _date = new Date(date);
     const city = geo ? geo.city : 'Uluru-Kata Tjuta National Park';
