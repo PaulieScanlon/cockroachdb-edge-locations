@@ -18,12 +18,17 @@ export default async function handler(req, res) {
     const ip = await requestIp.getClientIp(req);
     const geo = await geoip.lookup(ip);
 
+    const _date = new Date(date);
+    const city = geo ? geo.city : 'Uluru-Kata Tjuta National Park';
+    const lat = geo ? setAsPrismaDecimal(geo.ll[0]) : setAsPrismaDecimal(-25.34449);
+    const lng = geo ? setAsPrismaDecimal(geo.ll[1]) : setAsPrismaDecimal(131.0369);
+
     const response = await client.locations.create({
       data: {
-        date: new Date(date),
-        city: geo ? geo.city : 'Uluru-Kata Tjuta National Park',
-        lat: geo ? setAsPrismaDecimal(geo.ll[0]) : setAsPrismaDecimal(-25.34449),
-        lng: geo ? setAsPrismaDecimal(geo.ll[1]) : setAsPrismaDecimal(131.0369),
+        date: _date,
+        city: city,
+        lat: lat,
+        lng: lng,
         runtime: 'serverless'
       }
     });
@@ -31,7 +36,11 @@ export default async function handler(req, res) {
     res.status(200).json({
       message: 'A-OK!',
       data: {
-        id: JSON.stringify(response.id, (_key, value) => (typeof value === 'bigint' ? value.toString() : value))
+        id: JSON.stringify(response.id, (_key, value) => (typeof value === 'bigint' ? value.toString() : value)),
+        city: city,
+        date: date,
+        lat: lat,
+        lng: lng
       }
     });
   } catch (error) {

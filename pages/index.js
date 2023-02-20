@@ -109,19 +109,19 @@ const Page = () => {
   const mutation = useMutation(
     async () => {
       try {
-        const response = await (
-          await fetch('/api/create-location', {
-            method: 'POST',
-            body: JSON.stringify({
-              date: new Date()
-            })
+        const response = await fetch('/api/create-location', {
+          method: 'POST',
+          body: JSON.stringify({
+            date: new Date()
           })
-        ).json();
+        });
 
-        if (!response.data) {
+        const json = await response.json();
+
+        if (!response.ok) {
           throw new Error();
         }
-        return response;
+        return json.data;
       } catch (error) {
         throw new Error();
       }
@@ -178,30 +178,19 @@ const Page = () => {
                 <ul className="flex gap-2 text-xs text-primary px-3 rounded border border-border p-3">
                   <li>
                     <strong>Date: </strong>
-                    <small className="text-announce-success">
-                      {mutation.data ? `${mutation.data.data.date}` : null}
-                    </small>
+                    <small className="text-announce-success">{mutation.data ? `${mutation.data.date}` : null}</small>
                   </li>
                   <li>
                     <strong>City: </strong>
-                    <small className="text-announce-success">
-                      {' '}
-                      {mutation.data ? `${mutation.data.data.city}` : null}
-                    </small>
+                    <small className="text-announce-success"> {mutation.data ? `${mutation.data.city}` : null}</small>
                   </li>
                   <li>
                     <strong>Latitude: </strong>
-                    <small className="text-announce-success">
-                      {' '}
-                      {mutation.data ? `${mutation.data.data.lat}` : null}{' '}
-                    </small>
+                    <small className="text-announce-success"> {mutation.data ? `${mutation.data.lat}` : null} </small>
                   </li>
                   <li>
                     <strong>Longitude: </strong>
-                    <small className="text-announce-success">
-                      {' '}
-                      {mutation.data ? `${mutation.data.data.lng}` : null}{' '}
-                    </small>
+                    <small className="text-announce-success"> {mutation.data ? `${mutation.data.lng}` : null} </small>
                   </li>
                 </ul>
               </div>
