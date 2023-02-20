@@ -80,7 +80,7 @@ const Page = () => {
             </button>
           ) : (
             <button
-              onClick={() => signIn()}
+              onClick={() => signIn('github')}
               className="text-xs text-secondary bg-background/30 rounded p-3 hover:text-primary hover:bg-background/80"
             >
               Sign in
