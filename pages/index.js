@@ -338,7 +338,7 @@ const Page = () => {
                     <Fragment>
                       {queries[2].data.regions.map((region, index) => {
                         const { name } = region;
-                        console.log(name);
+
                         return (
                           <li key={index} className="flex items-center gap-1">
                             <span>{fromProvider(name, queries[2].data.cloud_provider).flag}</span>
