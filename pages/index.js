@@ -178,7 +178,18 @@ const Page = () => {
                 <ul className="flex gap-2 text-xs text-primary px-3 rounded border border-border p-3">
                   <li>
                     <strong>Date: </strong>
-                    <small className="text-announce-success">{mutation.data ? `${mutation.data.date}` : null}</small>
+                    <small className="text-announce-success">
+                      {mutation.data
+                        ? `${new Date(mutation.data.date).toLocaleString('default', {
+                            month: 'short',
+                            day: 'numeric',
+                            year: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit'
+                          })}`
+                        : null}
+                    </small>
                   </li>
                   <li>
                     <strong>City: </strong>
@@ -221,14 +232,15 @@ const Page = () => {
                           {queries[0].data.map((item, index) => {
                             const { date, city, lat, lng } = item;
 
-                            const dateFormat = new Date(date).toLocaleString('default', {
-                              month: 'short',
-                              day: 'numeric',
-                              year: '2-digit'
-                            });
                             return (
                               <tr key={index}>
-                                <td className="p-3 whitespace-nowrap">{dateFormat}</td>
+                                <td className="p-3 whitespace-nowrap">
+                                  {new Date(date).toLocaleString('default', {
+                                    month: 'short',
+                                    day: 'numeric',
+                                    year: '2-digit'
+                                  })}
+                                </td>
                                 <td className="p-3 whitespace-nowrap">{`${city || '* city not recognized'}`}</td>
                                 <td className="p-3 whitespace-nowrap">{lat}</td>
                                 <td className="p-3 whitespace-nowrap">{lng}</td>

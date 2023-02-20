@@ -114,15 +114,17 @@ const Page = () => {
                             .sort((a, b) => b.id - a.id)
                             .map((item, index) => {
                               const { id, date, city, lat, lng, runtime } = item;
-                              const dateFormat = new Date(date).toLocaleString('default', {
-                                month: 'short',
-                                day: 'numeric',
-                                year: '2-digit'
-                              });
+
                               return (
                                 <tr key={index} className="hover:bg-primary/10">
                                   <td className="text-xs text-secondary p-3">{id}</td>
-                                  <td className="p-3 whitespace-nowrap">{dateFormat}</td>
+                                  <td className="p-3 whitespace-nowrap">
+                                    {new Date(date).toLocaleString('default', {
+                                      month: 'short',
+                                      day: 'numeric',
+                                      year: '2-digit'
+                                    })}
+                                  </td>
                                   <td className="p-3 whitespace-nowrap">{`${city || '* city not recognized'}`}</td>
                                   <td className="p-3 whitespace-nowrap">{lat}</td>
                                   <td className="p-3 whitespace-nowrap">{lng}</td>
