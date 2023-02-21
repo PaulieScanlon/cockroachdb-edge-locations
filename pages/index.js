@@ -310,10 +310,13 @@ const Page = ({ data }) => {
               <div className="flex flex-col gap-1">
                 <strong className="flex items-center gap-1 text-sm">
                   <span className="w-2 h-2 leading-none" style={{ backgroundColor: '#0066ff' }} />
-                  CockroachDB Serverless Regions <em className="text-xs font-normal">(beta)</em>
+                  CockroachDB Serverless Regions
                 </strong>
 
                 <ul className="leading-5">
+                  <li>
+                    <em className="text-xs font-normal">(beta)</em>
+                  </li>
                   <Fragment>
                     {data.regions.map((region, index) => {
                       const { name } = region;
