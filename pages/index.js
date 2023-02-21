@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { useMutation, useQuery, useQueries, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueries, useQueryClient } from '@tanstack/react-query';
 import { fromProvider } from 'cloud-regions-country-flags';
 
 import Logo from '../components/logo';
@@ -13,7 +13,7 @@ import ThreeScene from '../components/three-scene';
 
 import usePrefersReducedMotion from '../hooks/use-prefers-reduced-motion';
 
-const Page = () => {
+const Page = ({ data }) => {
   const queryClient = useQueryClient();
   const [isPlaying, setIsPlaying] = useState(true);
 
@@ -66,27 +66,6 @@ const Page = () => {
         queryFn: async () => {
           try {
             const response = await fetch('/api/vercel-project', {
-              method: 'GET'
-            });
-
-            if (!response.ok) {
-              throw new Error();
-            }
-
-            const json = await response.json();
-
-            return json.data;
-          } catch (error) {
-            throw new Error();
-          }
-        },
-        retry: 2
-      },
-      {
-        queryKey: ['cockroach-query'],
-        queryFn: async () => {
-          try {
-            const response = await fetch('/api/cockroach-cluster', {
               method: 'GET'
             });
 
@@ -331,25 +310,23 @@ const Page = () => {
               <div className="flex flex-col gap-1">
                 <strong className="flex items-center gap-1 text-sm">
                   <span className="w-2 h-2 leading-none" style={{ backgroundColor: '#0066ff' }} />
-                  CockroachDB Serverless Regions
+                  CockroachDB Serverless Regions <em className="text-xs font-normal">(beta)</em>
                 </strong>
 
                 <ul className="leading-5">
-                  {queries[2].isSuccess ? (
-                    <Fragment>
-                      {queries[2].data.regions.map((region, index) => {
-                        const { name } = region;
+                  <Fragment>
+                    {data.regions.map((region, index) => {
+                      const { name } = region;
 
-                        return (
-                          <li key={index} className="flex items-center gap-1">
-                            <span>{fromProvider(name, queries[2].data.cloud_provider).flag}</span>
-                            <span>{fromProvider(name, queries[2].data.cloud_provider).location}</span>
-                            <span>{fromProvider(name, queries[2].data.cloud_provider).raw}</span>
-                          </li>
-                        );
-                      })}
-                    </Fragment>
-                  ) : null}
+                      return (
+                        <li key={index} className="flex items-center gap-1">
+                          <span>{fromProvider(name, data.cloud_provider).flag}</span>
+                          <span>{fromProvider(name, data.cloud_provider).location}</span>
+                          <span>{fromProvider(name, data.cloud_provider).raw}</span>
+                        </li>
+                      );
+                    })}
+                  </Fragment>
                 </ul>
               </div>
 
@@ -359,13 +336,17 @@ const Page = () => {
                   Vercel Serverless Region
                 </strong>
                 <ul className="leading-5">
-                  {queries[1].isSuccess ? (
-                    <li className="flex items-center gap-1">
-                      <span>{fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').flag}</span>
-                      <span>{fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').location}</span>
-                      <span>{fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').provider_region}</span>
-                    </li>
-                  ) : null}
+                  <li className="flex items-center gap-1 h-5">
+                    {queries[1].isSuccess ? (
+                      <Fragment>
+                        <span>{fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').flag}</span>
+                        <span>{fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').location}</span>
+                        <span>{fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').provider_region}</span>
+                      </Fragment>
+                    ) : (
+                      <Spinner className="w-3 h-3" />
+                    )}
+                  </li>
                 </ul>
               </div>
             </div>
@@ -393,13 +374,43 @@ const Page = () => {
             isPlaying={isPlaying}
             locations={queries[0].isSuccess ? queries[0].data : []}
             vercelServerlessRegion={queries[1].isSuccess ? queries[1].data.serverlessFunctionRegion : ''}
-            cockroachDBServerlessRegions={queries[2].isSuccess ? queries[2].data.regions : []}
-            cockroachDBProvider={queries[2].isSuccess ? queries[2].data.cloud_provider : ''}
+            cockroachDBServerlessRegions={data.regions}
+            cockroachDBProvider={data.cloud_provider}
           />
         </div>
       </div>
     </section>
   );
 };
+
+export async function getServerSideProps() {
+  try {
+    const response = await fetch(`https://cockroachlabs.cloud/api/v1/clusters/${process.env.COCKROACH_CLUSTER_ID}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${process.env.COCKROACH_CLOUD_SECRET_KEY}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error();
+    }
+
+    const json = await response.json();
+
+    return {
+      props: {
+        message: 'A-OK',
+        data: json
+      }
+    };
+  } catch (error) {
+    return {
+      props: {
+        message: 'Error!'
+      }
+    };
+  }
+}
 
 export default Page;
