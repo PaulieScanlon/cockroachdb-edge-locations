@@ -62,7 +62,7 @@ const Page = ({ data }) => {
             throw new Error();
           }
         },
-        retry: 10
+        retry: 2
       },
       {
         queryKey: ['vercel-query'],
@@ -114,6 +114,8 @@ const Page = ({ data }) => {
       }
     }
   );
+
+  console.log(queries[0]);
 
   return (
     <section className="grid grid-cols-1 xl:grid-cols-2">
@@ -192,12 +194,21 @@ const Page = ({ data }) => {
             <div className="overflow-hidden lg:grow">
               <div className="flex h-[220px] lg:h-[calc(100vh-520px)] h-full rounded border border-border overflow-auto">
                 {queries[0].isLoading ? (
-                  <div className="flex flex-col gap-3 items-center justify-center h-full w-full">
-                    <strong className="block text-center text-text">
+                  <div className="flex flex-col gap-3 items-center justify-center h-full w-full px-2">
+                    <span className="block text-center text-text text-xs leading-5">
                       CockroachDB Multi-Region Serverless is in Beta. <br />
                       This might take a while.
-                    </strong>
+                    </span>
                     <Spinner />
+                  </div>
+                ) : null}
+
+                {queries[0].isError ? (
+                  <div className="flex flex-col gap-3 items-center justify-center h-full w-full px-2">
+                    <span className="block text-center text-announce-error text-xs leading-5">
+                      Can't reach database server. <br />
+                      Refresh to try again.
+                    </span>
                   </div>
                 ) : null}
 
