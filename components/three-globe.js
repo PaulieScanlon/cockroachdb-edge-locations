@@ -97,7 +97,7 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, data }) => {
       globeEl.current.controls().maxDistance = globeEl.current.getGlobeRadius() * 4;
 
       // tilt the Glob slightly, point it at Algeria
-      globeEl.current.pointOfView({ lat: 28.102363277955938, lng: 2.6993398129629016, altitude: 2.3 });
+      globeEl.current.pointOfView({ lat: 28.102363277955938, lng: 2.6993398129629016, altitude: 1.8 });
     }
   };
 
