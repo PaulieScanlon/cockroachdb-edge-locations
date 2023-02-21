@@ -58,6 +58,8 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, data }) => {
 
   const ringsInterpolator = (t) => `rgba(255,0,0,${Math.sqrt(1 - t)})`;
 
+  console.log(ringsData);
+
   const arcsData = data.filter(Boolean).reduce((items, item) => {
     const { type, colors, data } = item;
 
@@ -93,6 +95,9 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, data }) => {
       globeEl.current.controls().autoRotate = isPlaying;
       globeEl.current.controls().minDistance = globeEl.current.getGlobeRadius() * 2;
       globeEl.current.controls().maxDistance = globeEl.current.getGlobeRadius() * 4;
+
+      // tilt the Glob slightly, point it at Algeria
+      globeEl.current.pointOfView({ lat: 28.102363277955938, lng: 2.6993398129629016, altitude: 2.3 });
     }
   };
 
@@ -101,6 +106,7 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, data }) => {
       <Globe
         ref={globeEl}
         onGlobeReady={globeReady}
+        rendererConfig={{ antialias: true, alpha: true }}
         animateIn={false}
         width={1280}
         backgroundColor={'rgba(255, 255, 255, 0)'}

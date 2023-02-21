@@ -219,7 +219,6 @@ const Page = ({ data }) => {
                             .filter((item) => item.city)
                             .map((item, index) => {
                               const { date, city, lat, lng } = item;
-                              console.log(city);
 
                               return (
                                 <tr key={index}>
