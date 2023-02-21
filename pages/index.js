@@ -296,7 +296,7 @@ const Page = ({ data }) => {
         </div>
       </div>
       <div className="bg-gradient-to-b from-black to-shade p-6 md:p-8 lg:p-0 overflow-scroll">
-        <div className="relative w-full h-[400px] md:h-[600px] xl:h-screen cursor-move rounded border border-border lg:border-none">
+        <div className="relative overflow-hidden w-full h-[400px] md:h-[600px] xl:h-screen cursor-move rounded border border-border lg:border-none">
           <div className="absolute top-0 left-0 flex justify-between gap-2 text-text p-4 text-xs w-full z-10">
             <div>
               <span className="flex gap-1 items-center">
