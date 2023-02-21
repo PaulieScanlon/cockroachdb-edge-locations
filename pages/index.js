@@ -314,9 +314,6 @@ const Page = ({ data }) => {
                 </strong>
 
                 <ul className="leading-5">
-                  <li>
-                    <em className="text-xs font-normal">(beta)</em>
-                  </li>
                   <Fragment>
                     {data.regions.map((region, index) => {
                       const { name } = region;
