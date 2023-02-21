@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { useMutation, useQueries, useQueryClient } from '@tanstack/react-query';
 import { fromProvider } from 'cloud-regions-country-flags';
 
@@ -9,7 +10,9 @@ import Loading from '../components/loading';
 import Error from '../components/error';
 import Success from '../components/success';
 
-import ThreeScene from '../components/three-scene';
+const ThreeGlobe = dynamic(() => import('../components/three-globe'), {
+  ssr: false
+});
 
 import usePrefersReducedMotion from '../hooks/use-prefers-reduced-motion';
 
@@ -154,7 +157,7 @@ const Page = ({ data }) => {
                     {mutation.isLoading ? <Spinner /> : 'Submit'}
                   </button>
                 </div>
-                <ul className="flex gap-2 text-xs text-primary px-3 rounded border border-border p-3">
+                <ul className="flex flex-col sm:flex-row gap-2 text-xs text-primary px-3 rounded border border-border p-3">
                   <li>
                     <strong>Date: </strong>
                     <small className="text-announce-success">
@@ -189,7 +192,11 @@ const Page = ({ data }) => {
             <div className="overflow-hidden lg:grow">
               <div className="flex h-[220px] lg:h-[calc(100vh-520px)] h-full rounded border border-border overflow-auto">
                 {queries[0].isLoading ? (
-                  <div className="flex items-center justify-center h-full w-full">
+                  <div className="flex flex-col gap-3 items-center justify-center h-full w-full">
+                    <strong className="block text-center text-text">
+                      CockroachDB Multi-Region Serverless is in Beta. <br />
+                      This might take a while.
+                    </strong>
                     <Spinner />
                   </div>
                 ) : null}
@@ -208,24 +215,27 @@ const Page = ({ data }) => {
 
                       <tbody className="divide-y divide-table-divide bg-table-tbody text-text">
                         <Fragment>
-                          {queries[0].data.map((item, index) => {
-                            const { date, city, lat, lng } = item;
+                          {queries[0].data
+                            .filter((item) => item.city)
+                            .map((item, index) => {
+                              const { date, city, lat, lng } = item;
+                              console.log(city);
 
-                            return (
-                              <tr key={index}>
-                                <td className="p-3 whitespace-nowrap">
-                                  {new Date(date).toLocaleString('default', {
-                                    month: 'short',
-                                    day: 'numeric',
-                                    year: '2-digit'
-                                  })}
-                                </td>
-                                <td className="p-3 whitespace-nowrap">{`${city || '* city not recognized'}`}</td>
-                                <td className="p-3 whitespace-nowrap">{lat}</td>
-                                <td className="p-3 whitespace-nowrap">{lng}</td>
-                              </tr>
-                            );
-                          })}
+                              return (
+                                <tr key={index}>
+                                  <td className="p-3 whitespace-nowrap">
+                                    {new Date(date).toLocaleString('default', {
+                                      month: 'short',
+                                      day: 'numeric',
+                                      year: '2-digit'
+                                    })}
+                                  </td>
+                                  <td className="p-3 whitespace-nowrap">{city}</td>
+                                  <td className="p-3 whitespace-nowrap">{lat}</td>
+                                  <td className="p-3 whitespace-nowrap">{lng}</td>
+                                </tr>
+                              );
+                            })}
                         </Fragment>
                       </tbody>
                     </table>
@@ -291,6 +301,7 @@ const Page = ({ data }) => {
           <div className="absolute top-0 left-0 flex justify-between gap-2 text-text p-4 text-xs w-full z-10">
             <div>
               <span className="flex gap-1 items-center">
+                <span className="w-2 h-2 leading-none" style={{ backgroundColor: '#ff00ff' }} />
                 <strong>Total Edges: </strong>
                 {queries[0].isSuccess ? `x${queries[0].data.length}` : <Spinner className="w-3 h-3" />}
               </span>
@@ -300,20 +311,17 @@ const Page = ({ data }) => {
                 <strong>Zoom: </strong> <span className="hidden xl:block">Scroll</span>
                 <span className="block xl:hidden">Pinch</span>
               </span>
-              <span className="hidden xl:block">
-                <strong>Pan: </strong>⌘ Click
-              </span>
             </div>
           </div>
           <div className="absolute bottom-0 right-0 flex items-end justify-between gap-2 text-text p-4 text-xs w-full z-10 select-none">
             <div className="flex flex-col gap-2">
               <div className="flex flex-col gap-1">
-                <strong className="flex items-center gap-1 text-sm">
-                  <span className="w-2 h-2 leading-none" style={{ backgroundColor: '#0066ff' }} />
+                <strong className="flex items-center gap-1 text-xs">
+                  <span className="w-2 h-2 leading-none" style={{ backgroundColor: '#3366ff' }} />
                   CockroachDB Serverless Regions
                 </strong>
 
-                <ul className="leading-5">
+                <ul className="leading-5 text-xs">
                   <Fragment>
                     {data.regions.map((region, index) => {
                       const { name } = region;
@@ -331,11 +339,11 @@ const Page = ({ data }) => {
               </div>
 
               <div className="flex flex-col gap-1">
-                <strong className="flex items-center gap-1 text-sm">
+                <strong className="flex items-center gap-1 text-xs">
                   <span className="w-2 h-2 leading-none" style={{ backgroundColor: '#ff3333' }} />
                   Vercel Serverless Region
                 </strong>
-                <ul className="leading-5">
+                <ul className="leading-5 text-xs">
                   <li className="flex items-center gap-1 h-5">
                     {queries[1].isSuccess ? (
                       <Fragment>
@@ -370,13 +378,64 @@ const Page = ({ data }) => {
             </button>
           </div>
 
-          <ThreeScene
-            isPlaying={isPlaying}
-            locations={queries[0].isSuccess ? queries[0].data : []}
-            vercelServerlessRegion={queries[1].isSuccess ? queries[1].data.serverlessFunctionRegion : ''}
-            cockroachDBServerlessRegions={data.regions}
-            cockroachDBProvider={data.cloud_provider}
-          />
+          {queries[0].isSuccess && queries[1].isSuccess ? (
+            <ThreeGlobe
+              isPlaying={isPlaying}
+              hasCurrent={mutation.data ? true : false}
+              data={[
+                {
+                  type: 'location',
+                  radius: 0.4,
+                  altitude: 0.01,
+                  colors: ['#ff00ff'],
+                  data: queries[0].data.map((data) => {
+                    const { lat, lng } = data;
+                    return { latitude: lat, longitude: lng };
+                  })
+                },
+                {
+                  type: 'cluster',
+                  radius: 0.5,
+                  altitude: 0.02,
+                  colors: ['#3366ff'],
+                  data: data.regions.map((region) => {
+                    const location = fromProvider(region.name, data.cloud_provider);
+                    return {
+                      latitude: location.latitude,
+                      longitude: location.longitude
+                    };
+                  })
+                },
+                {
+                  type: 'function',
+                  radius: 0.5,
+                  altitude: 0.03,
+                  colors: ['#ff3333'],
+                  data: [
+                    {
+                      latitude: fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').latitude,
+                      longitude: fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').longitude
+                    }
+                  ]
+                },
+                mutation.data
+                  ? {
+                      type: 'current',
+                      radius: 0.5,
+                      altitude: 0.01,
+                      colors: ['#33ff00'],
+
+                      data: [
+                        {
+                          latitude: mutation.data.lat,
+                          longitude: mutation.data.lng
+                        }
+                      ]
+                    }
+                  : null
+              ]}
+            />
+          ) : null}
         </div>
       </div>
     </section>
