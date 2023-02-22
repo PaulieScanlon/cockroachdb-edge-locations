@@ -398,7 +398,7 @@ const Page = ({ data }) => {
               data={[
                 {
                   type: 'location',
-                  radius: 0.4,
+                  radius: 0.3,
                   altitude: 0.01,
                   colors: ['--color-location'],
                   data: queries[0].data.map((data) => {
@@ -434,8 +434,8 @@ const Page = ({ data }) => {
                 mutation.data
                   ? {
                       type: 'current',
-                      radius: 0.5,
-                      altitude: 0.01,
+                      radius: 0.4,
+                      altitude: 0.04,
                       colors: ['--color-current'],
                       data: [
                         {
