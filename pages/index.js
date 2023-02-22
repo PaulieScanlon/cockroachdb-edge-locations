@@ -115,8 +115,6 @@ const Page = ({ data }) => {
     }
   );
 
-  console.log(queries[0]);
-
   return (
     <section className="grid grid-cols-1 xl:grid-cols-2">
       <div className="bg-surface xl:min-h-screen shadow-lg">
@@ -311,7 +309,7 @@ const Page = ({ data }) => {
           <div className="absolute top-0 left-0 flex justify-between gap-2 text-text p-4 text-xs w-full z-10">
             <div>
               <span className="flex gap-1 items-center">
-                <span className="w-2 h-2 leading-none" style={{ backgroundColor: '#ff00ff' }} />
+                <span className="w-2 h-2 leading-none" style={{ backgroundColor: '#00ff33' }} />
                 <strong>Total Edges: </strong>
                 {queries[0].isSuccess ? `x${queries[0].data.length}` : <Spinner className="w-3 h-3" />}
               </span>
@@ -397,7 +395,7 @@ const Page = ({ data }) => {
                   type: 'location',
                   radius: 0.4,
                   altitude: 0.01,
-                  colors: ['#ff00ff'],
+                  colors: ['#00ff33'],
                   data: queries[0].data.map((data) => {
                     const { lat, lng } = data;
                     return { latitude: lat, longitude: lng };
@@ -405,8 +403,8 @@ const Page = ({ data }) => {
                 },
                 {
                   type: 'cluster',
-                  radius: 0.5,
-                  altitude: 0.02,
+                  radius: 0.4,
+                  altitude: 0.04,
                   colors: ['#3366ff'],
                   data: data.regions.map((region) => {
                     const location = fromProvider(region.name, data.cloud_provider);
@@ -418,8 +416,8 @@ const Page = ({ data }) => {
                 },
                 {
                   type: 'function',
-                  radius: 0.5,
-                  altitude: 0.03,
+                  radius: 0.4,
+                  altitude: 0.04,
                   colors: ['#ff3333'],
                   data: [
                     {
@@ -433,7 +431,7 @@ const Page = ({ data }) => {
                       type: 'current',
                       radius: 0.5,
                       altitude: 0.01,
-                      colors: ['#33ff00'],
+                      colors: ['#ffff00'],
 
                       data: [
                         {

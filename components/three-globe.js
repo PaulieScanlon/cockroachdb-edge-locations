@@ -58,8 +58,6 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, data }) => {
 
   const ringsInterpolator = (t) => `rgba(255,0,0,${Math.sqrt(1 - t)})`;
 
-  console.log(ringsData);
-
   const arcsData = data.filter(Boolean).reduce((items, item) => {
     const { type, colors, data } = item;
 
@@ -75,7 +73,9 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, data }) => {
             startLng: isCurrent ? longitude : ringsData[0].lng,
             endLat: isCurrent ? ringsData[0].lat : latitude,
             endLng: isCurrent ? ringsData[0].lng : longitude,
-            color: colors[Math.floor(Math.random() * colors.length)]
+            color: isCurrent
+              ? [colors[Math.floor(Math.random() * colors.length)], ringsData[0].color]
+              : [ringsData[0].color, colors[Math.floor(Math.random() * colors.length)]]
           };
         })
       );
@@ -143,6 +143,8 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, data }) => {
         arcsData={hasCurrent ? arcsData : []}
         arcColor={'color'}
         arcDashLength={() => 0.5}
+        arcAltitudeAutoScale={0.4}
+        arcStroke={0.4}
         arcDashGap={() => 0.1}
         arcDashAnimateTime={() => (isPlaying ? 2000 : 0)}
         ringsData={hasCurrent ? ringsData : []}
@@ -150,7 +152,7 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, data }) => {
         ringMaxRadius="maxR"
         ringPropagationSpeed="propagationSpeed"
         ringRepeatPeriod={isPlaying ? 'repeatPeriod' : 0}
-        ringResolution={256}
+        ringResolution={64}
       />
     </div>
   );
