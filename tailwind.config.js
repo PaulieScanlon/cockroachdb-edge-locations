@@ -10,20 +10,13 @@ module.exports = {
         shade: '#121212',
         background: '#000000',
         border: '#232323',
-        table: {
-          thead: '#262626',
-          tbody: '#1b1b1b',
-          divide: '#222222'
-        },
-        hero: {
-          start: '#00ff33',
-          end: '#00cc33'
-        },
-        announce: {
-          success: '#00ff33',
-          error: '#ff0000',
-          loading: '#0033ff'
-        }
+        thead: '#262626',
+        tbody: '#1b1b1b',
+        divide: '#222222',
+        location: '#00ff33',
+        cluster: '#0496ff',
+        function: '#dc3545',
+        current: '#ffc107'
       },
       gridTemplateColumns: {
         ['1fr-auto']: '1fr auto'
@@ -39,5 +32,26 @@ module.exports = {
       })
     }
   },
-  plugins: [require('@tailwindcss/typography')]
+  plugins: [
+    require('@tailwindcss/typography'),
+    // https://gist.github.com/Merott/d2a19b32db07565e94f10d13d11a8574
+    function ({ addBase, theme }) {
+      function extractColorVars(colorObj, colorGroup = '') {
+        return Object.keys(colorObj).reduce((vars, colorKey) => {
+          const value = colorObj[colorKey];
+
+          const newVars =
+            typeof value === 'string'
+              ? { [`--color${colorGroup}-${colorKey}`]: value }
+              : extractColorVars(value, `-${colorKey}`);
+
+          return { ...vars, ...newVars };
+        }, {});
+      }
+
+      addBase({
+        ':root': extractColorVars(theme('colors'))
+      });
+    }
+  ]
 };

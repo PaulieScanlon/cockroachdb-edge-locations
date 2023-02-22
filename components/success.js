@@ -3,7 +3,7 @@ import React from 'react';
 const Success = () => {
   return (
     <div className="rounded border border-border px-2 py-1 text-text">
-      <strong className="text-announce-success">Success: </strong>
+      <strong className="text-location">Success: </strong>
       <small className="ml-1">A-OK</small>
     </div>
   );

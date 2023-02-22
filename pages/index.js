@@ -115,6 +115,11 @@ const Page = ({ data }) => {
     }
   );
 
+  // console.log('--color-current: ', getComputedStyle(document.documentElement).getPropertyValue('--color-current'));
+  // console.log('--color-location: ', getComputedStyle(document.documentElement).getPropertyValue('--color-location'));
+  // console.log('--color-cluster: ', getComputedStyle(document.documentElement).getPropertyValue('--color-cluster'));
+  // console.log('--color-function: ', getComputedStyle(document.documentElement).getPropertyValue('--color-function'));
+
   return (
     <section className="grid grid-cols-1 xl:grid-cols-2">
       <div className="bg-surface xl:min-h-screen shadow-lg">
@@ -132,7 +137,7 @@ const Page = ({ data }) => {
                   href="https://paulie.dev/posts/2023/02/cockroachlabs-interview-app/"
                   target="_blank"
                   rel="noopener"
-                  className="underline text-primary hover:text-hero-start"
+                  className="underline text-primary hover:text-location"
                 >
                   blog
                 </a>
@@ -148,7 +153,7 @@ const Page = ({ data }) => {
                   {mutation.isSuccess ? <Success /> : null}
                   {mutation.isIdle ? <Empty /> : null}
                   <button
-                    className="min-w-[100px] rounded border border-hero-end px-2 py-1 text-hero-start disabled:border-border disabled:text-secondary disabled:cursor-not-allowed hover:text-primary hover:border-primary"
+                    className="min-w-[100px] rounded border border-location px-2 py-1 text-location disabled:border-border disabled:text-secondary disabled:cursor-not-allowed hover:text-primary hover:border-primary"
                     disabled={mutation.isLoading ? true : false}
                     onClick={() => {
                       mutation.mutate();
@@ -160,7 +165,7 @@ const Page = ({ data }) => {
                 <ul className="flex flex-col sm:flex-row gap-2 text-xs text-primary px-3 rounded border border-border p-3">
                   <li>
                     <strong>Date: </strong>
-                    <small className="text-announce-success">
+                    <small className="text-location">
                       {mutation.data
                         ? `${new Date(mutation.data.date).toLocaleString('default', {
                             month: 'short',
@@ -175,15 +180,15 @@ const Page = ({ data }) => {
                   </li>
                   <li>
                     <strong>City: </strong>
-                    <small className="text-announce-success"> {mutation.data ? `${mutation.data.city}` : null}</small>
+                    <small className="text-location"> {mutation.data ? `${mutation.data.city}` : null}</small>
                   </li>
                   <li>
                     <strong>Latitude: </strong>
-                    <small className="text-announce-success"> {mutation.data ? `${mutation.data.lat}` : null} </small>
+                    <small className="text-location"> {mutation.data ? `${mutation.data.lat}` : null} </small>
                   </li>
                   <li>
                     <strong>Longitude: </strong>
-                    <small className="text-announce-success"> {mutation.data ? `${mutation.data.lng}` : null} </small>
+                    <small className="text-location"> {mutation.data ? `${mutation.data.lng}` : null} </small>
                   </li>
                 </ul>
               </div>
@@ -203,7 +208,7 @@ const Page = ({ data }) => {
 
                 {queries[0].isError ? (
                   <div className="flex flex-col gap-3 items-center justify-center h-full w-full px-2">
-                    <span className="block text-center text-announce-error text-xs leading-5">
+                    <span className="block text-center text-function text-xs leading-5">
                       Can't reach database server. <br />
                       Refresh to try again.
                     </span>
@@ -215,14 +220,14 @@ const Page = ({ data }) => {
                     <table className="relative w-full">
                       <thead className="text-primary font-bold">
                         <tr>
-                          <th className="sticky top-0 p-3 bg-table-thead text-left">Date</th>
-                          <th className="sticky top-0 p-3 bg-table-thead text-left">City</th>
-                          <th className="sticky top-0 p-3 bg-table-thead text-left">Latitude</th>
-                          <td className="sticky top-0 p-3 bg-table-thead text-left">Longitude</td>
+                          <th className="sticky top-0 p-3 bg-thead text-left">Date</th>
+                          <th className="sticky top-0 p-3 bg-thead text-left">City</th>
+                          <th className="sticky top-0 p-3 bg-thead text-left">Latitude</th>
+                          <td className="sticky top-0 p-3 bg-thead text-left">Longitude</td>
                         </tr>
                       </thead>
 
-                      <tbody className="divide-y divide-table-divide bg-table-tbody text-text">
+                      <tbody className="divide-y divide-divide bg-tbody text-text">
                         <Fragment>
                           {queries[0].data
                             .filter((item) => item.city)
@@ -309,7 +314,7 @@ const Page = ({ data }) => {
           <div className="absolute top-0 left-0 flex justify-between gap-2 text-text p-4 text-xs w-full z-10">
             <div>
               <span className="flex gap-1 items-center">
-                <span className="w-2 h-2 leading-none" style={{ backgroundColor: '#00ff33' }} />
+                <span className="w-2 h-2 rounded-full leading-none bg-location" />
                 <strong>Total Edges: </strong>
                 {queries[0].isSuccess ? `x${queries[0].data.length}` : <Spinner className="w-3 h-3" />}
               </span>
@@ -325,7 +330,7 @@ const Page = ({ data }) => {
             <div className="flex flex-col gap-2">
               <div className="flex flex-col gap-1">
                 <strong className="flex items-center gap-1 text-xs">
-                  <span className="w-2 h-2 leading-none" style={{ backgroundColor: '#3366ff' }} />
+                  <span className="w-2 h-2 rounded-full leading-none bg-cluster" />
                   CockroachDB Serverless Regions
                 </strong>
 
@@ -348,7 +353,7 @@ const Page = ({ data }) => {
 
               <div className="flex flex-col gap-1">
                 <strong className="flex items-center gap-1 text-xs">
-                  <span className="w-2 h-2 leading-none" style={{ backgroundColor: '#ff3333' }} />
+                  <span className="w-2 h-2 rounded-full leading-none bg-function" />
                   Vercel Serverless Region
                 </strong>
                 <ul className="leading-5 text-xs">
@@ -395,7 +400,7 @@ const Page = ({ data }) => {
                   type: 'location',
                   radius: 0.4,
                   altitude: 0.01,
-                  colors: ['#00ff33'],
+                  colors: ['--color-location'],
                   data: queries[0].data.map((data) => {
                     const { lat, lng } = data;
                     return { latitude: lat, longitude: lng };
@@ -405,7 +410,7 @@ const Page = ({ data }) => {
                   type: 'cluster',
                   radius: 0.4,
                   altitude: 0.04,
-                  colors: ['#3366ff'],
+                  colors: ['--color-cluster'],
                   data: data.regions.map((region) => {
                     const location = fromProvider(region.name, data.cloud_provider);
                     return {
@@ -418,7 +423,7 @@ const Page = ({ data }) => {
                   type: 'function',
                   radius: 0.4,
                   altitude: 0.04,
-                  colors: ['#ff3333'],
+                  colors: ['--color-function'],
                   data: [
                     {
                       latitude: fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').latitude,
@@ -431,8 +436,7 @@ const Page = ({ data }) => {
                       type: 'current',
                       radius: 0.5,
                       altitude: 0.01,
-                      colors: ['#ffff00'],
-
+                      colors: ['--color-current'],
                       data: [
                         {
                           latitude: mutation.data.lat,

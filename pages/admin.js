@@ -102,18 +102,18 @@ const Page = () => {
                   <table className="relative w-full m-0">
                     <thead className="text-primary font-bold">
                       <tr>
-                        <th className="sticky top-0 p-3 bg-table-thead text-left">Id</th>
-                        <th className="sticky top-0 p-3 bg-table-thead text-left">Date</th>
-                        <th className="sticky top-0 p-3 bg-table-thead text-left">City</th>
-                        <th className="sticky top-0 p-3 bg-table-thead text-left">Latitude</th>
-                        <td className="sticky top-0 p-3 bg-table-thead text-left">Longitude</td>
-                        <td className="sticky top-0 p-3 bg-table-thead text-left">Runtime</td>
-                        <td className="sticky top-0 p-3 bg-table-thead text-left">Delete</td>
+                        <th className="sticky top-0 p-3 bg-thead text-left">Id</th>
+                        <th className="sticky top-0 p-3 bg-thead text-left">Date</th>
+                        <th className="sticky top-0 p-3 bg-thead text-left">City</th>
+                        <th className="sticky top-0 p-3 bg-thead text-left">Latitude</th>
+                        <td className="sticky top-0 p-3 bg-thead text-left">Longitude</td>
+                        <td className="sticky top-0 p-3 bg-thead text-left">Runtime</td>
+                        <td className="sticky top-0 p-3 bg-thead text-left">Delete</td>
                       </tr>
                     </thead>
 
                     {query.data ? (
-                      <tbody className="divide-y divide-table-divide bg-table-tbody text-text">
+                      <tbody className="divide-y divide-divide bg-tbody text-text">
                         <Fragment>
                           {query.data
                             .sort((a, b) => b.id - a.id)

@@ -5,6 +5,10 @@ import Globe from 'react-globe.gl';
 import * as THREE from 'three';
 import goeJson from './ne_110m_admin_0_countries.geojson.json';
 
+const getComputedColor = (cssVariableName) => {
+  return getComputedStyle(document.documentElement).getPropertyValue(cssVariableName).replace(' ', '');
+};
+
 const ThreeGlobe = ({ isPlaying, hasCurrent, data }) => {
   const globeEl = useRef();
 
@@ -17,7 +21,7 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, data }) => {
   );
 
   const pointsData = data.filter(Boolean).reduce((items, item) => {
-    const { radius, altitude, colors, data } = item;
+    const { type, radius, altitude, colors, data } = item;
 
     return [
       ...items,
@@ -26,7 +30,7 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, data }) => {
         return {
           lat: latitude,
           lng: longitude,
-          color: colors[Math.floor(Math.random() * colors.length)],
+          color: getComputedColor(colors[Math.floor(Math.random() * colors.length)]),
           radius: radius,
           altitude: altitude
         };
@@ -44,7 +48,7 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, data }) => {
           return {
             lat: latitude,
             lng: longitude,
-            color: colors[Math.floor(Math.random() * colors.length)],
+            color: getComputedColor(colors[Math.floor(Math.random() * colors.length)]),
             maxR: 20,
             propagationSpeed: 4,
             repeatPeriod: 800
@@ -74,8 +78,8 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, data }) => {
             endLat: isCurrent ? ringsData[0].lat : latitude,
             endLng: isCurrent ? ringsData[0].lng : longitude,
             color: isCurrent
-              ? [colors[Math.floor(Math.random() * colors.length)], ringsData[0].color]
-              : [ringsData[0].color, colors[Math.floor(Math.random() * colors.length)]]
+              ? [getComputedColor(colors[Math.floor(Math.random() * colors.length)]), ringsData[0].color]
+              : [ringsData[0].color, getComputedColor(colors[Math.floor(Math.random() * colors.length)])]
           };
         })
       );
@@ -100,6 +104,8 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, data }) => {
       globeEl.current.pointOfView({ lat: 28.102363277955938, lng: 2.6993398129629016, altitude: 1.8 });
     }
   };
+
+  // console.log('--color-cluster: ', getComputedStyle(document.documentElement).getPropertyValue('--color-cluster'));
 
   return (
     <div className="flex justify-center">
