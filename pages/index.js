@@ -115,11 +115,6 @@ const Page = ({ data }) => {
     }
   );
 
-  // console.log('--color-current: ', getComputedStyle(document.documentElement).getPropertyValue('--color-current'));
-  // console.log('--color-location: ', getComputedStyle(document.documentElement).getPropertyValue('--color-location'));
-  // console.log('--color-cluster: ', getComputedStyle(document.documentElement).getPropertyValue('--color-cluster'));
-  // console.log('--color-function: ', getComputedStyle(document.documentElement).getPropertyValue('--color-function'));
-
   return (
     <section className="grid grid-cols-1 xl:grid-cols-2">
       <div className="bg-surface xl:min-h-screen shadow-lg">
@@ -196,7 +191,7 @@ const Page = ({ data }) => {
 
             <div className="overflow-hidden lg:grow">
               <div className="flex h-[220px] lg:h-[calc(100vh-520px)] h-full rounded border border-border overflow-auto">
-                {queries[0].isLoading ? (
+                {queries[0].status === 'loading' ? (
                   <div className="flex flex-col gap-3 items-center justify-center h-full w-full px-2">
                     <span className="block text-center text-text text-xs leading-5">
                       CockroachDB Multi-Region Serverless is in Beta. <br />
@@ -206,7 +201,7 @@ const Page = ({ data }) => {
                   </div>
                 ) : null}
 
-                {queries[0].isError ? (
+                {queries[0].status === 'error' ? (
                   <div className="flex flex-col gap-3 items-center justify-center h-full w-full px-2">
                     <span className="block text-center text-function text-xs leading-5">
                       Can't reach database server. <br />
@@ -215,7 +210,7 @@ const Page = ({ data }) => {
                   </div>
                 ) : null}
 
-                {queries[0].data ? (
+                {queries[0].status === 'success' ? (
                   <div className="flex-grow min-w-[400px] overflow-auto">
                     <table className="relative w-full">
                       <thead className="text-primary font-bold">
