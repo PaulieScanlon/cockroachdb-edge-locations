@@ -16,7 +16,7 @@ module.exports = {
         location: '#00ff33',
         cluster: '#0496ff',
         function: '#dc3545',
-        current: '#ffc107'
+        current: '#ffff00'
       },
       gridTemplateColumns: {
         ['1fr-auto']: '1fr auto'

@@ -160,7 +160,7 @@ const Page = ({ data }) => {
                 <ul className="flex flex-col sm:flex-row gap-2 text-xs text-primary px-3 rounded border border-border p-3">
                   <li>
                     <strong>Date: </strong>
-                    <small className="text-location">
+                    <small className="text-current">
                       {mutation.data
                         ? `${new Date(mutation.data.date).toLocaleString('default', {
                             month: 'short',
@@ -175,15 +175,15 @@ const Page = ({ data }) => {
                   </li>
                   <li>
                     <strong>City: </strong>
-                    <small className="text-location"> {mutation.data ? `${mutation.data.city}` : null}</small>
+                    <small className="text-current"> {mutation.data ? `${mutation.data.city}` : null}</small>
                   </li>
                   <li>
                     <strong>Latitude: </strong>
-                    <small className="text-location"> {mutation.data ? `${mutation.data.lat}` : null} </small>
+                    <small className="text-current"> {mutation.data ? `${mutation.data.lat}` : null} </small>
                   </li>
                   <li>
                     <strong>Longitude: </strong>
-                    <small className="text-location"> {mutation.data ? `${mutation.data.lng}` : null} </small>
+                    <small className="text-current"> {mutation.data ? `${mutation.data.lng}` : null} </small>
                   </li>
                 </ul>
               </div>
