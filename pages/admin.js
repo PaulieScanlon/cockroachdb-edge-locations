@@ -22,7 +22,7 @@ const Page = () => {
 
           const json = await response.json();
 
-          const formatted = JSON.parse(json.data.locations);
+          const formatted = json.data.locations;
 
           if (!response.ok) {
             throw new Error();
@@ -131,8 +131,8 @@ const Page = () => {
                                     })}
                                   </td>
                                   <td className="p-3 whitespace-nowrap">{`${city || '* city not recognized'}`}</td>
-                                  <td className="p-3 whitespace-nowrap">{lat}</td>
-                                  <td className="p-3 whitespace-nowrap">{lng}</td>
+                                  <td className="p-3 whitespace-nowrap">{parseFloat(lat)}</td>
+                                  <td className="p-3 whitespace-nowrap">{parseFloat(lng)}</td>
                                   <td className="p-3 whitespace-nowrap">{runtime}</td>
                                   <td className="p-3 whitespace-nowrap">
                                     <button
