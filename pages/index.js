@@ -198,7 +198,7 @@ const Page = ({ data }) => {
             </div>
 
             <div className="overflow-hidden lg:grow">
-              <div className="flex h-[220px] lg:h-[calc(100vh-520px)] h-full rounded border border-border overflow-auto">
+              <div className="flex h-[420px] xl:h-[calc(100vh-520px)] rounded border border-border overflow-auto">
                 {queries[0].status === 'loading' ? (
                   <div className="flex flex-col gap-3 items-center justify-center h-full w-full p-8">
                     <span className="block text-center text-text text-xs leading-5">

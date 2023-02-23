@@ -97,7 +97,7 @@ const Page = () => {
         <aside className="grid gap-8">
           <div className="grid gap-4">
             <div className="overflow-hidden">
-              <div className="flex flex-col h-[600px] overflow-hidden">
+              <div className="flex flex-col h-full lg:h-[600px] overflow-hidden">
                 <div className="flex-grow overflow-auto rounded border border-border">
                   <table className="relative w-full m-0">
                     <thead className="text-primary font-bold">
