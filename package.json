@@ -29,13 +29,12 @@
   },
   "homepage": "https://github.com/PaulieScanlon/cockroachdb-edge-locations#readme",
   "dependencies": {
-    "@prisma/client": "^4.10.1",
-    "@react-three/drei": "9.29.1",
     "@tanstack/react-query": "^4.24.6",
     "cloud-regions-country-flags": "^1.1.1",
     "fast-geoip": "^1.1.88",
     "next": "^13.1.6",
     "next-auth": "^4.19.2",
+    "pg-promise": "^11.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-globe.gl": "^2.23.3",
@@ -46,7 +45,6 @@
     "@tailwindcss/typography": "^0.5.7",
     "autoprefixer": "^10.4.8",
     "postcss": "^8.4.16",
-    "prisma": "^4.10.1",
     "prop-types": "^15.8.1",
     "tailwindcss": "^3.1.8"
   }

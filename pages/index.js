@@ -46,7 +46,9 @@ const Page = ({ data }) => {
 
             const json = await response.json();
 
-            const filtered = JSON.parse(json.data.locations)
+            console.log('json: ', json);
+
+            const filtered = json.data.locations
               .sort((a, b) => b.id - a.id)
               .reduce((items, item) => {
                 const city = items.find((obj) => obj.city === item.city);
@@ -179,11 +181,17 @@ const Page = ({ data }) => {
                   </li>
                   <li>
                     <strong>Latitude: </strong>
-                    <small className="text-current"> {mutation.data ? `${mutation.data.lat}` : null} </small>
+                    <small className="text-current">
+                      {' '}
+                      {mutation.data ? `${parseFloat(mutation.data.lat)}` : null}{' '}
+                    </small>
                   </li>
                   <li>
                     <strong>Longitude: </strong>
-                    <small className="text-current"> {mutation.data ? `${mutation.data.lng}` : null} </small>
+                    <small className="text-current">
+                      {' '}
+                      {mutation.data ? `${parseFloat(mutation.data.lng)}` : null}{' '}
+                    </small>
                   </li>
                 </ul>
               </div>
@@ -192,7 +200,7 @@ const Page = ({ data }) => {
             <div className="overflow-hidden lg:grow">
               <div className="flex h-[220px] lg:h-[calc(100vh-520px)] h-full rounded border border-border overflow-auto">
                 {queries[0].status === 'loading' ? (
-                  <div className="flex flex-col gap-3 items-center justify-center h-full w-full px-2">
+                  <div className="flex flex-col gap-3 items-center justify-center h-full w-full p-8">
                     <span className="block text-center text-text text-xs leading-5">
                       CockroachDB Multi-Region Serverless is in Beta. <br />
                       This might take a while.
@@ -202,7 +210,7 @@ const Page = ({ data }) => {
                 ) : null}
 
                 {queries[0].status === 'error' ? (
-                  <div className="flex flex-col gap-3 items-center justify-center h-full w-full px-2">
+                  <div className="flex flex-col gap-3 items-center justify-center h-full w-full p-8">
                     <span className="block text-center text-function text-xs leading-5">
                       Can't reach database server. <br />
                       Refresh to try again.
@@ -239,8 +247,8 @@ const Page = ({ data }) => {
                                     })}
                                   </td>
                                   <td className="p-3 whitespace-nowrap">{city}</td>
-                                  <td className="p-3 whitespace-nowrap">{lat}</td>
-                                  <td className="p-3 whitespace-nowrap">{lng}</td>
+                                  <td className="p-3 whitespace-nowrap">{parseFloat(lat)}</td>
+                                  <td className="p-3 whitespace-nowrap">{parseFloat(lng)}</td>
                                 </tr>
                               );
                             })}
