@@ -19,6 +19,7 @@ import usePrefersReducedMotion from '../hooks/use-prefers-reduced-motion';
 const Page = ({ data }) => {
   const queryClient = useQueryClient();
   const [isPlaying, setIsPlaying] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const prefersReducedMotion = usePrefersReducedMotion();
 
@@ -118,8 +119,8 @@ const Page = ({ data }) => {
   );
 
   return (
-    <section className="grid grid-cols-1 xl:grid-cols-2">
-      <div className="bg-surface xl:min-h-screen shadow-lg">
+    <section className={`grid grid-cols-1 ${isExpanded ? '' : 'xl:grid-cols-2'}`}>
+      <div className={`bg-surface xl:min-h-screen shadow-lg ${isExpanded ? 'hidden' : 'block'}`}>
         <div className="flex flex-col p-6 md:p-8 h-full">
           <div className="grid gap-8 px-8 py-8">
             <Logo />
@@ -152,6 +153,8 @@ const Page = ({ data }) => {
                   <button
                     className="min-w-[100px] rounded border border-location px-2 py-1 text-location disabled:border-border disabled:text-secondary disabled:cursor-not-allowed hover:text-primary hover:border-primary"
                     disabled={mutation.isLoading ? true : false}
+                    type="button"
+                    role="button"
                     onClick={() => {
                       mutation.mutate();
                     }}
@@ -273,15 +276,7 @@ const Page = ({ data }) => {
                   className="w-5 h-5"
                   aria-label="GitHub Logo"
                 >
-                  <path
-                    d="M12.01,1.64c-5.83,0-10.55,4.75-10.55,10.63c0,4.7,3.02,8.67,7.21,10.08c0.52,0.11,0.72-0.23,0.72-0.51
-		c0-0.25-0.02-1.09-0.02-1.97C6.44,20.5,5.83,18.6,5.83,18.6c-0.47-1.23-1.17-1.55-1.17-1.55C3.7,16.4,4.73,16.4,4.73,16.4
-		c1.07,0.07,1.62,1.09,1.62,1.09c0.94,1.62,2.46,1.16,3.07,0.88c0.09-0.69,0.37-1.16,0.66-1.42c-2.34-0.25-4.8-1.16-4.8-5.24
-		c0-1.16,0.42-2.11,1.08-2.85c-0.1-0.26-0.47-1.35,0.1-2.81c0,0,0.89-0.28,2.9,1.09c0.86-0.23,1.75-0.35,2.64-0.35
-		c0.89,0,1.8,0.12,2.64,0.35c2.01-1.37,2.9-1.09,2.9-1.09c0.58,1.46,0.21,2.55,0.1,2.81c0.68,0.74,1.08,1.69,1.08,2.85
-		c0,4.08-2.46,4.98-4.82,5.24c0.38,0.33,0.72,0.97,0.72,1.97c0,1.42-0.02,2.57-0.02,2.92c0,0.28,0.19,0.62,0.72,0.51
-		c4.19-1.41,7.21-5.38,7.21-10.08C22.56,6.39,17.82,1.64,12.01,1.64z"
-                  />
+                  <path d="M12.01,1.64c-5.83,0-10.55,4.75-10.55,10.63c0,4.7,3.02,8.67,7.21,10.08c0.52,0.11,0.72-0.23,0.72-0.51c0-0.25-0.02-1.09-0.02-1.97C6.44,20.5,5.83,18.6,5.83,18.6c-0.47-1.23-1.17-1.55-1.17-1.55C3.7,16.4,4.73,16.4,4.73,16.4c1.07,0.07,1.62,1.09,1.62,1.09c0.94,1.62,2.46,1.16,3.07,0.88c0.09-0.69,0.37-1.16,0.66-1.42c-2.34-0.25-4.8-1.16-4.8-5.24c0-1.16,0.42-2.11,1.08-2.85c-0.1-0.26-0.47-1.35,0.1-2.81c0,0,0.89-0.28,2.9,1.09c0.86-0.23,1.75-0.35,2.64-0.35c0.89,0,1.8,0.12,2.64,0.35c2.01-1.37,2.9-1.09,2.9-1.09c0.58,1.46,0.21,2.55,0.1,2.81c0.68,0.74,1.08,1.69,1.08,2.85c0,4.08-2.46,4.98-4.82,5.24c0.38,0.33,0.72,0.97,0.72,1.97c0,1.42-0.02,2.57-0.02,2.92c0,0.28,0.19,0.62,0.72,0.51c4.19-1.41,7.21-5.38,7.21-10.08C22.56,6.39,17.82,1.64,12.01,1.64z" />
                 </svg>
                 PaulieScanlon/cockroachdb-edge-locations
               </a>
@@ -312,8 +307,43 @@ const Page = ({ data }) => {
           </aside>
         </div>
       </div>
+
       <div className="bg-gradient-to-b from-black to-shade p-6 md:p-8 lg:p-0 overflow-scroll">
-        <div className="relative overflow-hidden w-full h-[400px] md:h-[600px] xl:h-screen cursor-move rounded border border-border lg:border-none">
+        <div className={`absolute top-1/2 bg-surface z-20 ${isExpanded ? 'left-0' : 'left-1/2'}`}>
+          <button
+            className="hidden xl:block bg-surface px-2 py-4 text-secondary hover:text-primary"
+            type="button"
+            role="button"
+            aria-pressed={isExpanded ? true : false}
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+              aria-label={isExpanded ? 'Collapse Icon' : 'Expand Icon'}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d={
+                  isExpanded
+                    ? 'M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5'
+                    : 'M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5'
+                }
+              />
+            </svg>
+          </button>
+        </div>
+
+        <div
+          className={`relative overflow-hidden w-full ${
+            isExpanded ? '' : 'h-[400px] md:h-[600px]'
+          } xl:h-screen cursor-move rounded border border-border lg:border-none`}
+        >
           <div className="absolute top-0 left-0 flex justify-between gap-2 text-text p-4 text-xs w-full z-10">
             <div>
               <span className="flex gap-1 items-center">
