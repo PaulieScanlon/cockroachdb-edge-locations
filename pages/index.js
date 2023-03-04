@@ -47,8 +47,6 @@ const Page = ({ data }) => {
 
             const json = await response.json();
 
-            console.log('json: ', json);
-
             const filtered = json.data.locations
               .sort((a, b) => b.id - a.id)
               .reduce((items, item) => {
