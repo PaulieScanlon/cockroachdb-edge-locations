@@ -16,6 +16,12 @@ const ThreeGlobe = dynamic(() => import('../components/three-globe'), {
 
 import usePrefersReducedMotion from '../hooks/use-prefers-reduced-motion';
 
+const lambda = [
+  fromProvider('eu-central-1', 'AWS'),
+  fromProvider('us-east-1', 'AWS'),
+  fromProvider('us-west-1', 'AWS')
+];
+
 const Page = ({ data }) => {
   const queryClient = useQueryClient();
   const [isPlaying, setIsPlaying] = useState(true);
@@ -46,8 +52,6 @@ const Page = ({ data }) => {
             }
 
             const json = await response.json();
-
-            console.log('json: ', json);
 
             const filtered = json.data.locations
               .sort((a, b) => b.id - a.id)
@@ -214,7 +218,7 @@ const Page = ({ data }) => {
 
                 {queries[0].status === 'error' ? (
                   <div className="flex flex-col gap-3 items-center justify-center h-full w-full p-8">
-                    <span className="block text-center text-function text-xs leading-5">
+                    <span className="block text-center text-serverless text-xs leading-5">
                       Can't reach database server. <br />
                       Refresh to try again.
                     </span>
@@ -386,7 +390,7 @@ const Page = ({ data }) => {
 
               <div className="flex flex-col gap-1">
                 <strong className="flex items-center gap-1 text-xs">
-                  <span className="w-2 h-2 rounded-full leading-none bg-function" />
+                  <span className="w-2 h-2 rounded-full leading-none bg-serverless" />
                   Vercel Serverless Region
                 </strong>
                 <ul className="leading-5 text-xs">
@@ -401,6 +405,25 @@ const Page = ({ data }) => {
                       <Spinner className="w-3 h-3" />
                     )}
                   </li>
+                </ul>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <strong className="flex items-center gap-1 text-xs">
+                  <span className="w-2 h-2 rounded-full leading-none bg-lambda" />
+                  AWS Lambda Regions
+                </strong>
+                <ul className="leading-5 text-xs">
+                  {lambda.map((region, index) => {
+                    const { flag, location, raw } = region;
+                    return (
+                      <li className="flex items-center gap-1 h-5" key={index}>
+                        <span>{flag}</span>
+                        <span>{location}</span>
+                        <span>{raw}</span>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             </div>
@@ -453,16 +476,30 @@ const Page = ({ data }) => {
                   })
                 },
                 {
-                  type: 'function',
+                  type: 'serverless',
                   radius: 0.4,
-                  altitude: 0.04,
-                  colors: ['--color-function'],
+                  altitude: 0.03,
+                  colors: ['--color-serverless'],
                   data: [
                     {
                       latitude: fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').latitude,
                       longitude: fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').longitude
                     }
                   ]
+                },
+                {
+                  type: 'lambda',
+                  radius: 0.4,
+                  altitude: 0.03,
+                  colors: ['--color-lambda'],
+                  data: lambda.map((region) => {
+                    const { latitude, longitude } = region;
+
+                    return {
+                      latitude: latitude - 1,
+                      longitude: longitude + 1
+                    };
+                  })
                 },
                 mutation.data
                   ? {
