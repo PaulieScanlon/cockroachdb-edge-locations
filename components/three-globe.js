@@ -41,7 +41,7 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, data }) => {
   const ringsData = data.filter(Boolean).reduce((items, item) => {
     const { type, colors, data } = item;
 
-    if (type === 'serverless' || type === 'lambda') {
+    if (type === 'serverless') {
       items.push(
         ...data.map((d) => {
           const { latitude, longitude } = d;
