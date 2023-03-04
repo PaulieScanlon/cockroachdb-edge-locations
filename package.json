@@ -30,7 +30,7 @@
   "homepage": "https://github.com/PaulieScanlon/cockroachdb-edge-locations#readme",
   "dependencies": {
     "@tanstack/react-query": "^4.24.6",
-    "cloud-regions-country-flags": "^1.1.1",
+    "cloud-regions-country-flags": "^1.1.2",
     "fast-geoip": "^1.1.88",
     "next": "^13.1.6",
     "next-auth": "^4.19.2",

@@ -13,7 +13,7 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, data }) => {
   const globeEl = useRef();
 
   const [stars, _] = useState(
-    [...Array(300).keys()].map(() => ({
+    [...Array(500).keys()].map(() => ({
       lat: (Math.random() - 0.5) * 180,
       lng: (Math.random() - 0.5) * 360,
       alt: Math.random() * 1.4 + 0.1
@@ -41,7 +41,7 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, data }) => {
   const ringsData = data.filter(Boolean).reduce((items, item) => {
     const { type, colors, data } = item;
 
-    if (type === 'function') {
+    if (type === 'serverless' || type === 'lambda') {
       items.push(
         ...data.map((d) => {
           const { latitude, longitude } = d;
@@ -105,8 +105,6 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, data }) => {
     }
   };
 
-  // console.log('--color-cluster: ', getComputedStyle(document.documentElement).getPropertyValue('--color-cluster'));
-
   return (
     <div className="flex justify-center">
       <Globe
@@ -139,7 +137,7 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, data }) => {
         customLayerData={stars}
         customThreeObject={() =>
           new THREE.Mesh(
-            new THREE.SphereGeometry(0.5),
+            new THREE.SphereGeometry(0.3),
             new THREE.MeshBasicMaterial({ color: '#97907e', opacity: 0.6, transparent: true })
           )
         }

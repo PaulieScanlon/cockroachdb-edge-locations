@@ -15,7 +15,8 @@ module.exports = {
         divide: '#222222',
         location: '#00ff33',
         cluster: '#0496ff',
-        function: '#dc3545',
+        serverless: '#dc3545',
+        lambda: '#FF9900',
         current: '#ffff00'
       },
       gridTemplateColumns: {
