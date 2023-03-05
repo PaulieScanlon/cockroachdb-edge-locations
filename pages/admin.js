@@ -16,7 +16,7 @@ const Page = () => {
       queryKey: ['query'],
       queryFn: async () => {
         try {
-          const response = await fetch('/api/read-locations', {
+          const response = await fetch('/api/read', {
             method: 'GET'
           });
 
@@ -42,7 +42,7 @@ const Page = () => {
   const mutation = useMutation(
     async (id) => {
       try {
-        const response = await fetch('/api/delete-location', {
+        const response = await fetch('/api/delete', {
           method: 'DELETE',
           body: JSON.stringify({
             id: id

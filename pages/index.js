@@ -43,7 +43,7 @@ const Page = ({ data }) => {
         queryKey: ['read-query'],
         queryFn: async () => {
           try {
-            const response = await fetch('/api/read-locations', {
+            const response = await fetch('/api/read', {
               method: 'GET'
             });
 
@@ -98,7 +98,7 @@ const Page = ({ data }) => {
   const mutation = useMutation(
     async () => {
       try {
-        const response = await fetch('/api/create-location', {
+        const response = await fetch('/api/create', {
           method: 'POST',
           body: JSON.stringify({
             date: new Date()
