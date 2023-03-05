@@ -43,7 +43,13 @@ const Page = ({ data }) => {
         queryKey: ['read-query'],
         queryFn: async () => {
           try {
-            const response = await fetch('/api/read', {
+            // This API route uses the local env vars
+            // const response = await fetch('/api/read', {
+            //   method: 'GET'
+            // });
+
+            // This API uses env vars defined in the Serverless Repo / AWS Config
+            const response = await fetch('https://api.crl-devrel.net/read', {
               method: 'GET'
             });
 
