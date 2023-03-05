@@ -34,7 +34,7 @@
     "fast-geoip": "^1.1.88",
     "next": "^13.1.6",
     "next-auth": "^4.19.2",
-    "pg-promise": "^11.3.0",
+    "pg": "^8.9.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-globe.gl": "^2.23.3",
