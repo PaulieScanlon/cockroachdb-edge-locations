@@ -610,7 +610,7 @@ const Page = ({ data }) => {
                         type: 'cluster',
                         colors: ['--color-cluster'],
                         data: data.regions
-                          .filter((region) => region.name === mutation.data.region)
+                          // .filter((region) => region.name === mutation.data.region)
                           .map((region) => {
                             const location = fromProvider(region.name, data.cloud_provider);
                             return {
