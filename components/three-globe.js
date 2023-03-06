@@ -166,7 +166,7 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, points, route, rings }) => {
         arcDashAnimateTime={() => (isPlaying ? 2000 : 0)}
         ringsData={hasCurrent ? ringsData : []}
         ringColor={(ring) => (t) => {
-          return `rgba(${ring.color}, ${Math.sqrt(1 - t)})`;
+          return hasCurrent ? `rgba(${ring.color}, ${Math.sqrt(1 - t)})` : '';
         }}
         ringMaxRadius="maxR"
         ringPropagationSpeed="propagationSpeed"

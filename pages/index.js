@@ -477,7 +477,7 @@ const Page = ({ data }) => {
           {queries[0].isSuccess && queries[1].isSuccess ? (
             <ThreeGlobe
               isPlaying={isPlaying}
-              hasCurrent={mutation.data ? true : false}
+              hasCurrent={Boolean(mutation.data)}
               points={[
                 {
                   type: 'location',
