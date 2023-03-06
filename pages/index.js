@@ -8,25 +8,28 @@ import Spinner from '../components/spinner';
 import Empty from '../components/empty';
 import Loading from '../components/loading';
 import Error from '../components/error';
-import Success from '../components/success';
+import usePrefersReducedMotion from '../hooks/use-prefers-reduced-motion';
 
 const ThreeGlobe = dynamic(() => import('../components/three-globe'), {
   ssr: false
 });
 
-import usePrefersReducedMotion from '../hooks/use-prefers-reduced-motion';
+const AWS = 'AWS Lambda';
+const VERCEL = 'Vercel';
 
 const lambda = [
   fromProvider('eu-central-1', 'AWS'),
   fromProvider('us-east-1', 'AWS'),
-  fromProvider('us-west-1', 'AWS')
+  fromProvider('us-west-2', 'AWS')
 ];
+
+const lambdaOffset = 0.5;
 
 const Page = ({ data }) => {
   const queryClient = useQueryClient();
   const [isPlaying, setIsPlaying] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
-
+  const [functionProvider, setFunctionProvider] = useState(AWS);
   const prefersReducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
@@ -43,7 +46,13 @@ const Page = ({ data }) => {
         queryKey: ['read-query'],
         queryFn: async () => {
           try {
-            const response = await fetch('/api/read', {
+            // This API route uses the database connection string defined in .local env vars
+            // const response = await fetch('/api/read', {
+            //   method: 'GET'
+            // });
+
+            // This API uses prod env vars defined in the Serverless Repo / AWS Config
+            const response = await fetch('https://api.crl-devrel.net/read', {
               method: 'GET'
             });
 
@@ -98,7 +107,7 @@ const Page = ({ data }) => {
   const mutation = useMutation(
     async () => {
       try {
-        const response = await fetch('/api/create', {
+        const response = await fetch(functionProvider === AWS ? 'https://api.crl-devrel.net/create' : '/api/create', {
           method: 'POST',
           body: JSON.stringify({
             date: new Date()
@@ -110,6 +119,7 @@ const Page = ({ data }) => {
         if (!response.ok) {
           throw new Error();
         }
+
         return json.data;
       } catch (error) {
         throw new Error();
@@ -121,6 +131,11 @@ const Page = ({ data }) => {
       }
     }
   );
+
+  const handleChange = () => {
+    mutation.reset();
+    functionProvider === AWS ? setFunctionProvider(VERCEL) : setFunctionProvider(AWS);
+  };
 
   return (
     <section className={`grid grid-cols-1 ${isExpanded ? '' : 'xl:grid-cols-2'}`}>
@@ -149,11 +164,12 @@ const Page = ({ data }) => {
           <aside className="flex flex-col gap-8 grow">
             <div className="flex flex-col">
               <div className="grid gap-2">
-                <div className="grid grid-cols-1fr-auto gap-2 min-h-[36px]">
-                  {mutation.isLoading ? <Loading /> : null}
-                  {mutation.isError ? <Error /> : null}
-                  {mutation.isSuccess ? <Success /> : null}
-                  {mutation.isIdle ? <Empty /> : null}
+                <div className="flex items-center justify-between gap-4 h-12 min-h-full">
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" className="sr-only peer" value={functionProvider} onChange={handleChange} />
+                    <div className="w-11 h-6 bg-lambda peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-serverless"></div>
+                    <span className="ml-3 text-xs font-medium text-primary">{functionProvider}</span>
+                  </label>
                   <button
                     className="min-w-[100px] rounded border border-location px-2 py-1 text-location disabled:border-border disabled:text-secondary disabled:cursor-not-allowed hover:text-primary hover:border-primary"
                     disabled={mutation.isLoading ? true : false}
@@ -166,41 +182,49 @@ const Page = ({ data }) => {
                     {mutation.isLoading ? <Spinner /> : 'Submit'}
                   </button>
                 </div>
-                <ul className="flex flex-col sm:flex-row gap-2 text-xs text-primary px-3 rounded border border-border p-3">
-                  <li>
-                    <strong>Date: </strong>
-                    <small className="text-current">
-                      {mutation.data
-                        ? `${new Date(mutation.data.date).toLocaleString('default', {
-                            month: 'short',
-                            day: 'numeric',
-                            year: '2-digit',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            second: '2-digit'
-                          })}`
-                        : null}
-                    </small>
-                  </li>
-                  <li>
-                    <strong>City: </strong>
-                    <small className="text-current"> {mutation.data ? `${mutation.data.city}` : null}</small>
-                  </li>
-                  <li>
-                    <strong>Latitude: </strong>
-                    <small className="text-current">
-                      {' '}
-                      {mutation.data ? `${parseFloat(mutation.data.lat)}` : null}{' '}
-                    </small>
-                  </li>
-                  <li>
-                    <strong>Longitude: </strong>
-                    <small className="text-current">
-                      {' '}
-                      {mutation.data ? `${parseFloat(mutation.data.lng)}` : null}{' '}
-                    </small>
-                  </li>
-                </ul>
+
+                <div className="rounded border border-border px-2 py-2 flex items-center sm:h-10 min-h-full">
+                  {mutation.isIdle ? <Empty /> : null}
+                  {mutation.isLoading ? <Loading /> : null}
+                  {mutation.isError ? <Error /> : null}
+                  {mutation.isSuccess ? (
+                    <ul className="flex flex-col sm:flex-row gap-2 text-xs text-primary">
+                      <li>
+                        <strong>Date: </strong>
+                        <small className="text-current">
+                          {mutation.data
+                            ? `${new Date(mutation.data.date).toLocaleString('default', {
+                                month: 'short',
+                                day: 'numeric',
+                                year: '2-digit',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: '2-digit'
+                              })}`
+                            : null}
+                        </small>
+                      </li>
+                      <li>
+                        <strong>City: </strong>
+                        <small className="text-current"> {mutation.data ? `${mutation.data.city}` : null}</small>
+                      </li>
+                      <li>
+                        <strong>Latitude: </strong>
+                        <small className="text-current">
+                          {' '}
+                          {mutation.data ? `${parseFloat(mutation.data.lat)}` : null}{' '}
+                        </small>
+                      </li>
+                      <li>
+                        <strong>Longitude: </strong>
+                        <small className="text-current">
+                          {' '}
+                          {mutation.data ? `${parseFloat(mutation.data.lng)}` : null}{' '}
+                        </small>
+                      </li>
+                    </ul>
+                  ) : null}
+                </div>
               </div>
             </div>
 
@@ -363,7 +387,8 @@ const Page = ({ data }) => {
               </span>
             </div>
           </div>
-          <div className="absolute bottom-0 right-0 flex items-end justify-between gap-2 text-text p-4 text-xs w-full z-10 select-none">
+
+          <div className="absolute bottom-0 left-0 flex items-end justify-between gap-2 text-text p-4 text-xs z-10 select-none pointer-events-none">
             <div className="flex flex-col gap-2">
               <div className="flex flex-col gap-1">
                 <strong className="flex items-center gap-1 text-xs">
@@ -427,7 +452,9 @@ const Page = ({ data }) => {
                 </ul>
               </div>
             </div>
+          </div>
 
+          <div className="absolute bottom-0 right-0 flex items-end justify-between gap-2 text-text p-4 text-xs z-10 select-none">
             <button onClick={() => setIsPlaying(!isPlaying)}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                 {isPlaying ? (
@@ -451,7 +478,7 @@ const Page = ({ data }) => {
             <ThreeGlobe
               isPlaying={isPlaying}
               hasCurrent={mutation.data ? true : false}
-              data={[
+              points={[
                 {
                   type: 'location',
                   radius: 0.3,
@@ -465,7 +492,7 @@ const Page = ({ data }) => {
                 {
                   type: 'cluster',
                   radius: 0.4,
-                  altitude: 0.04,
+                  altitude: 0.03,
                   colors: ['--color-cluster'],
                   data: data.regions.map((region) => {
                     const location = fromProvider(region.name, data.cloud_provider);
@@ -496,8 +523,8 @@ const Page = ({ data }) => {
                     const { latitude, longitude } = region;
 
                     return {
-                      latitude: latitude - 1,
-                      longitude: longitude + 1
+                      latitude: latitude - lambdaOffset,
+                      longitude: longitude + lambdaOffset
                     };
                   })
                 },
@@ -505,7 +532,7 @@ const Page = ({ data }) => {
                   ? {
                       type: 'current',
                       radius: 0.4,
-                      altitude: 0.04,
+                      altitude: 0.07,
                       colors: ['--color-current'],
                       data: [
                         {
@@ -516,6 +543,85 @@ const Page = ({ data }) => {
                     }
                   : null
               ]}
+              rings={
+                mutation.data
+                  ? [
+                      functionProvider === AWS
+                        ? {
+                            type: 'lambda',
+                            colors: ['--color-lambda'],
+                            data: [
+                              {
+                                latitude: fromProvider(mutation.data.region, 'AWS').latitude - lambdaOffset,
+                                longitude: fromProvider(mutation.data.region, 'AWS').longitude + lambdaOffset
+                              }
+                            ]
+                          }
+                        : {
+                            type: 'serverless',
+                            colors: ['--color-serverless'],
+                            data: [
+                              {
+                                latitude: fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').latitude,
+                                longitude: fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').longitude
+                              }
+                            ]
+                          }
+                    ]
+                  : []
+              }
+              route={
+                mutation.data
+                  ? [
+                      {
+                        type: 'current',
+                        colors: ['--color-current'],
+                        data: [
+                          {
+                            latitude: mutation.data.lat,
+                            longitude: mutation.data.lng
+                          }
+                        ]
+                      },
+                      ...[
+                        functionProvider === AWS
+                          ? {
+                              type: 'lambda',
+                              colors: ['--color-lambda'],
+                              data: [
+                                {
+                                  latitude: fromProvider(mutation.data.region, 'AWS').latitude - lambdaOffset,
+                                  longitude: fromProvider(mutation.data.region, 'AWS').longitude + lambdaOffset
+                                }
+                              ]
+                            }
+                          : {
+                              type: 'serverless',
+                              colors: ['--color-serverless'],
+                              data: [
+                                {
+                                  latitude: fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').latitude,
+                                  longitude: fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').longitude
+                                }
+                              ]
+                            }
+                      ],
+                      {
+                        type: 'cluster',
+                        colors: ['--color-cluster'],
+                        data: data.regions
+                          // .filter((region) => region.name === 'eu-central-1')
+                          .map((region) => {
+                            const location = fromProvider(region.name, data.cloud_provider);
+                            return {
+                              latitude: location.latitude,
+                              longitude: location.longitude
+                            };
+                          })
+                      }
+                    ]
+                  : []
+              }
             />
           ) : null}
         </div>

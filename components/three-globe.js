@@ -5,11 +5,16 @@ import Globe from 'react-globe.gl';
 import * as THREE from 'three';
 import goeJson from './ne_110m_admin_0_countries.geojson.json';
 
+const hexToRgb = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? `${parseInt(result[1], 16)},${parseInt(result[2], 16)},${parseInt(result[3], 16)}` : null;
+};
+
 const getComputedColor = (cssVariableName) => {
   return getComputedStyle(document.documentElement).getPropertyValue(cssVariableName).replace(' ', '');
 };
 
-const ThreeGlobe = ({ isPlaying, hasCurrent, data }) => {
+const ThreeGlobe = ({ isPlaying, hasCurrent, points, route, rings }) => {
   const globeEl = useRef();
 
   const [stars, _] = useState(
@@ -20,8 +25,8 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, data }) => {
     }))
   );
 
-  const pointsData = data.filter(Boolean).reduce((items, item) => {
-    const { type, radius, altitude, colors, data } = item;
+  const pointsData = points.filter(Boolean).reduce((items, item) => {
+    const { radius, altitude, colors, data } = item;
 
     return [
       ...items,
@@ -38,55 +43,63 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, data }) => {
     ];
   }, []);
 
-  const ringsData = data.filter(Boolean).reduce((items, item) => {
-    const { type, colors, data } = item;
+  const ringsData = rings.filter(Boolean).reduce((items, item) => {
+    const { colors, data } = item;
 
-    if (type === 'serverless') {
-      items.push(
-        ...data.map((d) => {
-          const { latitude, longitude } = d;
-          return {
-            lat: latitude,
-            lng: longitude,
-            color: getComputedColor(colors[Math.floor(Math.random() * colors.length)]),
-            maxR: 20,
-            propagationSpeed: 4,
-            repeatPeriod: 800
-          };
-        })
-      );
-    }
+    return [
+      ...items,
+      ...data.map((d) => {
+        const { latitude, longitude } = d;
+        return {
+          lat: latitude,
+          lng: longitude,
+          color: hexToRgb(getComputedColor(colors[Math.floor(Math.random() * colors.length)])),
+          maxR: 20,
+          propagationSpeed: 4,
+          repeatPeriod: 800
+        };
+      })
+    ];
+  }, []);
+
+  const routesData = route.filter(Boolean).reduce((items, item, index) => {
+    const { data } = item;
+    const isCurrent = index === 0;
+
+    items.push(
+      ...data.map(() => {
+        return {
+          startLat: isCurrent ? route[0].data[0].latitude : route[1].data[0].latitude,
+          startLng: isCurrent ? route[0].data[0].longitude : route[1].data[0].longitude,
+          endLat: isCurrent ? route[1].data[0].latitude : route[2].data[0].latitude,
+          endLng: isCurrent ? route[1].data[0].longitude : route[2].data[0].longitude,
+          color: isCurrent
+            ? [getComputedColor(route[0].colors[0]), getComputedColor(route[1].colors[0])]
+            : [getComputedColor(route[1].colors[0]), getComputedColor(route[2].colors[0])]
+        };
+      })
+    );
 
     return items;
   }, []);
 
-  const ringsInterpolator = (t) => `rgba(255,0,0,${Math.sqrt(1 - t)})`;
-
-  const arcsData = data.filter(Boolean).reduce((items, item) => {
-    const { type, colors, data } = item;
-
-    if (type === 'cluster' || type === 'current') {
-      items.push(
-        ...data.map((d) => {
-          const { latitude, longitude } = d;
-
-          const isCurrent = type === 'current';
-
-          return {
-            startLat: isCurrent ? latitude : ringsData[0].lat,
-            startLng: isCurrent ? longitude : ringsData[0].lng,
-            endLat: isCurrent ? ringsData[0].lat : latitude,
-            endLng: isCurrent ? ringsData[0].lng : longitude,
-            color: isCurrent
-              ? [getComputedColor(colors[Math.floor(Math.random() * colors.length)]), ringsData[0].color]
-              : [ringsData[0].color, getComputedColor(colors[Math.floor(Math.random() * colors.length)])]
-          };
-        })
-      );
+  // hard coded for now, these are the locations for the serverless clusters
+  const clustersData = [
+    {
+      startLat: 50.10967976447574,
+      startLng: 8.68942905774188,
+      endLat: 37.25633550865467,
+      endLng: -79.09898275762913,
+      color: getComputedColor('--color-cluster')
+    },
+    {
+      startLat: 37.25633550865467,
+      startLng: -79.09898275762913,
+      endLat: 43.80433182823407,
+      endLng: -121.02829983691751,
+      color: getComputedColor('--color-cluster')
     }
-
-    return items;
-  }, []);
+  ];
 
   useEffect(() => {
     if (globeEl.current) {
@@ -144,7 +157,7 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, data }) => {
         customThreeObjectUpdate={(obj, d) => {
           Object.assign(obj.position, globeEl.current?.getCoords(d.lat, d.lng, d.alt));
         }}
-        arcsData={hasCurrent ? arcsData : []}
+        arcsData={hasCurrent ? [...routesData, ...clustersData] : []}
         arcColor={'color'}
         arcDashLength={() => 0.5}
         arcAltitudeAutoScale={0.4}
@@ -152,7 +165,9 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, data }) => {
         arcDashGap={() => 0.1}
         arcDashAnimateTime={() => (isPlaying ? 2000 : 0)}
         ringsData={hasCurrent ? ringsData : []}
-        ringColor={() => ringsInterpolator}
+        ringColor={(ring) => (t) => {
+          return `rgba(${ring.color}, ${Math.sqrt(1 - t)})`;
+        }}
         ringMaxRadius="maxR"
         ringPropagationSpeed="propagationSpeed"
         ringRepeatPeriod={isPlaying ? 'repeatPeriod' : 0}
@@ -167,8 +182,12 @@ ThreeGlobe.propTypes = {
   isPlaying: PropTypes.bool.isRequired,
   /** has current location data  */
   hasCurrent: PropTypes.bool.isRequired,
-  /** The  locations, clusters and functions */
-  data: PropTypes.any.isRequired
+  /** The locations, clusters and functions */
+  points: PropTypes.any.isRequired,
+  /** The route of the data: current position, current server/lambda, nearest database */
+  routes: PropTypes.any,
+  /** The location of where to add rings */
+  rings: PropTypes.any
 };
 
 export default memo(ThreeGlobe);

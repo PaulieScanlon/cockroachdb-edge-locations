@@ -2,7 +2,7 @@ import React from 'react';
 
 const Loading = () => {
   return (
-    <div className="rounded border border-border px-2 py-1 text-text">
+    <div className="text-text text-xs">
       <strong className="text-cluster">Loading:</strong>
       <small className="ml-1">...</small>
     </div>
