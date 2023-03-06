@@ -16,8 +16,8 @@ module.exports = {
         location: '#00ff33',
         cluster: '#0496ff',
         serverless: '#dc3545',
-        lambda: '#FF9900',
-        current: '#ffff00'
+        lambda: '#f69402',
+        current: '#f7f702'
       },
       gridTemplateColumns: {
         ['1fr-auto']: '1fr auto'

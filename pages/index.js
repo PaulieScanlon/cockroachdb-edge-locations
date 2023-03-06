@@ -23,7 +23,7 @@ const lambda = [
   fromProvider('us-west-2', 'AWS')
 ];
 
-const lambdaOffset = 0.5;
+const lambdaOffset = 0.8;
 
 const Page = ({ data }) => {
   const queryClient = useQueryClient();
