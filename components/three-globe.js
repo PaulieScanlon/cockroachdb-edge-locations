@@ -62,10 +62,8 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, points, route, rings }) => {
     ];
   }, []);
 
-  console.log(route[2]);
-
   const routesData = route.filter(Boolean).reduce((items, item, index) => {
-    const { data } = item;
+    const { type, data } = item;
     const isCurrent = index === 0;
 
     items.push(
@@ -88,6 +86,7 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, points, route, rings }) => {
   // hard coded for now, these are the locations for the serverless clusters
   const clustersData = [
     {
+      type: 'cluster',
       startLat: 50.10967976447574,
       startLng: 8.68942905774188,
       endLat: 37.25633550865467,
@@ -95,6 +94,7 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, points, route, rings }) => {
       color: getComputedColor('--color-cluster')
     },
     {
+      type: 'cluster',
       startLat: 37.25633550865467,
       startLng: -79.09898275762913,
       endLat: 43.80433182823407,
@@ -161,9 +161,13 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, points, route, rings }) => {
         }}
         arcsData={hasCurrent ? [...routesData, ...clustersData] : []}
         arcColor={'color'}
-        arcDashLength={() => 0.5}
+        arcDashLength={(arc) => {
+          return arc.type === 'cluster' ? 0.05 : 0.5;
+        }}
         arcAltitudeAutoScale={0.4}
-        arcStroke={0.4}
+        arcStroke={(arc) => {
+          return arc.type === 'cluster' ? 0.1 : 0.5;
+        }}
         arcDashGap={() => 0.1}
         arcDashAnimateTime={() => (isPlaying ? 2000 : 0)}
         ringsData={hasCurrent ? ringsData : []}
