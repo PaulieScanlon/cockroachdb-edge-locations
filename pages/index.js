@@ -94,7 +94,16 @@ const Page = ({ data }) => {
 
             const json = await response.json();
 
-            return json.data;
+            const details = fromProvider(json.data.serverlessFunctionRegion, 'Vercel');
+
+            return {
+              name: details.provider_region.split(' ')[1],
+              location: details.location,
+              flag: details.flag,
+              latitude: details.latitude,
+              longitude: details.longitude,
+              provider_region: details.provider_region
+            };
           } catch (error) {
             throw new Error();
           }
@@ -171,7 +180,7 @@ const Page = ({ data }) => {
                     <span className="ml-2 text-xs font-medium text-primary">{functionProvider}</span>
                   </label>
                   <button
-                    className="min-w-[100px] rounded border border-location px-2 py-1 text-location disabled:border-border disabled:text-secondary disabled:cursor-not-allowed hover:text-primary hover:border-primary"
+                    className="min-w-[100px] rounded border border-location px-2 py-1 text-location disabled:border-border disabled:text-secondary disabled:cursor-not-allowed hover:text-primary hover:border-primary min-h-[34px]"
                     disabled={mutation.isLoading ? true : false}
                     type="button"
                     role="button"
@@ -422,9 +431,9 @@ const Page = ({ data }) => {
                   <li className="flex items-center gap-1 h-5">
                     {queries[1].isSuccess ? (
                       <Fragment>
-                        <span>{fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').flag}</span>
-                        <span>{fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').location}</span>
-                        <span>{fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').provider_region}</span>
+                        <span>{queries[1].data.flag}</span>
+                        <span>{queries[1].data.location}</span>
+                        <span>{queries[1].data.provider_region}</span>
                       </Fragment>
                     ) : (
                       <Spinner className="w-3 h-3" />
@@ -509,8 +518,8 @@ const Page = ({ data }) => {
                   colors: ['--color-serverless'],
                   data: [
                     {
-                      latitude: fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').latitude,
-                      longitude: fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').longitude
+                      latitude: queries[1].data.latitude,
+                      longitude: queries[1].data.longitude
                     }
                   ]
                 },
@@ -562,8 +571,8 @@ const Page = ({ data }) => {
                             colors: ['--color-serverless'],
                             data: [
                               {
-                                latitude: fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').latitude,
-                                longitude: fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').longitude
+                                latitude: queries[1].data.latitude,
+                                longitude: queries[1].data.longitude
                               }
                             ]
                           }
@@ -600,8 +609,8 @@ const Page = ({ data }) => {
                               colors: ['--color-serverless'],
                               data: [
                                 {
-                                  latitude: fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').latitude,
-                                  longitude: fromProvider(queries[1].data.serverlessFunctionRegion, 'Vercel').longitude
+                                  latitude: queries[1].data.latitude,
+                                  longitude: queries[1].data.longitude
                                 }
                               ]
                             }
@@ -610,7 +619,16 @@ const Page = ({ data }) => {
                         type: 'cluster',
                         colors: ['--color-cluster'],
                         data: data.regions
-                          // .filter((region) => region.name === mutation.data.region)
+                          .filter((region) => {
+                            const server = {
+                              // filter out nearest cluster if AWS, or default to us-east-1 if its Vercel
+                              name: functionProvider === AWS ? mutation.data.region : 'us-east-1'
+                            };
+
+                            if (region.name === server.name) {
+                              return region;
+                            }
+                          })
                           .map((region) => {
                             const location = fromProvider(region.name, data.cloud_provider);
                             return {

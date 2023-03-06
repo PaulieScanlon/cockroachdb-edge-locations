@@ -62,6 +62,8 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, points, route, rings }) => {
     ];
   }, []);
 
+  console.log(route[2]);
+
   const routesData = route.filter(Boolean).reduce((items, item, index) => {
     const { data } = item;
     const isCurrent = index === 0;
