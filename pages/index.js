@@ -405,7 +405,7 @@ const Page = ({ data }) => {
                   CockroachDB Serverless Regions
                 </strong>
 
-                <ul className="leading-5 text-xs">
+                <ul className="leading-5 text-xs pl-3">
                   <Fragment>
                     {data.regions.map((region, index) => {
                       const { name } = region;
@@ -427,7 +427,7 @@ const Page = ({ data }) => {
                   <span className="w-2 h-2 rounded-full leading-none bg-serverless" />
                   Vercel Serverless Region
                 </strong>
-                <ul className="leading-5 text-xs">
+                <ul className="leading-5 text-xs pl-3">
                   <li className="flex items-center gap-1 h-5">
                     {queries[1].isSuccess ? (
                       <Fragment>
@@ -447,7 +447,7 @@ const Page = ({ data }) => {
                   <span className="w-2 h-2 rounded-full leading-none bg-lambda" />
                   AWS Lambda Regions
                 </strong>
-                <ul className="leading-5 text-xs">
+                <ul className="leading-5 text-xs pl-3">
                   {lambda.map((region, index) => {
                     const { flag, location, raw } = region;
                     return (
