@@ -35,7 +35,7 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, points, route, rings }) => {
         return {
           lat: latitude,
           lng: longitude,
-          color: getComputedColor(colors[Math.floor(Math.random() * colors.length)]),
+          color: getComputedColor(colors[0]),
           radius: radius,
           altitude: altitude
         };
@@ -53,7 +53,7 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, points, route, rings }) => {
         return {
           lat: latitude,
           lng: longitude,
-          color: hexToRgb(getComputedColor(colors[Math.floor(Math.random() * colors.length)])),
+          color: hexToRgb(getComputedColor(colors[0])),
           maxR: 20,
           propagationSpeed: 4,
           repeatPeriod: 800

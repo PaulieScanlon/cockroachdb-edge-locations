@@ -9,7 +9,7 @@ module.exports = {
         surface: '#121212',
         shade: '#121212',
         background: '#000000',
-        border: '#232323',
+        border: '#2b2b2b',
         thead: '#262626',
         tbody: '#1b1b1b',
         divide: '#222222',
