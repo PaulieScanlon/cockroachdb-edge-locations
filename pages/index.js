@@ -8,21 +8,22 @@ import Spinner from '../components/spinner';
 import Empty from '../components/empty';
 import Loading from '../components/loading';
 import Error from '../components/error';
-
-const AWS = 'AWS Lambda';
-const VERCEL = 'Vercel';
+import usePrefersReducedMotion from '../hooks/use-prefers-reduced-motion';
 
 const ThreeGlobe = dynamic(() => import('../components/three-globe'), {
   ssr: false
 });
 
-import usePrefersReducedMotion from '../hooks/use-prefers-reduced-motion';
+const AWS = 'AWS Lambda';
+const VERCEL = 'Vercel';
 
 const lambda = [
   fromProvider('eu-central-1', 'AWS'),
   fromProvider('us-east-1', 'AWS'),
-  fromProvider('us-west-1', 'AWS')
+  fromProvider('us-west-2', 'AWS')
 ];
+
+const lambdaOffset = 0.5;
 
 const Page = ({ data }) => {
   const queryClient = useQueryClient();
@@ -135,8 +136,6 @@ const Page = ({ data }) => {
     mutation.reset();
     functionProvider === AWS ? setFunctionProvider(VERCEL) : setFunctionProvider(AWS);
   };
-
-  console.log(mutation);
 
   return (
     <section className={`grid grid-cols-1 ${isExpanded ? '' : 'xl:grid-cols-2'}`}>
@@ -524,8 +523,8 @@ const Page = ({ data }) => {
                     const { latitude, longitude } = region;
 
                     return {
-                      latitude: latitude - 1,
-                      longitude: longitude + 1
+                      latitude: latitude - lambdaOffset,
+                      longitude: longitude + lambdaOffset
                     };
                   })
                 },
@@ -553,8 +552,8 @@ const Page = ({ data }) => {
                             colors: ['--color-lambda'],
                             data: [
                               {
-                                latitude: fromProvider(mutation.data.region, 'AWS').latitude - 1,
-                                longitude: fromProvider(mutation.data.region, 'AWS').longitude + 1
+                                latitude: fromProvider(mutation.data.region, 'AWS').latitude - lambdaOffset,
+                                longitude: fromProvider(mutation.data.region, 'AWS').longitude + lambdaOffset
                               }
                             ]
                           }
@@ -591,8 +590,8 @@ const Page = ({ data }) => {
                               colors: ['--color-lambda'],
                               data: [
                                 {
-                                  latitude: fromProvider(mutation.data.region, 'AWS').latitude - 1,
-                                  longitude: fromProvider(mutation.data.region, 'AWS').longitude + 1
+                                  latitude: fromProvider(mutation.data.region, 'AWS').latitude - lambdaOffset,
+                                  longitude: fromProvider(mutation.data.region, 'AWS').longitude + lambdaOffset
                                 }
                               ]
                             }
