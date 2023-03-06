@@ -176,11 +176,14 @@ const Page = ({ data }) => {
                 <div className="flex items-center justify-between gap-4 h-12 min-h-full">
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" className="sr-only peer" value={functionProvider} onChange={handleChange} />
-                    <div className="w-11 h-6 bg-lambda peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-serverless"></div>
+                    <div className="w-11 h-6 bg-lambda peer-checked:bg-serverless peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-primary after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-primary after:border after:rounded-full after:h-5 after:w-5 after:transition-all " />
                     <span className="ml-2 text-xs font-medium text-primary">{functionProvider}</span>
                   </label>
                   <button
-                    className="min-w-[100px] rounded border border-location px-2 py-1 text-location disabled:border-border disabled:text-secondary disabled:cursor-not-allowed hover:text-primary hover:border-primary min-h-[34px]"
+                    className={`min-w-[100px] rounded border px-2 py-1 disabled:border-border disabled:text-secondary disabled:cursor-not-allowed hover:text-primary hover:border-primary min-h-[34px] button-${functionProvider
+                      .split(' ')
+                      .join('-')
+                      .toLocaleLowerCase()}`}
                     disabled={mutation.isLoading ? true : false}
                     type="button"
                     role="button"
@@ -382,12 +385,19 @@ const Page = ({ data }) => {
           } xl:h-screen cursor-move rounded border border-border lg:border-none`}
         >
           <div className="absolute top-0 left-0 flex justify-between gap-2 text-text p-4 text-xs w-full z-10">
-            <div>
+            <div className="flex flex-col gap-1">
               <span className="flex gap-1 items-center">
                 <span className="w-2 h-2 rounded-full leading-none bg-location" />
                 <strong>Total Edges: </strong>
                 {queries[0].isSuccess ? `x${queries[0].data.length}` : <Spinner className="w-3 h-3" />}
               </span>
+              {mutation.data ? (
+                <span className="flex gap-1 items-center">
+                  <span className="w-2 h-2 rounded-full leading-none bg-current" />
+                  <strong>You: </strong>
+                  {mutation.data.city}
+                </span>
+              ) : null}
             </div>
             <div>
               <span className="flex gap-1">

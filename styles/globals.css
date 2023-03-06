@@ -8,3 +8,11 @@
     @apply antialiased bg-background;
   }
 }
+
+.button-aws-lambda {
+  @apply border-lambda text-lambda;
+}
+
+.button-vercel-serverless {
+  @apply border-serverless text-serverless;
+}
