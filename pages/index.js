@@ -630,9 +630,11 @@ const Page = ({ data }) => {
                         colors: ['--color-cluster'],
                         data: data.regions
                           .filter((region) => {
+                            // console.log('mutation.data.region: ', mutation.data.region);
+                            // console.log('queries[1].data.serverlessFunctionRegion: ', queries[1].data.name);
                             const server = {
-                              // filter out nearest cluster if AWS, or default to us-east-1 if its Vercel
-                              name: functionProvider === AWS ? mutation.data.region : 'us-east-1'
+                              // filter out nearest cluster if AWS, or default to us-east-1 if its Vercel and not using Washington
+                              name: functionProvider === AWS ? mutation.data.region : queries[1].data.name // 'us-east-1'
                             };
 
                             if (region.name === server.name) {
