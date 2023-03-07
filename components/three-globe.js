@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import Globe from 'react-globe.gl';
 import * as THREE from 'three';
+import { getDistance } from 'geolib';
+
 import goeJson from './ne_110m_admin_0_countries.geojson.json';
 
 const hexToRgb = (hex) => {
@@ -69,6 +71,7 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, points, route, rings }) => {
     items.push(
       ...data.map(() => {
         return {
+          type: type,
           startLat: isCurrent ? route[0].data[0].latitude : route[1].data[0].latitude,
           startLng: isCurrent ? route[0].data[0].longitude : route[1].data[0].longitude,
           endLat: isCurrent ? route[1].data[0].latitude : route[2].data[0].latitude,
@@ -82,6 +85,54 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, points, route, rings }) => {
 
     return items;
   }, []);
+
+  const markerData = route.filter(Boolean).reduce((items, item) => {
+    const { data } = item;
+    return [
+      ...items,
+      ...data.map((d) => {
+        const { latitude, longitude } = d;
+        return {
+          lat: latitude,
+          lng: longitude
+        };
+      })
+    ];
+  }, []);
+
+  const distances = routesData
+    .reduce((items, item) => {
+      const { startLat, startLng } = item;
+
+      return [
+        ...items,
+        {
+          latitude: startLat,
+          longitude: startLng
+        }
+      ];
+    }, [])
+    .map((d) => {
+      return d;
+    })
+    .slice(0, -1);
+
+  if (hasCurrent) {
+    console.log(distances);
+
+    const meters = getDistance(...distances);
+    const miles = meters * 0.000621371192;
+    const kilometers = meters / 1000;
+
+    console.log('meters: ', meters);
+    console.log('miles: ', miles);
+    console.log('kilometers: ', kilometers);
+
+    //console.log('markerData: ', [markerData[0]]);
+    //   console.log('markerData.lat: ', markerData.lat);
+    //   console.log('markerData.lng: ', markerData.lng);
+    // console.log('totalDistance m: ', getDistance(...totalDistance));
+  }
 
   // hard coded for now, these are the locations for the serverless clusters
   const clustersData = [
@@ -178,6 +229,42 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, points, route, rings }) => {
         ringPropagationSpeed="propagationSpeed"
         ringRepeatPeriod={isPlaying ? 'repeatPeriod' : 0}
         ringResolution={64}
+        htmlElementsData={hasCurrent ? [markerData[0]] : []}
+        htmlAltitude={0.2}
+        htmlElement={() => {
+          const el = document.createElement('div');
+          const meters = hasCurrent ? getDistance(...distances) : 0;
+          const miles = meters * 0.000621371192;
+          const kilometers = meters / 1000;
+
+          el.innerHTML = `<div class='flex flex-col gap-2 text-primary text-sm px-4 py-2 bg-surface/80 border border-border rounded mt-24 mr-48'>
+                            <div class='flex flex-col gap-3'>
+                              <div class='flex flex-col gap-1'>
+                                <small class='text-current'>→ One Way</small>
+                                <span class='block'>
+                                  ~<strong>${miles.toLocaleString()}</strong>
+                                  <small>miles</small>
+                                </span>      
+                                <span class='block'>
+                                  ~<strong>${kilometers.toLocaleString()}</strong>
+                                  <small>km</small>
+                                </span>
+                              </div>
+                              <div class='flex flex-col gap-1'>
+                                <small class='text-current'>↔ Round Trip</small>
+                                <span class='block'>
+                                  ~<strong>${(miles * 2).toLocaleString()}</strong>
+                                  <small>miles</small>
+                                </span>      
+                                <span class='block'>
+                                  ~<strong>${(kilometers * 2).toLocaleString()}</strong>
+                                  <small>km</small>
+                                </span>
+                              </div>
+                            </div>
+                          </div>`;
+          return el;
+        }}
       />
     </div>
   );
