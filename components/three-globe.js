@@ -117,23 +117,6 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, points, route, rings }) => {
     })
     .slice(0, -1);
 
-  if (hasCurrent) {
-    console.log(distances);
-
-    const meters = getDistance(...distances);
-    const miles = meters * 0.000621371192;
-    const kilometers = meters / 1000;
-
-    console.log('meters: ', meters);
-    console.log('miles: ', miles);
-    console.log('kilometers: ', kilometers);
-
-    //console.log('markerData: ', [markerData[0]]);
-    //   console.log('markerData.lat: ', markerData.lat);
-    //   console.log('markerData.lng: ', markerData.lng);
-    // console.log('totalDistance m: ', getDistance(...totalDistance));
-  }
-
   // hard coded for now, these are the locations for the serverless clusters
   const clustersData = [
     {
