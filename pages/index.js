@@ -195,7 +195,7 @@ const Page = ({ data }) => {
                   </button>
                 </div>
 
-                <div className="rounded border border-border px-2 py-2 flex h-26 sm:h-9 min-h-full">
+                <div className="rounded border border-border px-2 py-2 flex h-28 sm:h-9 min-h-full">
                   {mutation.isIdle ? <Empty /> : null}
                   {mutation.isLoading ? <Loading /> : null}
                   {mutation.isError ? <Error /> : null}
