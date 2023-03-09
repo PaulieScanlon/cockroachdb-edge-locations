@@ -11,7 +11,7 @@ import '../styles/globals.css';
 const App = ({ Component, pageProps: { session, ...pageProps } }) => {
   const url = 'https://cockroachdb-edge-locations.vercel.app/';
   const seoTitle = 'Edge';
-  const seoDescription = 'Submit the location of your nearest edge.';
+  const seoDescription = 'A CockroachDB demo application that calculates the distance from data to you.';
   const seoImage = 'edge-open-graph-image.jpg';
 
   return (
