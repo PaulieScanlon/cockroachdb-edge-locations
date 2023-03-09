@@ -155,7 +155,7 @@ const ThreeGlobe = ({ isPlaying, hasCurrent, points, route, rings }) => {
   };
 
   return (
-    <div className="flex justify-center">
+    <div className="flex items-start sm:items-center justify-center h-full">
       <Globe
         ref={globeEl}
         onGlobeReady={globeReady}

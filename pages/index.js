@@ -381,8 +381,8 @@ const Page = ({ data }) => {
 
         <div
           className={`relative overflow-hidden w-full ${
-            isExpanded ? '' : 'h-[400px] md:h-[600px]'
-          } xl:h-screen cursor-move rounded border border-border lg:border-none`}
+            isExpanded ? '' : 'h-[400px] md:h-screen'
+          } cursor-move rounded border border-border lg:border-none`}
         >
           <div className="absolute top-0 left-0 flex justify-between gap-2 text-text p-4 text-xs w-full z-10">
             <div className="flex flex-col gap-1">
