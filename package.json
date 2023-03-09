@@ -1,7 +1,7 @@
 {
   "name": "cockroachdb-edge-locations",
   "version": "1.0.0",
-  "description": "A demo application that logs the locations of where Vercel Serverless Functions are deployed",
+  "description": "A CockroachDB demo application that calculates the distance from data to you.",
   "main": "index.js",
   "scripts": {
     "dev": "next dev",

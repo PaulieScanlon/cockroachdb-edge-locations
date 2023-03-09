@@ -8,8 +8,7 @@
 
 # Edge
 
-A demo application that logs the locations of where Vercel Serverless Functions are deployed. Data saved in
-[CockroachDB](https://www.cockroachlabs.com/product/).
+A [CockroachDB](https://www.cockroachlabs.com/product/) demo application that calculates the distance from data to you.
 
 ## Preview
 
