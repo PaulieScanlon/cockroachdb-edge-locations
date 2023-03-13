@@ -191,13 +191,14 @@ const Page = ({ data }) => {
                 </div>
                 <div className="flex h-[123px] rounded border border-border overflow-auto">
                   <div className="flex-grow min-w-[400px] overflow-auto text-xs">
-                    <table className="relative w-full">
+                    <table className="relative table-auto w-full">
                       <thead className="text-primary font-bold">
                         <tr>
                           <th className="sticky top-0 p-3 bg-thead text-left">Provider</th>
                           <th className="sticky top-0 p-3 bg-thead text-left">Date</th>
                           <th className="sticky top-0 p-3 bg-thead text-left">City</th>
-                          <th className="sticky top-0 p-3 bg-thead text-left">Response Time</th>
+                          <th className="sticky top-0 p-3 bg-thead text-left">Response Time (s)</th>
+                          <th className="sticky top-0 p-3 bg-thead text-left">Response Time (ms)</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-divide">
@@ -221,6 +222,7 @@ const Page = ({ data }) => {
                                       })}
                                     </td>
                                     <td className="p-3 whitespace-nowrap">{city}</td>
+                                    <td className="p-3 whitespace-nowrap">{`${(diff / 1000).toFixed(2)} s`}</td>
                                     <td className="p-3 whitespace-nowrap">{`${diff.toFixed(2)} ms`}</td>
                                   </tr>
                                 );
