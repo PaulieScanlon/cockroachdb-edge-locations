@@ -46,13 +46,7 @@ const Page = ({ data }) => {
         queryKey: ['read-query'],
         queryFn: async () => {
           try {
-            // This API route uses the database connection string defined in .local env vars
-            // const response = await fetch('/api/read', {
-            //   method: 'GET'
-            // });
-
-            // This API uses prod env vars defined in the Serverless Repo / AWS Config
-            const response = await fetch('https://api.crl-devrel.net/read', {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_AWS_API_URL}/read`, {
               method: 'GET'
             });
 
@@ -116,12 +110,15 @@ const Page = ({ data }) => {
   const mutation = useMutation(
     async () => {
       try {
-        const response = await fetch(functionProvider === AWS ? 'https://api.crl-devrel.net/create' : '/api/create', {
-          method: 'POST',
-          body: JSON.stringify({
-            date: new Date()
-          })
-        });
+        const response = await fetch(
+          functionProvider === AWS ? `${process.env.NEXT_PUBLIC_AWS_API_URL}/create` : '/api/create',
+          {
+            method: 'POST',
+            body: JSON.stringify({
+              date: new Date()
+            })
+          }
+        );
 
         const json = await response.json();
 

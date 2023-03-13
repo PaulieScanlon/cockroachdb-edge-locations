@@ -16,11 +16,7 @@ const Page = () => {
       queryKey: ['query'],
       queryFn: async () => {
         try {
-          // const response = await fetch('/api/read', {
-          //   method: 'GET'
-          // });
-
-          const response = await fetch('https://api.crl-devrel.net/read', {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_AWS_API_URL}/read`, {
             method: 'GET'
           });
 
@@ -46,7 +42,7 @@ const Page = () => {
   const mutation = useMutation(
     async (id) => {
       try {
-        const response = await fetch('/api/delete', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_AWS_API_URL}/delete`, {
           method: 'DELETE',
           body: JSON.stringify({
             id: id
