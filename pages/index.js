@@ -28,7 +28,8 @@ const lambdaOffset = 0.8;
 const Page = ({ data }) => {
   const queryClient = useQueryClient();
   const [isPlaying, setIsPlaying] = useState(true);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isGlobeExpanded, setIsGlobeExpanded] = useState(false);
+  const [isPanelExpanded, setIsPanelExpanded] = useState(true);
   const [functionProvider, setFunctionProvider] = useState(AWS);
   const prefersReducedMotion = usePrefersReducedMotion();
 
@@ -147,8 +148,8 @@ const Page = ({ data }) => {
   };
 
   return (
-    <section className={`grid grid-cols-1 ${isExpanded ? '' : 'xl:grid-cols-2'}`}>
-      <div className={`bg-surface xl:min-h-screen shadow-lg ${isExpanded ? 'hidden' : 'block'}`}>
+    <section className={`grid grid-cols-1 ${isGlobeExpanded ? '' : 'xl:grid-cols-2'}`}>
+      <div className={`bg-surface xl:min-h-screen shadow-lg ${isGlobeExpanded ? 'hidden' : 'block'}`}>
         <div className="flex flex-col p-6 md:p-8 h-full">
           <div className="grid gap-8 px-8 py-8">
             <Logo />
@@ -349,13 +350,13 @@ const Page = ({ data }) => {
       </div>
 
       <div className="bg-gradient-to-b from-black to-shade p-6 md:p-8 lg:p-0 overflow-scroll">
-        <div className={`absolute top-1/2 bg-surface z-20 ${isExpanded ? 'left-0' : 'left-1/2'}`}>
+        <div className={`absolute top-1/2 bg-surface z-20 ${isGlobeExpanded ? 'left-0' : 'left-1/2'}`}>
           <button
-            className="hidden xl:block bg-surface px-2 py-4 text-secondary hover:text-primary"
+            className="hidden xl:block bg-surface/80 px-2 py-4 text-secondary hover:text-primary"
             type="button"
             role="button"
-            aria-pressed={isExpanded ? true : false}
-            onClick={() => setIsExpanded(!isExpanded)}
+            aria-pressed={isGlobeExpanded ? true : false}
+            onClick={() => setIsGlobeExpanded(!isGlobeExpanded)}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -363,14 +364,14 @@ const Page = ({ data }) => {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6"
-              aria-label={isExpanded ? 'Collapse Icon' : 'Expand Icon'}
+              className="w-5 h-5"
+              aria-label={isGlobeExpanded ? 'Collapse globe' : 'Expand globe'}
             >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 d={
-                  isExpanded
+                  isGlobeExpanded
                     ? 'M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5'
                     : 'M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5'
                 }
@@ -381,7 +382,7 @@ const Page = ({ data }) => {
 
         <div
           className={`relative overflow-hidden w-full ${
-            isExpanded ? '' : 'h-[400px] md:h-screen'
+            isGlobeExpanded ? '' : 'h-[400px] md:h-screen'
           } cursor-move rounded border border-border lg:border-none`}
         >
           <div className="absolute top-0 left-0 flex justify-between gap-2 text-text p-4 text-xs w-full z-10">
@@ -407,8 +408,37 @@ const Page = ({ data }) => {
             </div>
           </div>
 
-          <div className="absolute bottom-0 left-0 flex items-end justify-between gap-2 text-text p-4 text-xs z-10 select-none pointer-events-none">
-            <div className="flex flex-col gap-2">
+          <div
+            className={`absolute left-0 flex items-end justify-between gap-2 text-text text-xs z-20 ${
+              isPanelExpanded ? 'bottom-0' : 'bottom-[-248px]'
+            }`}
+          >
+            <div className="flex flex-col p-4 gap-4 bg-surface/80 rounded">
+              <button
+                className="flex items-center justify-between text-secondary hover:text-primary"
+                onClick={() => setIsPanelExpanded(!isPanelExpanded)}
+              >
+                <strong>Legend</strong>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-5 h-5"
+                  aria-label={isPanelExpanded ? 'Collapse legend' : 'Expand legend'}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d={
+                      isPanelExpanded
+                        ? 'M19.5 5.25l-7.5 7.5-7.5-7.5m15 6l-7.5 7.5-7.5-7.5'
+                        : 'M4.5 12.75l7.5-7.5 7.5 7.5m-15 6l7.5-7.5 7.5 7.5'
+                    }
+                  />
+                </svg>
+              </button>
               <div className="flex flex-col gap-1">
                 <strong className="flex items-center gap-1 text-xs">
                   <span className="w-2 h-2 rounded-full leading-none bg-cluster" />
