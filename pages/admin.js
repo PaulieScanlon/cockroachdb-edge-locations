@@ -22,13 +22,11 @@ const Page = () => {
 
           const json = await response.json();
 
-          const formatted = json.data.locations;
-
           if (!response.ok) {
             throw new Error();
           }
 
-          return formatted;
+          return json.data.locations;
         } catch (error) {
           throw new Error();
         }

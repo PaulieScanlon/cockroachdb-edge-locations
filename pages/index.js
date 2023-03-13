@@ -56,18 +56,8 @@ const Page = ({ data }) => {
 
             const json = await response.json();
 
-            const filtered = json.data.locations
-              .sort((a, b) => b.id - a.id)
-              .reduce((items, item) => {
-                const city = items.find((obj) => obj.city === item.city);
-                if (!city) {
-                  return items.concat([item]);
-                } else {
-                  return items;
-                }
-              }, []);
-
-            return filtered;
+            const sorted = json.data.locations.sort((a, b) => b.id - a.id);
+            return sorted;
           } catch (error) {
             throw new Error();
           }
@@ -211,8 +201,8 @@ const Page = ({ data }) => {
                         {locations
                           ? locations
                               .reduce((items, item) => {
-                                const city = items.find((obj) => obj.runtime === item.runtime);
-                                if (!city) {
+                                const runtime = items.find((obj) => obj.runtime === item.runtime);
+                                if (!runtime) {
                                   return items.concat([item]);
                                 } else {
                                   return items;
