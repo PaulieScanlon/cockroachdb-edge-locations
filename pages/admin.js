@@ -16,7 +16,11 @@ const Page = () => {
       queryKey: ['query'],
       queryFn: async () => {
         try {
-          const response = await fetch('/api/read', {
+          // const response = await fetch('/api/read', {
+          //   method: 'GET'
+          // });
+
+          const response = await fetch('https://api.crl-devrel.net/read', {
             method: 'GET'
           });
 
