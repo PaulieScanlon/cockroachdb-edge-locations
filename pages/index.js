@@ -99,6 +99,7 @@ const Page = ({ data }) => {
 
   const mutation = useMutation(
     async () => {
+      const startTime = performance.now();
       try {
         const response = await fetch(
           functionProvider === AWS ? `${process.env.NEXT_PUBLIC_AWS_API_URL}/create` : '/api/create',
@@ -111,11 +112,12 @@ const Page = ({ data }) => {
         );
 
         const json = await response.json();
+        const finishTime = performance.now();
 
         if (!response.ok) {
           throw new Error();
         }
-        setLocations([...locations, json.data]);
+        setLocations([...locations, { ...json.data, diff: finishTime - startTime }]);
         return json.data;
       } catch (error) {
         throw new Error();
@@ -195,6 +197,7 @@ const Page = ({ data }) => {
                           <th className="sticky top-0 p-3 text-left">Provider</th>
                           <th className="sticky top-0 p-3 text-left">Date</th>
                           <th className="sticky top-0 p-3 text-left">City</th>
+                          <th className="sticky top-0 p-3 text-left">Response Time</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-divide">
@@ -209,7 +212,7 @@ const Page = ({ data }) => {
                                 }
                               }, [])
                               .map((data, index) => {
-                                const { date, city, runtime } = data;
+                                const { date, city, runtime, diff } = data;
 
                                 return (
                                   <tr key={index} className={`text-${runtime}`}>
@@ -225,6 +228,7 @@ const Page = ({ data }) => {
                                       })}
                                     </td>
                                     <td className="p-3 whitespace-nowrap">{city}</td>
+                                    <td className="p-3 whitespace-nowrap">{`${diff.toFixed(2)} ms`}</td>
                                   </tr>
                                 );
                               })
