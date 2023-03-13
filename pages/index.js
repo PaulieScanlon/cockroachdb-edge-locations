@@ -56,8 +56,8 @@ const Page = ({ data }) => {
 
             const json = await response.json();
 
-            const sorted = json.data.locations.sort((a, b) => b.id - a.id);
-            return sorted;
+            const filtered = json.data.locations.sort((a, b) => b.id - a.id).filter((item) => item.city);
+            return filtered;
           } catch (error) {
             throw new Error();
           }
@@ -204,9 +204,7 @@ const Page = ({ data }) => {
                         {locations
                           ? locations
                               .reduce((items, item) => {
-                                const current = items.find(
-                                  (obj) => obj.runtime === item.runtime && obj.city === obj.city
-                                );
+                                const current = items.find((obj) => obj.runtime === item.runtime);
                                 if (!current) {
                                   return items.concat([item]);
                                 } else {
@@ -278,27 +276,25 @@ const Page = ({ data }) => {
 
                       <tbody className="divide-y divide-divide bg-tbody text-text">
                         <Fragment>
-                          {queries[0].data
-                            .filter((item) => item.city)
-                            .map((item, index) => {
-                              const { date, city, lat, lng, runtime } = item;
+                          {queries[0].data.map((item, index) => {
+                            const { date, city, lat, lng, runtime } = item;
 
-                              return (
-                                <tr key={index}>
-                                  <td className="p-3 whitespace-nowrap">
-                                    {new Date(date).toLocaleString('default', {
-                                      month: 'short',
-                                      day: 'numeric',
-                                      year: '2-digit'
-                                    })}
-                                  </td>
-                                  <td className="p-3 whitespace-nowrap">{city}</td>
-                                  <td className="p-3 whitespace-nowrap">{parseFloat(lat)}</td>
-                                  <td className="p-3 whitespace-nowrap">{parseFloat(lng)}</td>
-                                  <td className="p-3 whitespace-nowrap capitalize">{runtime}</td>
-                                </tr>
-                              );
-                            })}
+                            return (
+                              <tr key={index}>
+                                <td className="p-3 whitespace-nowrap">
+                                  {new Date(date).toLocaleString('default', {
+                                    month: 'short',
+                                    day: 'numeric',
+                                    year: '2-digit'
+                                  })}
+                                </td>
+                                <td className="p-3 whitespace-nowrap">{city}</td>
+                                <td className="p-3 whitespace-nowrap">{parseFloat(lat)}</td>
+                                <td className="p-3 whitespace-nowrap">{parseFloat(lng)}</td>
+                                <td className="p-3 whitespace-nowrap capitalize">{runtime}</td>
+                              </tr>
+                            );
+                          })}
                         </Fragment>
                       </tbody>
                     </table>
@@ -392,8 +388,21 @@ const Page = ({ data }) => {
             <div className="flex flex-col gap-1">
               <span className="flex gap-1 items-center">
                 <span className="w-2 h-2 rounded-full leading-none bg-location" />
-                <strong>Total Edges: </strong>
-                {queries[0].isSuccess ? `x${queries[0].data.length}` : <Spinner className="w-3 h-3" />}
+                <strong>Unique Edges: </strong>
+                {queries[0].isSuccess ? (
+                  `x${
+                    queries[0].data.reduce((items, item) => {
+                      const current = items.find((obj) => obj.city === item.city);
+                      if (!current) {
+                        return items.concat([item]);
+                      } else {
+                        return items;
+                      }
+                    }, []).length
+                  }`
+                ) : (
+                  <Spinner className="w-3 h-3" />
+                )}
               </span>
               {mutation.data ? (
                 <span className="flex gap-1 items-center">
