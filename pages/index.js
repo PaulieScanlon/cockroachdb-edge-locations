@@ -5,9 +5,7 @@ import { fromProvider } from 'cloud-regions-country-flags';
 
 import Logo from '../components/logo';
 import Spinner from '../components/spinner';
-import Empty from '../components/empty';
-import Loading from '../components/loading';
-import Error from '../components/error';
+
 import usePrefersReducedMotion from '../hooks/use-prefers-reduced-motion';
 
 const ThreeGlobe = dynamic(() => import('../components/three-globe'), {
@@ -31,6 +29,7 @@ const Page = ({ data }) => {
   const [isGlobeExpanded, setIsGlobeExpanded] = useState(false);
   const [isPanelExpanded, setIsPanelExpanded] = useState(true);
   const [functionProvider, setFunctionProvider] = useState(AWS);
+  const [locations, setLocations] = useState([]);
   const prefersReducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
@@ -129,7 +128,7 @@ const Page = ({ data }) => {
         if (!response.ok) {
           throw new Error();
         }
-
+        setLocations([...locations, json.data]);
         return json.data;
       } catch (error) {
         throw new Error();
@@ -176,7 +175,13 @@ const Page = ({ data }) => {
               <div className="grid gap-2">
                 <div className="flex items-center justify-between gap-4 h-12 min-h-full">
                   <label className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" className="sr-only peer" value={functionProvider} onChange={handleChange} />
+                    <input
+                      type="checkbox"
+                      className="sr-only peer"
+                      value={functionProvider}
+                      onChange={handleChange}
+                      disabled={mutation.isLoading ? true : false}
+                    />
                     <div className="w-11 h-6 bg-lambda peer-checked:bg-serverless peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-primary after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-primary after:border after:rounded-full after:h-5 after:w-5 after:transition-all " />
                     <span className="ml-2 text-xs font-medium text-primary">{functionProvider}</span>
                   </label>
@@ -195,48 +200,51 @@ const Page = ({ data }) => {
                     {mutation.isLoading ? <Spinner /> : 'Submit'}
                   </button>
                 </div>
+                <div className="flex h-[123px] rounded border border-border overflow-auto">
+                  <div className="flex-grow min-w-[400px] overflow-auto text-xs">
+                    <table className="relative w-full">
+                      <thead className="text-primary font-bold">
+                        <tr className="bg-thead">
+                          <th className="sticky top-0 p-3 text-left">Provider</th>
+                          <th className="sticky top-0 p-3 text-left">Date</th>
+                          <th className="sticky top-0 p-3 text-left">City</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-divide">
+                        {locations
+                          ? locations
+                              .reduce((items, item) => {
+                                const city = items.find((obj) => obj.city === item.city);
+                                if (!city) {
+                                  return items.concat([item]);
+                                } else {
+                                  return items;
+                                }
+                              }, [])
+                              .map((data, index) => {
+                                const { date, city, runtime } = data;
 
-                <div className="rounded border border-border px-2 py-2 flex h-28 sm:h-9 min-h-full">
-                  {mutation.isIdle ? <Empty /> : null}
-                  {mutation.isLoading ? <Loading /> : null}
-                  {mutation.isError ? <Error /> : null}
-                  {mutation.isSuccess ? (
-                    <ul className="flex flex-col sm:flex-row gap-2 text-xs text-primary">
-                      <li>
-                        <strong>Date: </strong>
-                        <small className="text-current">
-                          {mutation.data
-                            ? `${new Date(mutation.data.date).toLocaleString('default', {
-                                month: 'short',
-                                day: 'numeric',
-                                year: '2-digit',
-                                hour: '2-digit',
-                                minute: '2-digit',
-                                second: '2-digit'
-                              })}`
-                            : null}
-                        </small>
-                      </li>
-                      <li>
-                        <strong>City: </strong>
-                        <small className="text-current"> {mutation.data ? `${mutation.data.city}` : null}</small>
-                      </li>
-                      <li>
-                        <strong>Latitude: </strong>
-                        <small className="text-current">
-                          {' '}
-                          {mutation.data ? `${parseFloat(mutation.data.lat)}` : null}{' '}
-                        </small>
-                      </li>
-                      <li>
-                        <strong>Longitude: </strong>
-                        <small className="text-current">
-                          {' '}
-                          {mutation.data ? `${parseFloat(mutation.data.lng)}` : null}{' '}
-                        </small>
-                      </li>
-                    </ul>
-                  ) : null}
+                                return (
+                                  <tr key={index} className={`text-${runtime}`}>
+                                    <td className="flex items-center gap-2 p-3 capitalize">
+                                      <span className={`inline-block mt-0.5 bg-${runtime} w-2 h-2 rounded-full`} />
+                                      {runtime}
+                                    </td>
+                                    <td className="p-3 whitespace-nowrap">
+                                      {new Date(date).toLocaleString('default', {
+                                        month: 'short',
+                                        day: 'numeric',
+                                        year: '2-digit'
+                                      })}
+                                    </td>
+                                    <td className="p-3 whitespace-nowrap">{city}</td>
+                                  </tr>
+                                );
+                              })
+                          : null}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
@@ -271,6 +279,7 @@ const Page = ({ data }) => {
                           <th className="sticky top-0 p-3 bg-thead text-left">City</th>
                           <th className="sticky top-0 p-3 bg-thead text-left">Latitude</th>
                           <td className="sticky top-0 p-3 bg-thead text-left">Longitude</td>
+                          <td className="sticky top-0 p-3 bg-thead text-left">Runtime</td>
                         </tr>
                       </thead>
 
@@ -279,7 +288,7 @@ const Page = ({ data }) => {
                           {queries[0].data
                             .filter((item) => item.city)
                             .map((item, index) => {
-                              const { date, city, lat, lng } = item;
+                              const { date, city, lat, lng, runtime } = item;
 
                               return (
                                 <tr key={index}>
@@ -293,6 +302,7 @@ const Page = ({ data }) => {
                                   <td className="p-3 whitespace-nowrap">{city}</td>
                                   <td className="p-3 whitespace-nowrap">{parseFloat(lat)}</td>
                                   <td className="p-3 whitespace-nowrap">{parseFloat(lng)}</td>
+                                  <td className="p-3 whitespace-nowrap capitalize">{runtime}</td>
                                 </tr>
                               );
                             })}

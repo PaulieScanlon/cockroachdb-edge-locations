@@ -29,7 +29,8 @@ export default async function handler(req, res) {
         city: city,
         date: date,
         lat: lat,
-        lng: lng
+        lng: lng,
+        runtime: runtime
       }
     });
   } catch (error) {
