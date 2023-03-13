@@ -193,24 +193,17 @@ const Page = ({ data }) => {
                   <div className="flex-grow min-w-[400px] overflow-auto text-xs">
                     <table className="relative w-full">
                       <thead className="text-primary font-bold">
-                        <tr className="bg-thead">
-                          <th className="sticky top-0 p-3 text-left">Provider</th>
-                          <th className="sticky top-0 p-3 text-left">Date</th>
-                          <th className="sticky top-0 p-3 text-left">City</th>
-                          <th className="sticky top-0 p-3 text-left">Response Time</th>
+                        <tr>
+                          <th className="sticky top-0 p-3 bg-thead text-left">Provider</th>
+                          <th className="sticky top-0 p-3 bg-thead text-left">Date</th>
+                          <th className="sticky top-0 p-3 bg-thead text-left">City</th>
+                          <th className="sticky top-0 p-3 bg-thead text-left">Response Time</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-divide">
                         {locations
                           ? locations
-                              .reduce((items, item) => {
-                                const current = items.find((obj) => obj.runtime === item.runtime);
-                                if (!current) {
-                                  return items.concat([item]);
-                                } else {
-                                  return items;
-                                }
-                              }, [])
+                              .sort((a, b) => b.id - a.id)
                               .map((data, index) => {
                                 const { date, city, runtime, diff } = data;
 
