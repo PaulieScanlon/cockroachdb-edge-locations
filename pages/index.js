@@ -204,8 +204,10 @@ const Page = ({ data }) => {
                         {locations
                           ? locations
                               .reduce((items, item) => {
-                                const runtime = items.find((obj) => obj.runtime === item.runtime);
-                                if (!runtime) {
+                                const current = items.find(
+                                  (obj) => obj.runtime === item.runtime && obj.city === obj.city
+                                );
+                                if (!current) {
                                   return items.concat([item]);
                                 } else {
                                   return items;
