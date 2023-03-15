@@ -194,11 +194,11 @@ const Page = ({ data }) => {
                     <table className="relative table-auto w-full">
                       <thead className="text-primary font-bold">
                         <tr>
-                          <th className="sticky top-0 p-3 bg-thead text-left">Provider</th>
-                          <th className="sticky top-0 p-3 bg-thead text-left">Date</th>
-                          <th className="sticky top-0 p-3 bg-thead text-left">City</th>
-                          <th className="sticky top-0 p-3 bg-thead text-left">Response Time (s)</th>
-                          <th className="sticky top-0 p-3 bg-thead text-left">Response Time (ms)</th>
+                          <th className="sticky top-0 p-3 bg-thead whitespace-nowrap text-left">Provider</th>
+                          <th className="sticky top-0 p-3 bg-thead whitespace-nowrap text-left">Date</th>
+                          <th className="sticky top-0 p-3 bg-thead whitespace-nowrap text-left">City</th>
+                          <th className="sticky top-0 p-3 bg-thead whitespace-nowrap text-left">Response Time (s)</th>
+                          <th className="sticky top-0 p-3 bg-thead whitespace-nowrap text-left">Response Time (ms)</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-divide">
@@ -261,11 +261,11 @@ const Page = ({ data }) => {
                     <table className="relative w-full">
                       <thead className="text-primary font-bold">
                         <tr>
-                          <th className="sticky top-0 p-3 bg-thead text-left">Date</th>
-                          <th className="sticky top-0 p-3 bg-thead text-left">City</th>
-                          <th className="sticky top-0 p-3 bg-thead text-left">Latitude</th>
-                          <td className="sticky top-0 p-3 bg-thead text-left">Longitude</td>
-                          <td className="sticky top-0 p-3 bg-thead text-left">Runtime</td>
+                          <th className="sticky top-0 p-3 bg-thead whitespace-nowrap text-left">Date</th>
+                          <th className="sticky top-0 p-3 bg-thead whitespace-nowrap text-left">City</th>
+                          <th className="sticky top-0 p-3 bg-thead whitespace-nowrap text-left">Latitude</th>
+                          <td className="sticky top-0 p-3 bg-thead whitespace-nowrap text-left">Longitude</td>
+                          <td className="sticky top-0 p-3 bg-thead whitespace-nowrap text-left">Runtime</td>
                         </tr>
                       </thead>
 
