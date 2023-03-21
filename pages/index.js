@@ -1,4 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
+import Image from 'next/image';
+
 import dynamic from 'next/dynamic';
 import { useMutation, useQueries, useQueryClient } from '@tanstack/react-query';
 import { fromProvider } from 'cloud-regions-country-flags';
@@ -22,6 +24,8 @@ const lambda = [
 ];
 
 const lambdaOffset = 0.8;
+
+import tnsLogo from '../public/tns-logo.png';
 
 const Page = ({ data }) => {
   const queryClient = useQueryClient();
@@ -56,7 +60,17 @@ const Page = ({ data }) => {
 
             const json = await response.json();
 
-            const filtered = json.data.locations.sort((a, b) => b.id - a.id).filter((item) => item.city);
+            const filtered = json.data.locations
+              .reduce((items, item) => {
+                const current = items.find((obj) => obj.city === item.city);
+                if (!current) {
+                  return items.concat([item]);
+                } else {
+                  return items;
+                }
+              }, [])
+              .sort((a, b) => b.id - a.id)
+              .filter((item) => item.city);
             return filtered;
           } catch (error) {
             throw new Error();
@@ -146,15 +160,15 @@ const Page = ({ data }) => {
               <p className="text-text text-sm text-center">
                 Submit the location of your nearest <em className="font-bold">edge.</em>
               </p>
-              <small className="block text-secondary text-center">
-                Read more about this app on my{' '}
+              <small className="inline-flex justify-self-center gap-2 border border-border px-4 py-2 rounded">
                 <a
-                  href="https://paulie.dev/posts/2023/02/cockroachlabs-interview-app/"
+                  href="https://thenewstack.io/the-distance-from-data-to-you-in-edge-computing/"
                   target="_blank"
                   rel="noopener"
-                  className="underline text-primary hover:text-location"
+                  className="flex items-center gap-2 text-secondary hover:text-primary"
                 >
-                  blog
+                  <Image src={tnsLogo} alt="The New Stack Logo" className="inline w-6" />
+                  The Distance from Data to You in Edge Computing
                 </a>
               </small>
             </div>
@@ -235,13 +249,17 @@ const Page = ({ data }) => {
               </div>
             </div>
 
-            <div className="overflow-hidden lg:grow">
-              <div className="flex h-[420px] xl:h-[calc(100vh-600px)] rounded border border-border overflow-auto">
+            <div className="grid gap-2 overflow-hidden lg:grow">
+              <span className="flex gap-1 items-center text-primary text-xs">
+                <span className="w-2 h-2 rounded-full leading-none bg-location" />
+                <strong>Unique Edges: </strong>
+                {queries[0].isSuccess ? `x${queries[0].data.length}` : <Spinner className="w-3 h-3" />}
+              </span>
+              <div className="flex h-[420px] xl:h-[calc(100vh-650px)] rounded border border-border overflow-auto">
                 {queries[0].status === 'loading' ? (
                   <div className="flex flex-col gap-3 items-center justify-center h-full w-full p-8">
                     <span className="block text-center text-text text-xs leading-5">
-                      CockroachDB Multi-Region Serverless is in Beta. <br />
-                      This might take a while.
+                      CockroachDB Multi-Region Serverless is in Beta.
                     </span>
                     <Spinner />
                   </div>
@@ -384,20 +402,7 @@ const Page = ({ data }) => {
               <span className="flex gap-1 items-center">
                 <span className="w-2 h-2 rounded-full leading-none bg-location" />
                 <strong>Unique Edges: </strong>
-                {queries[0].isSuccess ? (
-                  `x${
-                    queries[0].data.reduce((items, item) => {
-                      const current = items.find((obj) => obj.city === item.city);
-                      if (!current) {
-                        return items.concat([item]);
-                      } else {
-                        return items;
-                      }
-                    }, []).length
-                  }`
-                ) : (
-                  <Spinner className="w-3 h-3" />
-                )}
+                {queries[0].isSuccess ? `x${queries[0].data.length}` : <Spinner className="w-3 h-3" />}
               </span>
               {mutation.data ? (
                 <span className="flex gap-1 items-center">
