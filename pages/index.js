@@ -152,8 +152,8 @@ const Page = ({ data }) => {
   return (
     <section className={`grid grid-cols-1 ${isGlobeExpanded ? '' : 'xl:grid-cols-2'}`}>
       <div className={`bg-surface xl:min-h-screen shadow-lg ${isGlobeExpanded ? 'hidden' : 'block'}`}>
-        <div className="flex flex-col p-6 md:p-8 h-full">
-          <div className="grid gap-8 py-8">
+        <div className="flex flex-col p-6 md:p-8 gap-8 h-full">
+          <div className="grid gap-8">
             <Logo />
             <h1 className="sr-only">Edge</h1>
             <div className="grid gap-3">
@@ -255,7 +255,7 @@ const Page = ({ data }) => {
                 <strong>Unique Edges: </strong>
                 {queries[0].isSuccess ? `x${queries[0].data.length}` : <Spinner className="w-3 h-3" />}
               </span>
-              <div className="flex h-[420px] xl:h-[calc(100vh-650px)] rounded border border-border overflow-auto">
+              <div className="flex h-[420px] xl:h-[calc(100vh-610px)] rounded border border-border overflow-auto">
                 {queries[0].status === 'loading' ? (
                   <div className="flex flex-col gap-3 items-center justify-center h-full w-full p-8">
                     <span className="block text-center text-text text-xs leading-5">
