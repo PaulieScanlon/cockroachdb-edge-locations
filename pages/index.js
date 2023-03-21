@@ -153,21 +153,21 @@ const Page = ({ data }) => {
     <section className={`grid grid-cols-1 ${isGlobeExpanded ? '' : 'xl:grid-cols-2'}`}>
       <div className={`bg-surface xl:min-h-screen shadow-lg ${isGlobeExpanded ? 'hidden' : 'block'}`}>
         <div className="flex flex-col p-6 md:p-8 h-full">
-          <div className="grid gap-8 px-8 py-8">
+          <div className="grid gap-8 py-8">
             <Logo />
             <h1 className="sr-only">Edge</h1>
-            <div className="grid gap-2">
+            <div className="grid gap-3">
               <p className="text-text text-sm text-center">
                 Submit the location of your nearest <em className="font-bold">edge.</em>
               </p>
-              <small className="inline-flex justify-self-center gap-2 border border-border px-4 py-2 rounded">
+              <small className="inline-flex justify-self-center gap-2 border border-border px-4 py-4 sm:py-2 rounded">
                 <a
                   href="https://thenewstack.io/the-distance-from-data-to-you-in-edge-computing/"
                   target="_blank"
                   rel="noopener"
-                  className="flex items-center gap-2 text-secondary hover:text-primary"
+                  className="flex flex-col sm:flex-row items-center gap-2 text-secondary text-center sm:text-left hover:text-primary"
                 >
-                  <Image src={tnsLogo} alt="The New Stack Logo" className="inline w-6" />
+                  <Image src={tnsLogo} alt="The New Stack Logo" className="inline w-8 sm:w-6" />
                   The Distance from Data to You in Edge Computing
                 </a>
               </small>
