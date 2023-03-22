@@ -93,6 +93,11 @@ const Page = () => {
       </div>
       {session?.user.admin ? (
         <aside className="grid gap-8">
+          <span className="flex gap-1 items-center text-primary text-xs">
+            <span className="w-2 h-2 rounded-full leading-none bg-location" />
+            <strong>Total Edges: </strong>
+            {query.data ? `x${query.data.length}` : <Spinner className="w-3 h-3" />}
+          </span>
           <div className="grid gap-4">
             <div className="overflow-hidden">
               <div className="flex flex-col h-full lg:h-[600px] overflow-hidden">
