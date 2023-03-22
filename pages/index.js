@@ -160,16 +160,21 @@ const Page = ({ data }) => {
               <p className="text-text text-sm text-center">
                 Submit the location of your nearest <em className="font-bold">edge.</em>
               </p>
-              <small className="inline-flex justify-self-center gap-2 border border-border px-4 py-4 sm:py-2 rounded">
-                <a
-                  href="https://thenewstack.io/the-distance-from-data-to-you-in-edge-computing/"
-                  target="_blank"
-                  rel="noopener"
-                  className="flex flex-col sm:flex-row items-center gap-2 text-secondary text-center sm:text-left hover:text-primary"
-                >
-                  <Image src={tnsLogo} alt="The New Stack Logo" className="inline w-8 sm:w-6" />
-                  The Distance from Data to You in Edge Computing
-                </a>
+              <small className="inline-flex items-center justify-center justify-self-center text-secondary gap-2 border border-border rounded px-3 py-3">
+                <div className="hidden sm:flex items-center justify-center bg-border rounded-full w-10 h-10">
+                  <Image src={tnsLogo} alt="The New Stack Logo" className="mt-0.5 w-6 h-auto" />
+                </div>
+                <span className="flex flex-col">
+                  Read about this App on The New Stack:
+                  <a
+                    href="https://thenewstack.io/the-distance-from-data-to-you-in-edge-computing/"
+                    target="_blank"
+                    rel="noopener"
+                    className="hover:text-primary hover:underline font-bold"
+                  >
+                    The Distance from Data to You in Edge Computing
+                  </a>
+                </span>
               </small>
             </div>
           </div>
@@ -255,7 +260,7 @@ const Page = ({ data }) => {
                 <strong>Unique Edges: </strong>
                 {queries[0].isSuccess ? `x${queries[0].data.length}` : <Spinner className="w-3 h-3" />}
               </span>
-              <div className="flex h-[420px] xl:h-[calc(100vh-610px)] rounded border border-border overflow-auto">
+              <div className="flex h-[420px] xl:h-[calc(100vh-635px)] rounded border border-border overflow-auto">
                 {queries[0].status === 'loading' ? (
                   <div className="flex flex-col gap-3 items-center justify-center h-full w-full p-8">
                     <span className="block text-center text-text text-xs leading-5">
@@ -320,7 +325,7 @@ const Page = ({ data }) => {
                 href=" https://github.com/PaulieScanlon/cockroachdb-edge-locations"
                 target="_blank"
                 rel="noopener"
-                className="flex gap-2 items-center text-xs text-secondary hover:text-primary"
+                className="flex gap-2 items-center text-xs text-secondary hover:text-primary hover:underline"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -338,7 +343,7 @@ const Page = ({ data }) => {
                 href="https://paulie.dev/posts/2023/02/cockroachlabs-interview-app/"
                 target="_blank"
                 rel="noopener"
-                className="flex gap-2 items-center text-xs text-secondary hover:text-primary"
+                className="flex gap-2 items-center text-xs text-secondary hover:text-primary hover:underline"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
