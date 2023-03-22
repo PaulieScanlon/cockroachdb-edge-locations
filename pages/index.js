@@ -547,7 +547,7 @@ const Page = ({ data }) => {
               points={[
                 {
                   type: 'location',
-                  radius: 0.3,
+                  radius: 0.2,
                   altitude: 0.01,
                   colors: ['--color-location'],
                   data: queries[0].data.map((data) => {

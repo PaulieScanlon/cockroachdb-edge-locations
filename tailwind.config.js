@@ -14,7 +14,7 @@ module.exports = {
         thead: '#262626',
         tbody: '#1b1b1b',
         divide: '#222222',
-        location: '#00ff33',
+        location: '#02d82d',
         cluster: '#0496ff',
         serverless: '#dc3545',
         lambda: '#f69402',
