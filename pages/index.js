@@ -160,11 +160,11 @@ const Page = ({ data }) => {
               <p className="text-text text-sm text-center">
                 Submit the location of your nearest <em className="font-bold">edge.</em>
               </p>
-              <small className="inline-flex items-center justify-center justify-self-center text-secondary gap-2 border border-border rounded px-3 py-3">
-                <div className="hidden sm:flex items-center justify-center bg-border rounded-full w-10 h-10">
-                  <Image src={tnsLogo} alt="The New Stack Logo" className="mt-0.5 w-6 h-auto" />
+              <small className="inline-flex flex-col sm:flex-row items-center justify-center sm:justify-self-center text-secondary gap-4 sm:gap-2 border border-border rounded px-3 py-3 text-xs">
+                <div className="flex items-center justify-center bg-border rounded-full p-3 sm:p-2 w-14 h-14 sm:w-10 sm:h-10">
+                  <Image src={tnsLogo} alt="The New Stack Logo" className="mt-0.5" />
                 </div>
-                <span className="flex flex-col">
+                <span className="flex flex-col text-center sm:text-left">
                   Read about this App on The New Stack:
                   <a
                     href="https://thenewstack.io/the-distance-from-data-to-you-in-edge-computing/"
