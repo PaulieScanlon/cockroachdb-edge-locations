@@ -160,22 +160,22 @@ const Page = ({ data }) => {
               <p className="text-text text-sm text-center">
                 Submit the location of your nearest <em className="font-bold">edge.</em>
               </p>
-              <small className="inline-flex flex-col sm:flex-row items-center justify-center sm:justify-self-center text-secondary gap-4 sm:gap-2 border border-border rounded px-3 py-3 text-xs">
-                <div className="flex items-center justify-center bg-border rounded-full p-3 sm:p-2 w-14 h-14 sm:w-10 sm:h-10">
+              <a
+                href="https://thenewstack.io/the-distance-from-data-to-you-in-edge-computing/"
+                target="_blank"
+                rel="noopener"
+                className="flex flex-col sm:flex-row items-center sm:justify-self-center gap-2 text-xs text-center sm:text-left text-secondary rounded border border-border p-3 group"
+              >
+                <div className="flex flex-col items-center justify-center bg-secondary/10 group-hover:bg-border rounded-full p-2 w-14 h-14 sm:w-10 sm:h-10">
                   <Image src={tnsLogo} alt="The New Stack Logo" className="mt-0.5" />
                 </div>
-                <span className="flex flex-col text-center sm:text-left">
-                  Read about this App on The New Stack:
-                  <a
-                    href="https://thenewstack.io/the-distance-from-data-to-you-in-edge-computing/"
-                    target="_blank"
-                    rel="noopener"
-                    className="hover:text-primary hover:underline font-bold"
-                  >
+                <div className="">
+                  <span className="block"> Read about this App on The New Stack:</span>
+                  <span className="group-hover:text-primary group-hover:underline font-bold">
                     The Distance from Data to You in Edge Computing
-                  </a>
-                </span>
-              </small>
+                  </span>
+                </div>
+              </a>
             </div>
           </div>
           <aside className="flex flex-col gap-8 grow">
