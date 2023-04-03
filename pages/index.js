@@ -275,10 +275,10 @@ const Page = ({ data }) => {
                 <div className="flex h-[420px] xl:h-[calc(100vh-635px)] rounded border border-border overflow-auto">
                   {queries[0].status === 'loading' ? (
                     <div className="flex flex-col gap-3 items-center justify-center h-full w-full p-8">
-                      <span className="block text-center text-text text-xs leading-5">
-                        CockroachDB Multi-Region Serverless is in Beta.
-                      </span>
                       <Spinner />
+                      <span className="block text-center text-text text-xs leading-5">
+                        CockroachDB Serverless multi-region capabilities are currently in Private Preview.
+                      </span>
                     </div>
                   ) : null}
 
