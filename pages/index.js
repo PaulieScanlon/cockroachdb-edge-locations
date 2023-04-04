@@ -158,7 +158,7 @@ const Page = ({ data }) => {
         rel="noopener"
         className="absolute p-4 text-secondary hover:text-primary"
       >
-        <CockroachLabsIcon className="w-7 h-7" />
+        {isGlobeExpanded ? null : <CockroachLabsIcon className="w-7 h-7" />}
       </a>
       <section className={`grid grid-cols-1 ${isGlobeExpanded ? '' : 'xl:grid-cols-2'}`}>
         <div className={`bg-surface xl:min-h-screen shadow-lg ${isGlobeExpanded ? 'hidden' : 'block'}`}>
