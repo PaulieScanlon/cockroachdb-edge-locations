@@ -277,7 +277,7 @@ const Page = ({ data }) => {
                     <div className="flex flex-col gap-3 items-center justify-center h-full w-full p-8">
                       <Spinner />
                       <span className="block text-center text-text text-xs leading-5">
-                        CockroachDB Serverless multi-region capabilities are currently in Private Preview.
+                        CockroachDB Serverless multi-region capabilities are currently in preview.
                       </span>
                     </div>
                   ) : null}
